@@ -1,5 +1,4 @@
 import React from "react";
-import { Loader2 } from "lucide-react";
 import Link from "next/link";
 import Image from "next/image";
 
