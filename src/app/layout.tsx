@@ -1,4 +1,3 @@
-import Header from "@/components/Header";
 import { ThemeProvider } from "@/Providers/ThemeProvider";
 import "@/styles/globals.css";
 
@@ -28,10 +27,7 @@ export default function RootLayout({
           enableSystem
           disableTransitionOnChange
         >
-          <main className={"container mx-auto p-2"}>
-            <Header />
-            {children}
-          </main>
+          {children}
         </ThemeProvider>
       </body>
     </html>
