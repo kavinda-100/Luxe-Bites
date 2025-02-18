@@ -5,6 +5,24 @@ const envSchema = z.object({
   NODE_ENV: z
     .enum(["development", "test", "production"])
     .default("development"),
+  KINDE_CLIENT_ID: z
+    .string({ message: "KINDE_CLIENT_ID is required" })
+    .min(1, { message: "KINDE_CLIENT_ID is required" }),
+  KINDE_CLIENT_SECRET: z
+    .string({ message: "KINDE_CLIENT_SECRET is required" })
+    .min(1, { message: "KINDE_CLIENT_SECRET is required" }),
+  KINDE_ISSUER_URL: z
+    .string({ message: "KINDE_ISSUER_URL is required" })
+    .url({ message: "KINDE_ISSUER_URL is not a valid URL" }),
+  KINDE_SITE_URL: z
+    .string({ message: "KINDE_SITE_URL is required" })
+    .url({ message: "KINDE_SITE_URL is not a valid URL" }),
+  KINDE_POST_LOGOUT_REDIRECT_URL: z
+    .string({ message: "KINDE_POST_LOGOUT_REDIRECT_URL is required" })
+    .url({ message: "KINDE_POST_LOGOUT_REDIRECT_URL is not a valid URL" }),
+  KINDE_POST_LOGIN_REDIRECT_URL: z
+    .string({ message: "KINDE_POST_LOGIN_REDIRECT_URL is required" })
+    .url({ message: "KINDE_POST_LOGIN_REDIRECT_URL is not a valid URL" }),
 });
 
 const env = envSchema.safeParse(process.env);

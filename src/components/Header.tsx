@@ -13,9 +13,20 @@ import {
 } from "@/components/ui/sheet";
 import { Menu } from "lucide-react";
 
-const isAuthenticated = true;
+// Kinde auth Imports
+import {
+  RegisterLink,
+  LoginLink,
+  LogoutLink,
+} from "@kinde-oss/kinde-auth-nextjs/components";
+import { getKindeServerSession } from "@kinde-oss/kinde-auth-nextjs/server";
 
-const Header = () => {
+const Header = async () => {
+  const { isAuthenticated, getUser } = getKindeServerSession();
+  const user = await getUser();
+  console.log("header", { user });
+  const isUserAuthenticated = await isAuthenticated();
+
   return (
     <header
       className={"container mx-auto flex items-center justify-between gap-3"}
@@ -31,20 +42,28 @@ const Header = () => {
       </Link>
       <NavLinks isMobile={false} />
       <div className={"hidden items-center justify-evenly gap-3 lg:flex"}>
-        {!isAuthenticated && (
+        {!isUserAuthenticated && (
           <>
-            <Button variant={"outline"}>Sign In</Button>
-            <Button>Sign Up</Button>
+            <Button variant={"outline"} asChild>
+              <LoginLink>Sign In</LoginLink>
+            </Button>
+            <Button asChild>
+              <RegisterLink>Sign Up</RegisterLink>
+            </Button>
           </>
         )}
-        {isAuthenticated && (
+        {isUserAuthenticated && (
           <>
-            <Button variant={"outline"}>Sign Out</Button>
+            <Button variant={"outline"} asChild>
+              <LogoutLink postLogoutRedirectURL={"/"}>Sign Out</LogoutLink>
+            </Button>
           </>
         )}
         <Avatar>
-          <AvatarImage src={""} />
-          <AvatarFallback>K</AvatarFallback>
+          <AvatarImage src={user?.picture ?? " "} />
+          <AvatarFallback>
+            {user?.family_name?.charAt(0).toUpperCase()}
+          </AvatarFallback>
         </Avatar>
         <ModeToggle />
       </div>
@@ -56,7 +75,11 @@ const Header = () => {
 };
 export default Header;
 
-const MobileHeader = () => {
+const MobileHeader = async () => {
+  const { isAuthenticated, getUser } = getKindeServerSession();
+  const user = await getUser();
+  const isUserAuthenticated = await isAuthenticated();
+
   return (
     <Sheet>
       <SheetTrigger>
@@ -78,10 +101,12 @@ const MobileHeader = () => {
           </SheetTitle>
           <SheetContent>
             <div className={"flex items-center justify-center gap-3"}>
-              <h4>Hi, User</h4>
+              <h4>Hi, {user?.family_name ?? "User"}</h4>
               <Avatar>
-                <AvatarImage src={""} />
-                <AvatarFallback>K</AvatarFallback>
+                <AvatarImage src={user?.picture ?? " "} />
+                <AvatarFallback>
+                  {user?.family_name?.charAt(0).toUpperCase()}
+                </AvatarFallback>
               </Avatar>
               <ModeToggle />
             </div>
@@ -89,13 +114,21 @@ const MobileHeader = () => {
             <NavLinks isMobile={true} />
             <div className={"my-2 w-full border border-t"} />
             <div className={"flex flex-col gap-3"}>
-              {!isAuthenticated && (
+              {!isUserAuthenticated && (
                 <>
-                  <Button variant={"outline"}>Sign In</Button>
-                  <Button>Sign Up</Button>
+                  <Button variant={"outline"} asChild>
+                    <LoginLink>Sign In</LoginLink>
+                  </Button>
+                  <Button asChild>
+                    <RegisterLink>Sign Up</RegisterLink>
+                  </Button>
                 </>
               )}
-              {isAuthenticated && <Button variant={"outline"}>Sign Out</Button>}
+              {isUserAuthenticated && (
+                <Button variant={"outline"} asChild>
+                  <LogoutLink postLogoutRedirectURL={"/"}>Sign Out</LogoutLink>
+                </Button>
+              )}
             </div>
           </SheetContent>
         </SheetHeader>

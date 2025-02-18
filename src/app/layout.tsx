@@ -5,6 +5,10 @@ import { GeistSans } from "geist/font/sans";
 import { type Metadata } from "next";
 import React from "react";
 
+// providers
+import TanstackProvider from "../Providers/TanstackProvider";
+import { AuthProvider } from "../Providers/AuthProvider";
+
 export const metadata: Metadata = {
   title: "Luxe Bites",
   description: "Luxe Bites is a luxury food delivery service.",
@@ -15,21 +19,23 @@ export default function RootLayout({
   children,
 }: Readonly<{ children: React.ReactNode }>) {
   return (
-    <html
-      lang="en"
-      className={`${GeistSans.variable}`}
-      suppressHydrationWarning
-    >
-      <body>
-        <ThemeProvider
-          attribute="class"
-          defaultTheme="light"
-          enableSystem
-          disableTransitionOnChange
-        >
-          {children}
-        </ThemeProvider>
-      </body>
-    </html>
+    <AuthProvider>
+      <html
+        lang="en"
+        className={`${GeistSans.variable}`}
+        suppressHydrationWarning
+      >
+        <body>
+          <ThemeProvider
+            attribute="class"
+            defaultTheme="light"
+            enableSystem
+            disableTransitionOnChange
+          >
+            <TanstackProvider>{children}</TanstackProvider>
+          </ThemeProvider>
+        </body>
+      </html>
+    </AuthProvider>
   );
 }
