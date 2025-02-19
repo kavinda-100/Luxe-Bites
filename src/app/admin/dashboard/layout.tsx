@@ -37,7 +37,10 @@ export default async function RootLayout({
           <SidebarTrigger />
           <ModeToggle size={"xm"} />
         </div>
-        {children}
+        <div className={"flex w-full gap-3 lg:w-5/6"}>
+          {children}
+          <div className={"hidden lg:block lg:w-1/6"}>Notifications</div>
+        </div>
       </main>
     </SidebarProvider>
   );

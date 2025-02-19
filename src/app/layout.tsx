@@ -12,6 +12,11 @@ import { AuthProvider } from "../Providers/AuthProvider";
 // shadcn components
 import { Toaster } from "@/components/ui/sonner";
 
+// UploadThing
+import { NextSSRPlugin } from "@uploadthing/react/next-ssr-plugin";
+import { ourFileRouter } from "./api/uploadthing/core";
+import { extractRouterConfig } from "uploadthing/server";
+
 export const metadata: Metadata = {
   title: "Luxe Bites",
   description: "Luxe Bites is a luxury food delivery service.",
@@ -29,6 +34,7 @@ export default function RootLayout({
         suppressHydrationWarning
       >
         <body>
+          <NextSSRPlugin routerConfig={extractRouterConfig(ourFileRouter)} />
           <ThemeProvider
             attribute="class"
             defaultTheme="light"
