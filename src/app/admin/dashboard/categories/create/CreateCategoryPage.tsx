@@ -5,7 +5,6 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import type { z } from "zod";
 
-import { Button } from "@/components/ui/button";
 import {
   Form,
   FormControl,
@@ -26,8 +25,14 @@ import {
 import { Textarea } from "../../../../../components/ui/textarea";
 import { categoriesSchema } from "../../../../../zod/categories";
 import StatusMessage from "../../../../../components/status/StatusMessage";
+import { useMutation } from "@tanstack/react-query";
+import { createCategory } from "../../../../../actions/categoryAction";
+import { useStatusHook } from "../../../../../hooks/useStatusHook";
+import SubmitButton from "../../../../../components/SubmitButton";
 
 const CreateCategoryPage = () => {
+  const { setErrorMessage, setSuccessMessage, successMessage, errorMessage } =
+    useStatusHook();
   // form.
   const form = useForm<z.infer<typeof categoriesSchema>>({
     resolver: zodResolver(categoriesSchema),
@@ -38,11 +43,26 @@ const CreateCategoryPage = () => {
   });
 
   // mutation.
-  const {} = useMutaion({});
+  const { mutate, isPending } = useMutation({
+    mutationFn: async (data: z.infer<typeof categoriesSchema>) =>
+      createCategory(data),
+    onSuccess: (data) => {
+      if (data.success) {
+        setSuccessMessage(data.message);
+        setErrorMessage(null);
+        form.reset();
+      }
+    },
+    onError: (error) => {
+      setSuccessMessage(null);
+      setErrorMessage(error.message);
+    },
+  });
 
   // submit handler.
   function onSubmit(values: z.infer<typeof categoriesSchema>) {
     console.log(values);
+    mutate(values);
   }
 
   return (
@@ -89,10 +109,13 @@ const CreateCategoryPage = () => {
                   </FormItem>
                 )}
               />
-              <StatusMessage message={"message"} type={"success"} />
-              <StatusMessage message={"message"} type={"error"} />
-              <StatusMessage message={"message"} type={"warning"} />
-              <Button type="submit">Submit</Button>
+              {errorMessage && (
+                <StatusMessage message={errorMessage} type={"error"} />
+              )}
+              {successMessage && (
+                <StatusMessage message={successMessage} type={"success"} />
+              )}
+              <SubmitButton isLoading={isPending} text={"Create Category"} />
             </form>
           </Form>
         </CardContent>
