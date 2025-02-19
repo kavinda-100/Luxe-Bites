@@ -43,3 +43,24 @@ export async function verifyUser() {
     throw new Error("Internal Server Error");
   }
 }
+
+export async function checkUserRole(userId: string) {
+  try {
+    const existingUser = await prisma.user.findUnique({
+      where: {
+        kindUserId: userId,
+      },
+      select: {
+        role: true,
+      },
+    });
+    if (!existingUser) {
+      console.log("Unauthorized - User not found", { existingUser });
+      return null;
+    }
+    return existingUser.role;
+  } catch (e: unknown) {
+    console.log("Error in checkUserRole: ", e);
+    return null;
+  }
+}

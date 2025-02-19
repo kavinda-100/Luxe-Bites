@@ -256,7 +256,7 @@ export async function AppSidebar() {
                 </DropdownMenuItem>
                 <DropdownMenuItem>
                   <LogOutIcon className={"size-4"} />
-                  <LogoutLink postLogoutRedirectURL={"/"}>Sign Out</LogoutLink>
+                  <LogoutLink>Sign Out</LogoutLink>
                 </DropdownMenuItem>
               </DropdownMenuContent>
             </DropdownMenu>

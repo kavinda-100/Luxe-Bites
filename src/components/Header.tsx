@@ -24,7 +24,7 @@ import { getKindeServerSession } from "@kinde-oss/kinde-auth-nextjs/server";
 const Header = async () => {
   const { isAuthenticated, getUser } = getKindeServerSession();
   const user = await getUser();
-  console.log("header", { user });
+  // console.log("header", { user });
   const isUserAuthenticated = await isAuthenticated();
 
   return (
@@ -55,7 +55,7 @@ const Header = async () => {
         {isUserAuthenticated && (
           <>
             <Button variant={"outline"} asChild>
-              <LogoutLink postLogoutRedirectURL={"/"}>Sign Out</LogoutLink>
+              <LogoutLink>Sign Out</LogoutLink>
             </Button>
           </>
         )}
@@ -126,7 +126,7 @@ const MobileHeader = async () => {
               )}
               {isUserAuthenticated && (
                 <Button variant={"outline"} asChild>
-                  <LogoutLink postLogoutRedirectURL={"/"}>Sign Out</LogoutLink>
+                  <LogoutLink>Sign Out</LogoutLink>
                 </Button>
               )}
             </div>
