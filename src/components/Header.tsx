@@ -65,7 +65,7 @@ const Header = async () => {
             {user?.family_name?.charAt(0).toUpperCase()}
           </AvatarFallback>
         </Avatar>
-        <ModeToggle />
+        <ModeToggle size={"icon"} />
       </div>
       <div className={"block lg:hidden"}>
         <MobileHeader />
@@ -108,7 +108,7 @@ const MobileHeader = async () => {
                   {user?.family_name?.charAt(0).toUpperCase()}
                 </AvatarFallback>
               </Avatar>
-              <ModeToggle />
+              <ModeToggle size={"icon"} />
             </div>
             <div className={"my-2 w-full border border-t"} />
             <NavLinks isMobile={true} />

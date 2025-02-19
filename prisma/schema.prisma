@@ -19,9 +19,73 @@ model User {
     name     String?
     profilePicture  String?
     role     Role     @default(USER)
+    reviews  Review[]
 
     createdAt DateTime @default(now())
     updatedAt DateTime @updatedAt
 
     @@index([id, kindUserId, email]) // Index for searching by id or kindUserId or email
+}
+
+model Category {
+    id        String   @id @default(cuid())
+    name      String   @unique
+    description String?
+    products  Product[]
+
+    createdAt DateTime @default(now())
+    updatedAt DateTime @updatedAt
+
+    @@index([id, name]) // Index for searching by id or name
+}
+
+model Product {
+    id          String   @id @default(cuid())
+    name        String
+    description String
+    price       Float
+    discount    Float?
+    stock       Int
+    image       String
+    categoryId  String
+    active      Boolean @default(true)
+    rating      Float?
+    reviews     Review[]
+
+    category    Category @relation(fields: [categoryId], references: [id])
+
+    createdAt DateTime @default(now())
+    updatedAt DateTime @updatedAt
+
+    @@index([id, name, categoryId]) // Index for searching by id or name or categoryId
+}
+
+model Review {
+    id        String   @id @default(cuid())
+    productId String
+    userId    String
+    comment   String
+
+    product   Product @relation(fields: [productId], references: [id])
+    user      User    @relation(fields: [userId], references: [kindUserId])
+
+    createdAt DateTime @default(now())
+    updatedAt DateTime @updatedAt
+
+    @@index([id, productId, userId]) // Index for searching by id or productId or userId
+}
+
+model Advertisement {
+    id          String   @id @default(cuid())
+    title       String
+    description String?
+    imageUrl    String?
+    videoUrl    String?
+    active      Boolean @default(true)
+    link        String // Link to the product or category eg: www.example.com/product/1 or www.example.com/category/1
+
+    createdAt DateTime @default(now())
+    updatedAt DateTime @updatedAt
+
+    @@index([id, title]) // Index for searching by id or title
 }

@@ -6,6 +6,7 @@ import { getKindeServerSession } from "@kinde-oss/kinde-auth-nextjs/server";
 import Unauthorized from "../../unauthorized/page";
 import { checkUserRole } from "../../../actions/AuthActions";
 import { redirect } from "next/navigation";
+import { ModeToggle } from "../../../components/ModeToggle";
 
 export default async function RootLayout({
   children,
@@ -32,7 +33,10 @@ export default async function RootLayout({
     <SidebarProvider defaultOpen={defaultOpen}>
       <AppSidebar />
       <main className={"container mx-auto p-2"}>
-        <SidebarTrigger />
+        <div className={"mb-2 flex w-full items-center justify-between"}>
+          <SidebarTrigger />
+          <ModeToggle size={"xm"} />
+        </div>
         {children}
       </main>
     </SidebarProvider>

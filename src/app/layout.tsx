@@ -9,6 +9,9 @@ import React from "react";
 import TanstackProvider from "../Providers/TanstackProvider";
 import { AuthProvider } from "../Providers/AuthProvider";
 
+// shadcn components
+import { Toaster } from "@/components/ui/sonner";
+
 export const metadata: Metadata = {
   title: "Luxe Bites",
   description: "Luxe Bites is a luxury food delivery service.",
@@ -32,7 +35,10 @@ export default function RootLayout({
             enableSystem
             disableTransitionOnChange
           >
-            <TanstackProvider>{children}</TanstackProvider>
+            <TanstackProvider>
+              {children}
+              <Toaster />
+            </TanstackProvider>
           </ThemeProvider>
         </body>
       </html>
