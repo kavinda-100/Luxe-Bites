@@ -7,7 +7,7 @@
 
 - [x] create a category function
 - [x] create a product function
-- [ ] create a advertisement function
-- [ ] create a all product function
-- [ ] create a all category function
-- [ ] create a all advertisement function
+- [x] create a advertisement function
+- [x] display all category function
+- [ ] display all product function
+- [ ] display all advertisement function

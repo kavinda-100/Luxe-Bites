@@ -19,7 +19,7 @@ const CategoriesPage = () => {
   if (isLoading) {
     return (
       <section className={"container mx-auto"}>
-        <Skeleton className={"h-full w-full"} />
+        <Skeleton className={"h-full min-h-screen"} />
       </section>
     );
   }
