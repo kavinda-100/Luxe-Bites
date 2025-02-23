@@ -5,8 +5,8 @@
 
 ## left to do
 
-- [ ] create a category function
-- [ ] create a product function
+- [x] create a category function
+- [x] create a product function
 - [ ] create a advertisement function
 - [ ] create a all product function
 - [ ] create a all category function

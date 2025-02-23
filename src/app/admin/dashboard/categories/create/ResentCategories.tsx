@@ -34,7 +34,7 @@ const ResentCategories = () => {
       {data?.resentCategories?.map((category) => (
         <div
           className={
-            "container mx-auto space-y-4 rounded-md bg-background p-4 shadow-sm"
+            "container mx-auto space-y-4 rounded-md bg-muted p-4 shadow-sm"
           }
           key={category.id}
         >
@@ -47,7 +47,7 @@ const ResentCategories = () => {
           <div className={"w-full"}>
             <p
               className={
-                "line-clamp-2 text-sm font-medium text-muted-foreground"
+                "line-clamp-2 text-xs font-medium text-muted-foreground"
               }
             >
               {category.description}
