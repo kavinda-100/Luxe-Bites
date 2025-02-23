@@ -2,15 +2,14 @@
 
 import type { z } from "zod";
 import { categoriesSchema } from "../../zod/categories";
-import { getKindeServerSession } from "@kinde-oss/kinde-auth-nextjs/server";
 import { zodIssueToString } from "../../zod/utils";
 import { prisma } from "../../server/db";
+import { checkIsAdmin } from "../AuthActions";
 
 export async function createCategory(data: z.infer<typeof categoriesSchema>) {
   try {
     // get user.
-    const { getUser } = getKindeServerSession();
-    const user = await getUser();
+    const user = await checkIsAdmin();
     if (!user) {
       throw new Error("Unauthorized");
       // return { success: false, message: "Unauthorized" };
@@ -58,8 +57,7 @@ export async function createCategory(data: z.infer<typeof categoriesSchema>) {
 export async function getResentCategories() {
   try {
     // get user.
-    const { getUser } = getKindeServerSession();
-    const user = await getUser();
+    const user = await checkIsAdmin();
     if (!user) {
       throw new Error("Unauthorized");
       // return { success: false, message: "Unauthorized" };
@@ -72,6 +70,26 @@ export async function getResentCategories() {
     return { resentCategories };
   } catch (e: unknown) {
     console.log("Error getting resent categories", e);
+    if (e instanceof Error) {
+      throw new Error(e.message);
+    }
+    throw new Error("Internal server error");
+  }
+}
+
+export async function getAllCategories() {
+  try {
+    // get user.
+    const user = await checkIsAdmin();
+    if (!user) {
+      throw new Error("Unauthorized");
+    }
+    const categories = await prisma.category.findMany({
+      select: { id: true, name: true },
+    });
+    return { categories };
+  } catch (e: unknown) {
+    console.log("Error getting all categories", e);
     if (e instanceof Error) {
       throw new Error(e.message);
     }
