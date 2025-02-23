@@ -85,7 +85,7 @@ export async function getAllCategories() {
       throw new Error("Unauthorized");
     }
     const categories = await prisma.category.findMany({
-      select: { id: true, name: true },
+      select: { id: true, name: true, createdAt: true, description: true },
     });
     return { categories };
   } catch (e: unknown) {

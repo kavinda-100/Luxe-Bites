@@ -36,11 +36,11 @@ import { productSchema } from "../../../../../zod/products";
 import { UploadDropzone } from "../../../../../lib/uploadthing";
 import { toast } from "sonner";
 import { Label } from "../../../../../components/ui/label";
-import { useMutation, useQuery } from "@tanstack/react-query";
+import { useMutation } from "@tanstack/react-query";
 import { createProduct } from "../../../../../actions/products";
-import { getAllCategories } from "../../../../../actions/categoryAction";
 import { CirclePlus } from "lucide-react";
 import { Skeleton } from "../../../../../components/ui/skeleton";
+import { useGetAllCategories } from "../../../../../hooks/api/categories/useGetAllCategories";
 
 const ProductCratePage = () => {
   // 1. Define your form.
@@ -59,10 +59,7 @@ const ProductCratePage = () => {
   });
 
   // get the selected category
-  const { data, isLoading, error } = useQuery({
-    queryKey: ["categories"],
-    queryFn: getAllCategories,
-  });
+  const { data, isLoading, error } = useGetAllCategories();
 
   // mutation
   const { mutate, isPending } = useMutation({

@@ -1,6 +1,7 @@
 import React from "react";
+import CategoriesPage from "./CategoriesPage";
 
 const Page = () => {
-  return <div>Page</div>;
+  return <CategoriesPage />;
 };
 export default Page;
