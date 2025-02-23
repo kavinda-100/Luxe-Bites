@@ -1,15 +1,17 @@
 "use client";
 
+import type { Role } from "@prisma/client";
 import type { ColumnDef } from "@tanstack/react-table";
 import { Checkbox } from "../../../../../components/ui/checkbox";
 import { Button } from "../../../../../components/ui/button";
+import { ArrowUpDown, CopyIcon, MoreHorizontal } from "lucide-react";
+import { cn, formatDate } from "../../../../../lib/utils";
 import {
-  ArrowUpDown,
-  CopyIcon,
-  MoreHorizontal,
-  PencilIcon,
-} from "lucide-react";
-import { cn, formatCurrency, formatDate } from "../../../../../lib/utils";
+  Avatar,
+  AvatarFallback,
+  AvatarImage,
+} from "../../../../../components/ui/avatar";
+import { toast } from "sonner";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -17,30 +19,18 @@ import {
   DropdownMenuLabel,
   DropdownMenuTrigger,
 } from "../../../../../components/ui/dropdown-menu";
-import Link from "next/link";
-import { toast } from "sonner";
-import {
-  Avatar,
-  AvatarFallback,
-  AvatarImage,
-} from "../../../../../components/ui/avatar";
 
 type Column = {
   id: string;
-  name: string;
-  description: string;
-  price: number;
-  discount: number | null;
-  stock: number;
-  image: string;
-  categoryId: string;
-  active: boolean;
-  rating: number | null;
+  kindUserId: string;
+  email: string;
+  name: string | null;
+  profilePicture: string | null;
+  role: Role;
   createdAt: Date;
-  categoryName: string;
 };
 
-export const AllProductsColumns: ColumnDef<Column>[] = [
+export const AllUsersColumns: ColumnDef<Column>[] = [
   {
     id: "select",
     header: ({ table }) => (
@@ -64,10 +54,10 @@ export const AllProductsColumns: ColumnDef<Column>[] = [
     enableHiding: false,
   },
   {
-    accessorKey: "image",
+    accessorKey: "profilePicture",
     header: "Image",
     cell: ({ row }) => {
-      const Image = row.original.image ?? "N/A";
+      const Image = row.original.profilePicture ?? "N/A";
       const name = row.original.name ?? "N/A";
       return (
         <Avatar>
@@ -96,81 +86,55 @@ export const AllProductsColumns: ColumnDef<Column>[] = [
     },
   },
   {
-    accessorKey: "description",
-    header: "Description",
-    cell: ({ row }) => {
-      const description = row.original.description ?? "N/A";
+    accessorKey: "email",
+    header: ({ column }) => {
       return (
-        <p className={"font-medium"}>{description.slice(0, 20) + "..."}</p>
+        <Button
+          variant="ghost"
+          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+        >
+          Email
+          <ArrowUpDown className="ml-2 h-4 w-4" />
+        </Button>
       );
     },
-  },
-  {
-    accessorKey: "price",
-    header: "Price",
     cell: ({ row }) => {
-      const price = row.original.price ?? 0;
-      return <p className={"font-medium"}>{formatCurrency(price)}</p>;
+      const email = row.original.email;
+      return <p className={"font-medium"}>{email}</p>;
     },
   },
   {
-    accessorKey: "discount",
-    header: "Discount",
+    accessorKey: "role",
+    header: "Role",
     cell: ({ row }) => {
-      const discount = row.original.discount ?? 0;
-      return <p className={"font-medium"}>{formatCurrency(discount)}</p>;
-    },
-  },
-  {
-    accessorKey: "stock",
-    header: "Stock",
-    cell: ({ row }) => {
-      const stock = row.original.stock ?? "N/A";
-      return <p className={"font-medium"}>{stock}</p>;
-    },
-  },
-  {
-    accessorKey: "active",
-    header: "Active",
-    cell: ({ row }) => {
-      const active = row.original.active ?? false;
+      const role = row.original.role;
       return (
-        <span
-          className={cn("rounded-md border px-2 py-1", {
-            "border-green-200 bg-green-100 text-green-700": active,
-            "border-red-200 bg-red-100 text-red-700": !active,
+        <p
+          className={cn("font-medium", {
+            "text-green-500": role === "ADMIN",
           })}
         >
-          {active ? "Active" : "Inactive"}
-        </span>
+          {role === "ADMIN" ? "Admin" : role === "USER" ? "User" : "N/A"}
+        </p>
       );
-    },
-  },
-  {
-    accessorKey: "rating",
-    header: "Rating",
-    cell: ({ row }) => {
-      const rating = row.original.rating ?? 0;
-      return <p className={"font-medium"}>{rating}</p>;
     },
   },
   {
     accessorKey: "createdAt",
     header: "Created At",
     cell: ({ row }) => {
-      const createdAt = row.original.createdAt ?? new Date();
+      const createdAt = row.original.createdAt;
       return <p className={"font-medium"}>{formatDate(createdAt)}</p>;
     },
   },
   {
     id: "actions",
     cell: ({ row }) => {
-      const id = row.original.id;
-      const categoryId = row.original.categoryId;
+      const id = row.original.kindUserId;
 
       const copyCategoryId = async () => {
-        await navigator.clipboard.writeText(categoryId);
-        toast.success("Category ID copied to clipboard");
+        await navigator.clipboard.writeText(id);
+        toast.success("User ID copied to clipboard");
       };
 
       return (
@@ -183,21 +147,12 @@ export const AllProductsColumns: ColumnDef<Column>[] = [
           </DropdownMenuTrigger>
           <DropdownMenuContent align="end">
             <DropdownMenuLabel>Actions</DropdownMenuLabel>
-            <DropdownMenuItem className={"cursor-pointer"}>
-              <Link
-                href={`/admin/dashboard/products/${id}`}
-                className={"flex items-center gap-3"}
-              >
-                <PencilIcon className={"size-3"} />
-                View/Edit
-              </Link>
-            </DropdownMenuItem>
             <DropdownMenuItem
               onClick={() => copyCategoryId()}
               className={"flex cursor-pointer items-center gap-3"}
             >
               <CopyIcon className={"size-3"} />
-              Copy Category ID
+              Copy User ID
             </DropdownMenuItem>
           </DropdownMenuContent>
         </DropdownMenu>
