@@ -5,6 +5,7 @@ import { useQuery } from "@tanstack/react-query";
 import { getResentCategories } from "../../../../../actions/categoryAction";
 import { Skeleton } from "../../../../../components/ui/skeleton";
 import { formatDate } from "../../../../../lib/utils";
+import StatusMessage from "../../../../../components/status/StatusMessage";
 
 const ResentCategories = () => {
   const { data, isLoading, error } = useQuery({
@@ -19,8 +20,12 @@ const ResentCategories = () => {
     );
   if (error)
     return (
-      <section className={"container mx-auto text-center"}>
-        Error: {error.message}
+      <section
+        className={
+          "container mx-auto flex flex-col items-center justify-center"
+        }
+      >
+        <StatusMessage message={error.message} type={"error"} />
       </section>
     );
   return (
