@@ -76,8 +76,8 @@ export const categoriesColumns: ColumnDef<ColumnsType>[] = [
       );
     },
     cell: ({ row }) => {
-      const name = row.original.name ?? "N/A";
-      return <p className={"font-medium"}>{name}</p>;
+      const des = row.original.description ?? "N/A";
+      return <p className={"font-medium"}>{des.slice(0, 50) + "..."}</p>;
     },
   },
   {

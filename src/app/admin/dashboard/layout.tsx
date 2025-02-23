@@ -7,6 +7,8 @@ import Unauthorized from "../../unauthorized/page";
 import { checkUserRole } from "../../../actions/AuthActions";
 import { redirect } from "next/navigation";
 import { ModeToggle } from "../../../components/ModeToggle";
+import RightSideBar from "./RightSideBar";
+import RightSideBarToggleButton from "../../../components/RightSideBarToggleButton";
 
 export default async function RootLayout({
   children,
@@ -33,14 +35,14 @@ export default async function RootLayout({
     <SidebarProvider defaultOpen={defaultOpen}>
       <AppSidebar />
       <main className={"container mx-auto p-2"}>
-        <div className={"mb-2 flex w-full items-center justify-between"}>
+        <div className={"mb-2 flex items-center justify-between"}>
           <SidebarTrigger />
-          <ModeToggle size={"xm"} />
+          <div className={"flex items-center gap-3"}>
+            <ModeToggle size={"xm"} />
+            <RightSideBarToggleButton />
+          </div>
         </div>
-        <div className={"flex w-full gap-3 lg:w-5/6"}>
-          {children}
-          <div className={"hidden lg:block lg:w-1/6"}>Notifications</div>
-        </div>
+        <RightSideBar>{children}</RightSideBar>
       </main>
     </SidebarProvider>
   );
