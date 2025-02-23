@@ -29,6 +29,7 @@ import { useMutation } from "@tanstack/react-query";
 import { createCategory } from "../../../../../actions/categoryAction";
 import { useStatusHook } from "../../../../../hooks/useStatusHook";
 import SubmitButton from "../../../../../components/SubmitButton";
+import ResentCategories from "./ResentCategories";
 
 const CreateCategoryPage = () => {
   const { setErrorMessage, setSuccessMessage, successMessage, errorMessage } =
@@ -66,7 +67,7 @@ const CreateCategoryPage = () => {
   }
 
   return (
-    <section className={"container mx-auto"}>
+    <section className={"container mx-auto flex flex-col space-y-4"}>
       <Card className={"mx-auto w-full max-w-6xl border-none shadow-sm"}>
         <CardHeader>
           <CardTitle>Create Category</CardTitle>
@@ -120,6 +121,8 @@ const CreateCategoryPage = () => {
           </Form>
         </CardContent>
       </Card>
+
+      <ResentCategories />
     </section>
   );
 };

@@ -54,3 +54,27 @@ export async function createCategory(data: z.infer<typeof categoriesSchema>) {
     throw new Error("Internal server error");
   }
 }
+
+export async function getResentCategories() {
+  try {
+    // get user.
+    const { getUser } = getKindeServerSession();
+    const user = await getUser();
+    if (!user) {
+      throw new Error("Unauthorized");
+      // return { success: false, message: "Unauthorized" };
+    }
+    const resentCategories = await prisma.category.findMany({
+      take: 5,
+      select: { id: true, name: true, description: true, createdAt: true },
+      orderBy: { createdAt: "desc" },
+    });
+    return { resentCategories };
+  } catch (e: unknown) {
+    console.log("Error getting resent categories", e);
+    if (e instanceof Error) {
+      throw new Error(e.message);
+    }
+    throw new Error("Internal server error");
+  }
+}
