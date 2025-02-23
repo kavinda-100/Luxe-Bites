@@ -2,15 +2,15 @@
 
 import React from "react";
 import { useRightSideBar } from "../store/useRightSideBar";
-import { ToggleLeftIcon, ToggleRightIcon } from "lucide-react";
+import { FiSidebar } from "react-icons/fi";
 import { Button } from "./ui/button";
 
 const RightSideBarToggleButton = () => {
-  const { toggle, isOpen } = useRightSideBar();
+  const { toggle } = useRightSideBar();
 
   return (
     <Button variant={"ghost"} size={"icon"} onClick={toggle}>
-      {isOpen ? <ToggleLeftIcon /> : <ToggleRightIcon />}
+      <FiSidebar className={"size-4"} />
     </Button>
   );
 };
