@@ -41,3 +41,27 @@ export async function createAdvertisement(
     throw new Error("Internal server error");
   }
 }
+
+export async function getAllAdvertisements() {
+  try {
+    const user = await checkIsAdmin();
+    if (!user) {
+      throw new Error("Unauthorized");
+    }
+    const advertisements = await prisma.advertisement.findMany();
+    return advertisements.map((advertisement) => ({
+      id: advertisement.id,
+      title: advertisement.title,
+      description: advertisement.description,
+      active: advertisement.active,
+      link: advertisement.link,
+      createdAt: advertisement.createdAt,
+    }));
+  } catch (e: unknown) {
+    console.log("Error getting advertisements", e);
+    if (e instanceof Error) {
+      throw new Error(e.message);
+    }
+    throw new Error("Internal server error");
+  }
+}
