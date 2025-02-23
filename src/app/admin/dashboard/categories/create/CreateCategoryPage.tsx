@@ -30,10 +30,16 @@ import { createCategory } from "../../../../../actions/categoryAction";
 import { useStatusHook } from "../../../../../hooks/useStatusHook";
 import SubmitButton from "../../../../../components/SubmitButton";
 import ResentCategories from "./ResentCategories";
+import { useRightSideBar } from "../../../../../store/useRightSideBar";
 
 const CreateCategoryPage = () => {
+  const { open } = useRightSideBar();
   const { setErrorMessage, setSuccessMessage, successMessage, errorMessage } =
     useStatusHook();
+
+  React.useEffect(() => {
+    open();
+  }, [open]);
   // form.
   const form = useForm<z.infer<typeof categoriesSchema>>({
     resolver: zodResolver(categoriesSchema),

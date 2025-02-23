@@ -31,8 +31,15 @@ import { toast } from "sonner";
 import { Asterisk } from "lucide-react";
 import { useMutation } from "@tanstack/react-query";
 import { createAdvertisement } from "../../../../../actions/advertisementsAction";
+import { useRightSideBar } from "../../../../../store/useRightSideBar";
 
 const CreateAdvertisements = () => {
+  const { open } = useRightSideBar();
+
+  React.useEffect(() => {
+    open();
+  }, [open]);
+
   // 1. Define your form.
   const form = useForm<z.infer<typeof AdvertisementSchema>>({
     resolver: zodResolver(AdvertisementSchema),

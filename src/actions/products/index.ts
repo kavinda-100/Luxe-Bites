@@ -3,7 +3,6 @@
 import type { z } from "zod";
 import { checkIsAdmin } from "../AuthActions";
 import { productSchema } from "../../zod/products";
-import { zodIssueToString } from "../../zod/utils";
 import { prisma } from "../../server/db";
 
 export async function createProduct(product: z.infer<typeof productSchema>) {
@@ -47,6 +46,38 @@ export async function createProduct(product: z.infer<typeof productSchema>) {
     };
   } catch (e: unknown) {
     console.log("Error creating product: ", e);
+    if (e instanceof Error) {
+      throw new Error(e.message);
+    }
+    throw new Error("Internal server error");
+  }
+}
+
+export async function getAllProducts() {
+  try {
+    const user = await checkIsAdmin();
+    if (!user) {
+      throw new Error("Unauthorized");
+    }
+    const products = await prisma.product.findMany({
+      include: { category: true },
+    });
+    return products.map((product) => ({
+      id: product.id,
+      name: product.name,
+      description: product.description,
+      price: product.price,
+      discount: product.discount,
+      stock: product.stock,
+      image: product.image,
+      categoryId: product.categoryId,
+      active: product.active,
+      rating: product.rating,
+      createdAt: product.createdAt,
+      categoryName: product.category.name,
+    }));
+  } catch (e: unknown) {
+    console.log("Error getting all products: ", e);
     if (e instanceof Error) {
       throw new Error(e.message);
     }

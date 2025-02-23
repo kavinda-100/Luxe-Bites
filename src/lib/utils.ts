@@ -8,7 +8,7 @@ export function cn(...inputs: ClassValue[]) {
 export function formatDate(date: Date) {
   return new Intl.DateTimeFormat("en-US", {
     year: "numeric",
-    month: "long",
+    month: "short",
     day: "2-digit",
   }).format(date);
 }

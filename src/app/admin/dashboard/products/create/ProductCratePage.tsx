@@ -41,8 +41,15 @@ import { createProduct } from "../../../../../actions/products";
 import { CirclePlus } from "lucide-react";
 import { Skeleton } from "../../../../../components/ui/skeleton";
 import { useGetAllCategories } from "../../../../../hooks/api/categories/useGetAllCategories";
+import { useRightSideBar } from "../../../../../store/useRightSideBar";
 
 const ProductCratePage = () => {
+  const { open } = useRightSideBar();
+
+  React.useEffect(() => {
+    open();
+  }, [open]);
+
   // 1. Define your form.
   const form = useForm<z.infer<typeof productSchema>>({
     resolver: zodResolver(productSchema),

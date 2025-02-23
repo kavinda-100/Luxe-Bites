@@ -8,15 +8,15 @@ import {
   CardHeader,
   CardTitle,
 } from "../../../../components/ui/card";
-import { useGetAllCategories } from "../../../../hooks/api/categories/useGetAllCategories";
-import { Skeleton } from "../../../../components/ui/skeleton";
 import { TableComponent } from "../../../../components/table/TableComponent";
-import { categoriesColumns } from "./_table/Colunms";
+import { useGetAllProducts } from "../../../../hooks/api/products/useGetAllProducts";
+import { Skeleton } from "../../../../components/ui/skeleton";
+import { AllProductsColumns } from "./_table/Colunm";
 import { useRightSideBar } from "../../../../store/useRightSideBar";
 
-const CategoriesPage = () => {
+const AllProductsPage = () => {
   const { close } = useRightSideBar();
-  const { data, isLoading, error } = useGetAllCategories();
+  const { data, isLoading, error } = useGetAllProducts();
 
   React.useEffect(() => {
     close();
@@ -38,19 +38,19 @@ const CategoriesPage = () => {
     <section className={"container mx-auto"}>
       <Card className={"mx-auto w-full max-w-6xl border-none shadow-sm"}>
         <CardHeader>
-          <CardTitle>All Categories</CardTitle>
-          <CardDescription>Manage your categories</CardDescription>
+          <CardTitle>All Products</CardTitle>
+          <CardDescription>Manage your Products</CardDescription>
         </CardHeader>
         <CardContent>
           <TableComponent
-            columns={categoriesColumns}
-            data={data?.categories ?? []}
+            columns={AllProductsColumns}
+            data={data ?? []}
             NameForFilter={"name"}
-            FilterInputPlaceholder={"Search by category name"}
+            FilterInputPlaceholder={"Search by Product name"}
           />
         </CardContent>
       </Card>
     </section>
   );
 };
-export default CategoriesPage;
+export default AllProductsPage;
