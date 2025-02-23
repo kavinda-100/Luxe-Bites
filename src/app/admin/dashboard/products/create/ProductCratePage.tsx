@@ -22,6 +22,13 @@ import {
   CardHeader,
   CardTitle,
 } from "../../../../../components/ui/card";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 import SubmitButton from "../../../../../components/SubmitButton";
 import { Textarea } from "../../../../../components/ui/textarea";
 import { Switch } from "@/components/ui/switch";
@@ -29,6 +36,11 @@ import { productSchema } from "../../../../../zod/products";
 import { UploadDropzone } from "../../../../../lib/uploadthing";
 import { toast } from "sonner";
 import { Label } from "../../../../../components/ui/label";
+import { useMutation, useQuery } from "@tanstack/react-query";
+import { createProduct } from "../../../../../actions/products";
+import { getAllCategories } from "../../../../../actions/categoryAction";
+import { CirclePlus } from "lucide-react";
+import { Skeleton } from "../../../../../components/ui/skeleton";
 
 const ProductCratePage = () => {
   // 1. Define your form.
@@ -46,9 +58,28 @@ const ProductCratePage = () => {
     },
   });
 
+  // get the selected category
+  const { data, isLoading, error } = useQuery({
+    queryKey: ["categories"],
+    queryFn: getAllCategories,
+  });
+
+  // mutation
+  const { mutate, isPending } = useMutation({
+    mutationFn: (data: z.infer<typeof productSchema>) => createProduct(data),
+    onSuccess: (data) => {
+      toast.success(data.message);
+      form.reset();
+    },
+    onError: (error) => {
+      toast.error(error.message);
+    },
+  });
+
   // 2. Define a submit handler.
   function onSubmit(values: z.infer<typeof productSchema>) {
     console.log(values);
+    mutate(values);
   }
 
   return (
@@ -66,6 +97,56 @@ const ProductCratePage = () => {
               onSubmit={form.handleSubmit(onSubmit)}
               className="!w-full space-y-4"
             >
+              <div className={"w-full"}>
+                {isLoading && <Skeleton className={"h-8 w-full"} />}
+                {error && (
+                  <div className={"w-full rounded-md border p-2"}>
+                    <p className={"text-sm font-medium text-red-500"}>
+                      Error loading categories
+                    </p>
+                  </div>
+                )}
+                {!isLoading && !error && (
+                  <FormField
+                    control={form.control}
+                    name="categoryId"
+                    render={({ field }) => (
+                      <FormItem>
+                        <FormLabel>Category</FormLabel>
+                        <Select
+                          onValueChange={field.onChange}
+                          defaultValue={field.value}
+                        >
+                          <FormControl>
+                            <SelectTrigger>
+                              <SelectValue placeholder="Select a the category" />
+                            </SelectTrigger>
+                          </FormControl>
+                          <SelectContent
+                            className={"max-h-[300px] w-full overflow-y-auto"}
+                          >
+                            {data?.categories.map((category) => (
+                              <SelectItem key={category.id} value={category.id}>
+                                <span className={"flex items-center gap-2"}>
+                                  <CirclePlus
+                                    className={"size-3 text-muted-foreground"}
+                                  />
+                                  {category.name}
+                                </span>
+                              </SelectItem>
+                            ))}
+                          </SelectContent>
+                        </Select>
+                        <FormDescription>
+                          You can select the category of the product.
+                        </FormDescription>
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
+                )}
+              </div>
+
               <div
                 className={"flex w-full flex-col gap-2 lg:flex-row lg:gap-6"}
               >
@@ -192,7 +273,7 @@ const ProductCratePage = () => {
                 )}
               />
 
-              <SubmitButton isLoading={false} text={"Create Product"} />
+              <SubmitButton isLoading={isPending} text={"Create Product"} />
             </form>
           </Form>
         </CardContent>
