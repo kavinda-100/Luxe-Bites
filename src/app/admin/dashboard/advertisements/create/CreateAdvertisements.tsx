@@ -29,12 +29,13 @@ import { Label } from "../../../../../components/ui/label";
 import { UploadDropzone } from "../../../../../lib/uploadthing";
 import { toast } from "sonner";
 import { Asterisk } from "lucide-react";
-import { useMutation } from "@tanstack/react-query";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { createAdvertisement } from "../../../../../actions/advertisementsAction";
 import { useRightSideBar } from "../../../../../store/useRightSideBar";
 
 const CreateAdvertisements = () => {
   const { open } = useRightSideBar();
+  const queryClient = useQueryClient();
 
   React.useEffect(() => {
     open();
@@ -56,10 +57,11 @@ const CreateAdvertisements = () => {
   const { mutate, isPending } = useMutation({
     mutationFn: (data: z.infer<typeof AdvertisementSchema>) =>
       createAdvertisement(data),
-    onSuccess: (data) => {
+    onSuccess: async (data) => {
       if (data.success) {
         toast.success(data.message);
         form.reset();
+        await queryClient.invalidateQueries({ queryKey: ["advertisements"] });
       }
     },
     onError: (error: Error) => {

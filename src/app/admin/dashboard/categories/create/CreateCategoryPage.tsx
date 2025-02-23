@@ -25,7 +25,7 @@ import {
 import { Textarea } from "../../../../../components/ui/textarea";
 import { categoriesSchema } from "../../../../../zod/categories";
 import StatusMessage from "../../../../../components/status/StatusMessage";
-import { useMutation } from "@tanstack/react-query";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { createCategory } from "../../../../../actions/categoryAction";
 import { useStatusHook } from "../../../../../hooks/useStatusHook";
 import SubmitButton from "../../../../../components/SubmitButton";
@@ -34,6 +34,7 @@ import { useRightSideBar } from "../../../../../store/useRightSideBar";
 
 const CreateCategoryPage = () => {
   const { open } = useRightSideBar();
+  const queryClient = useQueryClient();
   const { setErrorMessage, setSuccessMessage, successMessage, errorMessage } =
     useStatusHook();
 
@@ -53,11 +54,12 @@ const CreateCategoryPage = () => {
   const { mutate, isPending } = useMutation({
     mutationFn: async (data: z.infer<typeof categoriesSchema>) =>
       createCategory(data),
-    onSuccess: (data) => {
+    onSuccess: async (data) => {
       if (data.success) {
         setSuccessMessage(data.message);
         setErrorMessage(null);
         form.reset();
+        await queryClient.invalidateQueries({ queryKey: ["categories"] });
       }
     },
     onError: (error) => {

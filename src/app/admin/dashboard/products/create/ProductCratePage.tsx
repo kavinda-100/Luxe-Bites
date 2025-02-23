@@ -36,7 +36,7 @@ import { productSchema } from "../../../../../zod/products";
 import { UploadDropzone } from "../../../../../lib/uploadthing";
 import { toast } from "sonner";
 import { Label } from "../../../../../components/ui/label";
-import { useMutation } from "@tanstack/react-query";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { createProduct } from "../../../../../actions/products";
 import { CirclePlus } from "lucide-react";
 import { Skeleton } from "../../../../../components/ui/skeleton";
@@ -45,6 +45,8 @@ import { useRightSideBar } from "../../../../../store/useRightSideBar";
 
 const ProductCratePage = () => {
   const { open } = useRightSideBar();
+
+  const queryClient = useQueryClient();
 
   React.useEffect(() => {
     open();
@@ -71,8 +73,9 @@ const ProductCratePage = () => {
   // mutation
   const { mutate, isPending } = useMutation({
     mutationFn: (data: z.infer<typeof productSchema>) => createProduct(data),
-    onSuccess: (data) => {
+    onSuccess: async (data) => {
       toast.success(data.message);
+      // reset the form
       form.setValue("name", "");
       form.setValue("description", "");
       form.setValue("price", "0");
@@ -81,6 +84,10 @@ const ProductCratePage = () => {
       form.setValue("image", "");
       form.setValue("active", true);
       //! can't reset the entire form using from.reset() because it's resting select value to null
+      // invalidate the cache
+      await queryClient.invalidateQueries({
+        queryKey: ["products"],
+      });
     },
     onError: (error) => {
       toast.error(error.message);
