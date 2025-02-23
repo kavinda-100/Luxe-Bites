@@ -40,6 +40,9 @@ export async function verifyUser() {
     };
   } catch (e: unknown) {
     console.log("Error in verifyUser: ", e);
+    if (e instanceof Error) {
+      throw new Error(e.message);
+    }
     throw new Error("Internal Server Error");
   }
 }
@@ -61,6 +64,37 @@ export async function checkUserRole(userId: string) {
     return existingUser.role;
   } catch (e: unknown) {
     console.log("Error in checkUserRole: ", e);
+    return null;
+  }
+}
+
+export async function checkIsAdmin() {
+  try {
+    const { getUser } = getKindeServerSession();
+    const user = await getUser();
+    if (!user) {
+      console.log("Unauthorized - Kinde Auth User", { user });
+      return null;
+    }
+    const existingUser = await prisma.user.findUnique({
+      where: {
+        kindUserId: user.id,
+      },
+      select: {
+        role: true,
+      },
+    });
+    if (!existingUser) {
+      console.log("Unauthorized - User not found", { existingUser });
+      return null;
+    }
+    if (existingUser.role !== "ADMIN") {
+      console.log("Unauthorized - User is not an Admin", { existingUser });
+      return null;
+    }
+    return user;
+  } catch (e: unknown) {
+    console.log("Error in checkIsAdmin: ", e);
     return null;
   }
 }
