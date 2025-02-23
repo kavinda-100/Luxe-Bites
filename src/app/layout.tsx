@@ -43,7 +43,7 @@ export default function RootLayout({
           >
             <TanstackProvider>
               {children}
-              <Toaster />
+              <Toaster closeButton />
             </TanstackProvider>
           </ThemeProvider>
         </body>

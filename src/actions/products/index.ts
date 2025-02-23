@@ -15,7 +15,14 @@ export async function createProduct(product: z.infer<typeof productSchema>) {
     // validate product data
     const validatedProduct = productSchema.safeParse(product);
     if (!validatedProduct.success) {
-      throw new Error(zodIssueToString(validatedProduct.error.errors));
+      throw new Error("Invalid product data");
+    }
+    // check if category exists
+    const category = await prisma.category.findUnique({
+      where: { id: product.categoryId },
+    });
+    if (!category) {
+      throw new Error("Category does not exist");
     }
     // create product
     const createdProduct = await prisma.product.create({
@@ -23,9 +30,9 @@ export async function createProduct(product: z.infer<typeof productSchema>) {
         name: product.name,
         description: product.description,
         categoryId: product.categoryId,
-        price: product.price,
-        stock: product.stock,
-        discount: product.discount,
+        price: parseFloat(product.price),
+        stock: parseInt(product.stock),
+        discount: parseFloat(product.discount ?? "0"),
         image: product.image,
         active: product.active,
         rating: 0.0,

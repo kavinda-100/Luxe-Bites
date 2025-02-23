@@ -49,12 +49,12 @@ const ProductCratePage = () => {
     defaultValues: {
       name: "",
       description: "",
-      price: 0,
-      stock: 0,
+      price: "0",
+      stock: "0",
       image: "",
       categoryId: "",
       active: true,
-      discount: 0,
+      discount: "0",
     },
   });
 
@@ -69,7 +69,14 @@ const ProductCratePage = () => {
     mutationFn: (data: z.infer<typeof productSchema>) => createProduct(data),
     onSuccess: (data) => {
       toast.success(data.message);
-      form.reset();
+      form.setValue("name", "");
+      form.setValue("description", "");
+      form.setValue("price", "0");
+      form.setValue("stock", "0");
+      form.setValue("discount", "0");
+      form.setValue("image", "");
+      form.setValue("active", true);
+      //! can't reset the entire form using from.reset() because it's resting select value to null
     },
     onError: (error) => {
       toast.error(error.message);
@@ -78,7 +85,24 @@ const ProductCratePage = () => {
 
   // 2. Define a submit handler.
   function onSubmit(values: z.infer<typeof productSchema>) {
-    console.log(values);
+    // check if the stock, price and discount is a number
+    if (
+      isNaN(parseInt(values.stock)) ||
+      isNaN(parseFloat(values.price)) ||
+      (values.discount && isNaN(parseFloat(values.discount)))
+    ) {
+      toast.error("Stock, Price and Discount should be a number");
+      return;
+    }
+    // check stock, price and discount is not negative or zero
+    if (
+      parseInt(values.stock) <= 0 ||
+      parseFloat(values.price) <= 0 ||
+      (values.discount && parseFloat(values.discount) < 0)
+    ) {
+      toast.error("Stock, Price and Discount should be greater than zero");
+      return;
+    }
     mutate(values);
   }
 
