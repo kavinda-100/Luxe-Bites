@@ -41,7 +41,7 @@ import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { updateCategory } from "../../../../../actions/categoryAction";
 import { toast } from "sonner";
 import { useDeleteCategories } from "../../../../../hooks/api/categories/useDeleteCategories";
-import { Loader2 } from "lucide-react";
+import { Loader2, TrashIcon } from "lucide-react";
 import { useRouter } from "next/navigation";
 
 type ViewCategoryPageProps = {
@@ -192,7 +192,9 @@ const ViewCategoryPage = ({ id }: ViewCategoryPageProps) => {
                 {/* delete button */}
                 <Dialog open={dialogOpen} onOpenChange={setDialogOpen}>
                   <DialogTrigger asChild>
-                    <Button variant={"destructive"}>Delete Category</Button>
+                    <Button variant={"destructive"}>
+                      <TrashIcon className={"size-4"} /> Delete Category
+                    </Button>
                   </DialogTrigger>
                   <DialogContent>
                     <DialogHeader>

@@ -4,7 +4,12 @@ import type { Role } from "@prisma/client";
 import type { ColumnDef } from "@tanstack/react-table";
 import { Checkbox } from "../../../../../components/ui/checkbox";
 import { Button } from "../../../../../components/ui/button";
-import { ArrowUpDown, CopyIcon, MoreHorizontal } from "lucide-react";
+import {
+  ArrowUpDown,
+  CopyIcon,
+  MoreHorizontal,
+  PencilIcon,
+} from "lucide-react";
 import { cn, formatDate } from "../../../../../lib/utils";
 import {
   Avatar,
@@ -19,6 +24,7 @@ import {
   DropdownMenuLabel,
   DropdownMenuTrigger,
 } from "../../../../../components/ui/dropdown-menu";
+import Link from "next/link";
 
 type Column = {
   id: string;
@@ -31,28 +37,28 @@ type Column = {
 };
 
 export const AllUsersColumns: ColumnDef<Column>[] = [
-  {
-    id: "select",
-    header: ({ table }) => (
-      <Checkbox
-        checked={
-          table.getIsAllPageRowsSelected() ||
-          (table.getIsSomePageRowsSelected() && "indeterminate")
-        }
-        onCheckedChange={(value) => table.toggleAllPageRowsSelected(!!value)}
-        aria-label="Select all"
-      />
-    ),
-    cell: ({ row }) => (
-      <Checkbox
-        checked={row.getIsSelected()}
-        onCheckedChange={(value) => row.toggleSelected(!!value)}
-        aria-label="Select row"
-      />
-    ),
-    enableSorting: false,
-    enableHiding: false,
-  },
+  // {
+  //   id: "select",
+  //   header: ({ table }) => (
+  //     <Checkbox
+  //       checked={
+  //         table.getIsAllPageRowsSelected() ||
+  //         (table.getIsSomePageRowsSelected() && "indeterminate")
+  //       }
+  //       onCheckedChange={(value) => table.toggleAllPageRowsSelected(!!value)}
+  //       aria-label="Select all"
+  //     />
+  //   ),
+  //   cell: ({ row }) => (
+  //     <Checkbox
+  //       checked={row.getIsSelected()}
+  //       onCheckedChange={(value) => row.toggleSelected(!!value)}
+  //       aria-label="Select row"
+  //     />
+  //   ),
+  //   enableSorting: false,
+  //   enableHiding: false,
+  // },
   {
     accessorKey: "profilePicture",
     header: "Image",
@@ -131,10 +137,16 @@ export const AllUsersColumns: ColumnDef<Column>[] = [
     id: "actions",
     cell: ({ row }) => {
       const id = row.original.kindUserId;
+      const email = row.original.email;
 
       const copyCategoryId = async () => {
         await navigator.clipboard.writeText(id);
         toast.success("User ID copied to clipboard");
+      };
+
+      const copyEmail = async () => {
+        await navigator.clipboard.writeText(email);
+        toast.success("Email copied to clipboard");
       };
 
       return (
@@ -147,12 +159,28 @@ export const AllUsersColumns: ColumnDef<Column>[] = [
           </DropdownMenuTrigger>
           <DropdownMenuContent align="end">
             <DropdownMenuLabel>Actions</DropdownMenuLabel>
+            <DropdownMenuItem>
+              <Link
+                href={`/admin/dashboard/customers/manage?email=${email}`}
+                className={"flex cursor-pointer items-center gap-3"}
+              >
+                <PencilIcon className={"size-3"} />
+                Manage User
+              </Link>
+            </DropdownMenuItem>
             <DropdownMenuItem
               onClick={() => copyCategoryId()}
               className={"flex cursor-pointer items-center gap-3"}
             >
               <CopyIcon className={"size-3"} />
               Copy User ID
+            </DropdownMenuItem>
+            <DropdownMenuItem
+              onClick={() => copyEmail()}
+              className={"flex cursor-pointer items-center gap-3"}
+            >
+              <CopyIcon className={"size-3"} />
+              Copy User Email
             </DropdownMenuItem>
           </DropdownMenuContent>
         </DropdownMenu>

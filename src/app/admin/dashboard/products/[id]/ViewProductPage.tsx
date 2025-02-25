@@ -34,7 +34,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "../../../../../components/ui/select";
-import { CirclePlus, Loader2 } from "lucide-react";
+import { CirclePlus, Loader2, TrashIcon } from "lucide-react";
 import { Input } from "../../../../../components/ui/input";
 import { Textarea } from "../../../../../components/ui/textarea";
 import { Label } from "../../../../../components/ui/label";
@@ -439,7 +439,10 @@ const ViewProductPage = ({ id }: ViewProductPageProps) => {
                 {/* delete button */}
                 <Dialog open={dialogOpen} onOpenChange={setDialogOpen}>
                   <DialogTrigger asChild>
-                    <Button variant={"destructive"}>Delete Product</Button>
+                    <Button variant={"destructive"}>
+                      <TrashIcon className={"size-4"} />
+                      Delete Product
+                    </Button>
                   </DialogTrigger>
                   <DialogContent>
                     <DialogHeader>

@@ -18,7 +18,7 @@ import {
   FormMessage,
 } from "../../../../../components/ui/form";
 import { Input } from "../../../../../components/ui/input";
-import { Asterisk, Loader2 } from "lucide-react";
+import { Asterisk, Loader2, TrashIcon } from "lucide-react";
 import { Label } from "../../../../../components/ui/label";
 import { UploadDropzone } from "../../../../../lib/uploadthing";
 import { toast } from "sonner";
@@ -330,6 +330,7 @@ const ViewAdvertisementPage = ({ id }: ViewAdvertisementPageProps) => {
                 <Dialog open={dialogOpen} onOpenChange={setDialogOpen}>
                   <DialogTrigger asChild>
                     <Button variant={"destructive"}>
+                      <TrashIcon className={"size-4"} />
                       Delete Advertisement
                     </Button>
                   </DialogTrigger>

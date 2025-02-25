@@ -1,6 +1,6 @@
 import React from "react";
 import { Button } from "./ui/button";
-import { Loader2 } from "lucide-react";
+import { Loader2, PencilIcon } from "lucide-react";
 import { cn } from "../lib/utils";
 
 type SubmitButtonProps = {
@@ -21,7 +21,10 @@ const SubmitButton = ({ isLoading, className, text }: SubmitButtonProps) => {
           <Loader2 className={"size-4 animate-spin"} /> wait...
         </div>
       ) : (
-        text
+        <>
+          <PencilIcon className={"size-4"} />
+          {text}
+        </>
       )}
     </Button>
   );

@@ -79,7 +79,7 @@ const customers = [
   },
   {
     title: "Mange Customer",
-    url: "/admin/dashboard/customers/manage", // manage customers (search by customer id, update customer details, etc.)
+    url: "/admin/dashboard/customers/manage?email=", // manage customers (search by customer id, update customer details, etc.)
     icon: UserIcon,
   },
 ];
