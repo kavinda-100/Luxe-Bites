@@ -6,6 +6,16 @@ import "./src/env";
 import type { NextConfig } from "next";
 
 /** @type {import("next").NextConfig} */
-const config: NextConfig = {};
+const config: NextConfig = {
+  images: {
+    remotePatterns: [
+      {
+        protocol: "https",
+        hostname: "utfs.io",
+        port: "",
+      },
+    ],
+  },
+};
 
 export default config;

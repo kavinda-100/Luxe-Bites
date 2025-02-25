@@ -84,3 +84,138 @@ export async function getAllProducts() {
     throw new Error("Internal server error");
   }
 }
+
+export async function getProductById(id: string) {
+  try {
+    const user = await checkIsAdmin();
+    if (!user) {
+      throw new Error("Unauthorized");
+    }
+    const product = await prisma.product.findUnique({
+      where: { id },
+      select: {
+        id: true,
+        name: true,
+        description: true,
+        price: true,
+        discount: true,
+        stock: true,
+        image: true,
+        categoryId: true,
+        active: true,
+        category: {
+          select: {
+            name: true,
+          },
+        },
+      },
+    });
+    if (!product) {
+      throw new Error("Product not found");
+    }
+    return {
+      id: product.id,
+      name: product.name,
+      description: product.description,
+      price: product.price,
+      discount: product.discount,
+      stock: product.stock,
+      image: product.image,
+      categoryId: product.categoryId,
+      active: product.active,
+      categoryName: product.category.name,
+    };
+  } catch (e: unknown) {
+    console.log("Error getting product by id: ", e);
+    if (e instanceof Error) {
+      throw new Error(e.message);
+    }
+    throw new Error("Internal server error");
+  }
+}
+
+export async function updateProduct({
+  id,
+  data,
+}: {
+  id: string;
+  data: z.infer<typeof productSchema>;
+}) {
+  try {
+    const user = await checkIsAdmin();
+    if (!user) {
+      throw new Error("Unauthorized");
+    }
+    const validatedProduct = productSchema.safeParse(data);
+    if (!validatedProduct.success) {
+      throw new Error("Invalid product data");
+    }
+    const product = await prisma.product.findUnique({
+      where: { id: id },
+    });
+    if (!product) {
+      throw new Error("Product not found");
+    }
+    const updatedProduct = await prisma.product.update({
+      where: { id: id },
+      data: {
+        name: data.name,
+        description: data.description,
+        categoryId: data.categoryId,
+        price: parseFloat(data.price),
+        stock: parseInt(data.stock),
+        discount: parseFloat(data.discount ?? "0"),
+        image: data.image,
+        active: data.active,
+      },
+    });
+    if (!updatedProduct) {
+      throw new Error("Error updating product");
+    }
+    return {
+      success: true,
+      message: "Product updated successfully",
+    };
+  } catch (e: unknown) {
+    console.log("Error updating product: ", e);
+    if (e instanceof Error) {
+      throw new Error(e.message);
+    }
+    throw new Error("Internal server error");
+  }
+}
+
+export async function deleteProducts(ids: string | string[]) {
+  try {
+    const user = await checkIsAdmin();
+    if (!user) {
+      throw new Error("Unauthorized");
+    }
+    const productIds = Array.isArray(ids) ? ids : [ids];
+    // check if products exist
+    const products = await prisma.product.findMany({
+      where: { id: { in: productIds } },
+    });
+    // if not all products exist, throw error
+    if (products.length !== productIds.length) {
+      throw new Error("Product not found");
+    }
+    // delete products
+    const deletedProducts = await prisma.product.deleteMany({
+      where: { id: { in: productIds } },
+    });
+    if (!deletedProducts) {
+      throw new Error("Error deleting product");
+    }
+    return {
+      success: true,
+      message: "Product deleted successfully",
+    };
+  } catch (e: unknown) {
+    console.log("Error deleting product: ", e);
+    if (e instanceof Error) {
+      throw new Error(e.message);
+    }
+    throw new Error("Internal server error");
+  }
+}
