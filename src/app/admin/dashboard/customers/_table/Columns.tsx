@@ -33,6 +33,7 @@ type Column = {
   name: string | null;
   profilePicture: string | null;
   role: Role;
+  banned: boolean;
   createdAt: Date;
 };
 
@@ -121,6 +122,23 @@ export const AllUsersColumns: ColumnDef<Column>[] = [
           })}
         >
           {role === "ADMIN" ? "Admin" : role === "USER" ? "User" : "N/A"}
+        </p>
+      );
+    },
+  },
+  {
+    accessorKey: "banned",
+    header: "Banned",
+    cell: ({ row }) => {
+      const banned = row.original.banned;
+      return (
+        <p
+          className={cn("font-medium", {
+            "text-red-500": banned,
+            "text-green-500": !banned,
+          })}
+        >
+          {banned ? "Yes" : "No"}
         </p>
       );
     },

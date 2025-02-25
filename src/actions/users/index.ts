@@ -19,6 +19,7 @@ export async function getAllUsers() {
         name: true,
         profilePicture: true,
         role: true,
+        banned: true,
         createdAt: true,
       },
     });
