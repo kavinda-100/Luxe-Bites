@@ -37,15 +37,29 @@ import {
   DialogTrigger,
 } from "../../../../../components/ui/dialog";
 import { DialogBody } from "next/dist/client/components/react-dev-overlay/internal/components/Dialog";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { updateCategory } from "../../../../../actions/categoryAction";
+import { toast } from "sonner";
+import { useDeleteCategories } from "../../../../../hooks/api/categories/useDeleteCategories";
+import { Loader2 } from "lucide-react";
+import { useRouter } from "next/navigation";
 
 type ViewCategoryPageProps = {
   id: string;
 };
 
 const ViewCategoryPage = ({ id }: ViewCategoryPageProps) => {
+  const router = useRouter();
+  // open the right sidebar.
   const { open } = useRightSideBar();
-  const [dialogOpen, setDialogOpen] = React.useState(false);
+  const queryClient = useQueryClient();
+  // get category by id query.
   const { data, isLoading, error } = useGetCategoryById(id);
+  // delete mutation.
+  const { mutate: deleteMutate, isPending: deleteIsPending } =
+    useDeleteCategories();
+
+  const [dialogOpen, setDialogOpen] = React.useState(false);
 
   // open the right sidebar.
   React.useEffect(() => {
@@ -61,9 +75,35 @@ const ViewCategoryPage = ({ id }: ViewCategoryPageProps) => {
     },
   });
 
+  // update mutation.
+  const { mutate, isPending } = useMutation({
+    mutationFn: async ({
+      data,
+      id,
+    }: {
+      data: z.infer<typeof categoriesSchema>;
+      id: string;
+    }) =>
+      updateCategory({
+        data,
+        id,
+      }),
+    onSuccess: async (data) => {
+      if (data.success) {
+        toast.success("Category updated successfully");
+        await queryClient.invalidateQueries({ queryKey: ["categories"] });
+      }
+    },
+    onError: (error) => {
+      console.log(error);
+      toast.error(error.message);
+    },
+  });
+
   // submit handler.
   function onSubmit(values: z.infer<typeof categoriesSchema>) {
     console.log(values);
+    mutate({ data: values, id });
   }
 
   // data.
@@ -73,6 +113,19 @@ const ViewCategoryPage = ({ id }: ViewCategoryPageProps) => {
       form.setValue("description", data.category.description ?? "");
     }
   }, [data, form]);
+
+  // delete category.
+  function DeleteCategory() {
+    deleteMutate(id, {
+      onSuccess: () => {
+        setDialogOpen(false);
+        router.push("/admin/dashboard/categories");
+      },
+      onError: () => {
+        setDialogOpen(false);
+      },
+    });
+  }
 
   // loading.
   if (isLoading) {
@@ -135,7 +188,7 @@ const ViewCategoryPage = ({ id }: ViewCategoryPageProps) => {
               />
               <div className={"flex justify-between gap-3"}>
                 {/*edit button */}
-                <SubmitButton isLoading={false} text={"Edit Category"} />
+                <SubmitButton isLoading={isPending} text={"Edit Category"} />
                 {/* delete button */}
                 <Dialog open={dialogOpen} onOpenChange={setDialogOpen}>
                   <DialogTrigger asChild>
@@ -143,21 +196,33 @@ const ViewCategoryPage = ({ id }: ViewCategoryPageProps) => {
                   </DialogTrigger>
                   <DialogContent>
                     <DialogHeader>
-                      <DialogTitle>Delete Category</DialogTitle>
+                      <DialogTitle>Delete Category 🚨 </DialogTitle>
                       <DialogDescription>
                         Are you sure you want to delete this category? This
-                        action cannot be undone. 🚨
+                        action cannot be undone.
                       </DialogDescription>
                     </DialogHeader>
                     <DialogBody>
                       <div className={"flex justify-end gap-3"}>
                         <Button
+                          type={"button"}
                           variant={"secondary"}
                           onClick={() => setDialogOpen(false)}
                         >
                           Cancel
                         </Button>
-                        <Button variant={"destructive"}>Delete</Button>
+                        <Button
+                          type={"button"}
+                          variant={"destructive"}
+                          onClick={DeleteCategory}
+                          disabled={deleteIsPending}
+                        >
+                          {deleteIsPending ? (
+                            <Loader2 className={"size-3 animate-spin"} />
+                          ) : (
+                            "Delete"
+                          )}
+                        </Button>
                       </div>
                     </DialogBody>
                   </DialogContent>

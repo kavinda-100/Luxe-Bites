@@ -117,3 +117,93 @@ export async function getCategoryById(id: string) {
     throw new Error("Internal server error");
   }
 }
+
+export async function updateCategory({
+  data,
+  id,
+}: {
+  data: z.infer<typeof categoriesSchema>;
+  id: string;
+}) {
+  try {
+    // get user.
+    const user = await checkIsAdmin();
+    if (!user) {
+      throw new Error("Unauthorized");
+    }
+    // validate data.
+    const validData = categoriesSchema.safeParse(data);
+    if (!validData.success) {
+      throw new Error(zodIssueToString(validData.error.errors));
+    }
+    // check if category exists.
+    const existingCategory = await prisma.category.findUnique({
+      where: { id: id },
+    });
+    if (!existingCategory) {
+      throw new Error("Category Don't exists");
+    }
+    // update category.
+    const updatedCategory = await prisma.category.update({
+      where: { id: id },
+      data: {
+        name: data.name,
+        description: data.description,
+      },
+    });
+    if (!updatedCategory) {
+      throw new Error("Error updating category");
+    }
+    return { success: true, message: "Category updated successfully" };
+  } catch (e: unknown) {
+    console.log("Error updating category", e);
+    if (e instanceof Error) {
+      throw new Error(e.message);
+    }
+    throw new Error("Internal server error");
+  }
+}
+
+export async function deleteCategories(ids: string | string[]) {
+  try {
+    // get user.
+    const user = await checkIsAdmin();
+    if (!user) {
+      throw new Error("Unauthorized");
+    }
+
+    // ensure ids is an array
+    const categoryIds = Array.isArray(ids) ? ids : [ids];
+
+    // check if all categories exist.
+    const existingCategories = await prisma.category.findMany({
+      where: { id: { in: categoryIds } },
+    });
+
+    if (existingCategories.length !== categoryIds.length) {
+      console.log(
+        "categories don't exist",
+        { existingCategories },
+        { categoryIds },
+      );
+      const message =
+        categoryIds.length === 1
+          ? "Category doesn't exist"
+          : "Categories don't exist";
+      throw new Error(message);
+    }
+
+    // delete categories.
+    await prisma.category.deleteMany({
+      where: { id: { in: categoryIds } },
+    });
+
+    return { success: true, message: "Categories deleted successfully" };
+  } catch (e: unknown) {
+    console.log("Error deleting categories", e);
+    if (e instanceof Error) {
+      throw new Error(e.message);
+    }
+    throw new Error("Internal server error");
+  }
+}
