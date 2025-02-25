@@ -49,6 +49,9 @@ export async function getUserByEmail(email: string) {
         profilePicture: true,
         role: true,
         createdAt: true,
+        banned: true,
+        bannedReason: true,
+        bannedAt: true,
       },
     });
     if (!newUser) {
@@ -135,6 +138,86 @@ export async function deleteUserByEmail(email: string) {
     return { success: true };
   } catch (e: unknown) {
     console.log("Error deleting user by email", e);
+    if (e instanceof Error) {
+      throw new Error(e.message);
+    }
+    throw new Error("Internal server error");
+  }
+}
+
+export async function banUserByEmail({
+  email,
+  bannedReason,
+}: {
+  email: string;
+  bannedReason: string;
+}) {
+  try {
+    const user = await checkIsAdmin();
+    if (!user) {
+      throw new Error("Unauthorized");
+    }
+    // Check if the user exists.
+    const userExists = await prisma.user.findUnique({
+      where: {
+        email,
+      },
+    });
+    if (!userExists) {
+      throw new Error("User not found");
+    }
+    // Ban the user by email.
+    await prisma.user.update({
+      where: {
+        email,
+      },
+      data: {
+        banned: true,
+        bannedReason: bannedReason,
+        bannedAt: new Date(),
+      },
+    });
+
+    return { success: true };
+  } catch (e: unknown) {
+    console.log("Error banning user by email", e);
+    if (e instanceof Error) {
+      throw new Error(e.message);
+    }
+    throw new Error("Internal server error");
+  }
+}
+
+export async function unbanUserByEmail(email: string) {
+  try {
+    const user = await checkIsAdmin();
+    if (!user) {
+      throw new Error("Unauthorized");
+    }
+    // Check if the user exists.
+    const userExists = await prisma.user.findUnique({
+      where: {
+        email,
+      },
+    });
+    if (!userExists) {
+      throw new Error("User not found");
+    }
+    // Unban the user by email.
+    await prisma.user.update({
+      where: {
+        email,
+      },
+      data: {
+        banned: false,
+        bannedReason: null,
+        bannedAt: null,
+      },
+    });
+
+    return { success: true };
+  } catch (e: unknown) {
+    console.log("Error unbanning user by email", e);
     if (e instanceof Error) {
       throw new Error(e.message);
     }

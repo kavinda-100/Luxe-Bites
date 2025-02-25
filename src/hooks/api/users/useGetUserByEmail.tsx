@@ -13,6 +13,9 @@ type userType = {
   name: string | null;
   profilePicture: string | null;
   role: Role;
+  banned: boolean;
+  bannedAt: Date | null;
+  bannedReason: string | null;
   createdAt: Date;
 };
 

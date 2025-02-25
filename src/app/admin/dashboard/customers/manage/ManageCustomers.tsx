@@ -38,7 +38,9 @@ import { BanIcon, Loader2, TrashIcon } from "lucide-react";
 import { useGetUserByEmail } from "../../../../../hooks/api/users/useGetUserByEmail";
 import { useMutation } from "@tanstack/react-query";
 import {
+  banUserByEmail,
   deleteUserByEmail,
+  unbanUserByEmail,
   updateUserByEmail,
 } from "../../../../../actions/users";
 import { toast } from "sonner";
@@ -66,6 +68,10 @@ const ManageCustomers = () => {
   const [isDeleteDialogOpen, setIsDeleteDialogOpen] = React.useState(false);
   // dialog for banning user
   const [isBanDialogOpen, setIsBanDialogOpen] = React.useState(false);
+  // ban reason
+  const [bannedReason, setBannedReason] = React.useState("");
+  // unban dialog
+  const [isUnbanDialogOpen, setIsUnbanDialogOpen] = React.useState(false);
 
   React.useEffect(() => {
     open();
@@ -131,6 +137,46 @@ const ManageCustomers = () => {
     },
   });
 
+  // ban mutation
+  const { mutate: banUserMutate, isPending: isBanningUser } = useMutation({
+    mutationFn: async ({
+      email,
+      bannedReason,
+    }: {
+      email: string;
+      bannedReason: string;
+    }) => banUserByEmail({ email, bannedReason }),
+    onSuccess: (data) => {
+      if (data.success) {
+        toast.success("User banned successfully");
+        setIsBanDialogOpen(false);
+        window.location.reload();
+      }
+    },
+    onError: (error) => {
+      console.log("Error banning user", error);
+      toast.error(error.message);
+      setIsBanDialogOpen(false);
+    },
+  });
+
+  // unban mutation
+  const { mutate: unbanUserMutate, isPending: isUnbanningUser } = useMutation({
+    mutationFn: async (email: string) => unbanUserByEmail(email),
+    onSuccess: (data) => {
+      if (data.success) {
+        toast.success("User unbanned successfully");
+        setIsUnbanDialogOpen(false);
+        window.location.reload();
+      }
+    },
+    onError: (error) => {
+      console.log("Error unbanning user", error);
+      toast.error(error.message);
+      setIsUnbanDialogOpen(false);
+    },
+  });
+
   // set the user data to the form
   React.useEffect(() => {
     if (user) {
@@ -160,6 +206,27 @@ const ManageCustomers = () => {
       return;
     }
     deleteUserMutate(search);
+  }
+
+  // ban user function
+  function banUser() {
+    if (!search) {
+      toast.error("Please search for a user first");
+      return;
+    }
+    if (!bannedReason || bannedReason.trim() === "") {
+      setBannedReason("No reason");
+    }
+    banUserMutate({ email: search, bannedReason });
+  }
+
+  // unban user function
+  function unbanUser() {
+    if (!search) {
+      toast.error("Please search for a user first");
+      return;
+    }
+    unbanUserMutate(search);
   }
 
   return (
@@ -299,49 +366,97 @@ const ManageCustomers = () => {
                     </Dialog>
 
                     {/* ban button */}
-                    <Dialog
-                      open={isBanDialogOpen}
-                      onOpenChange={setIsBanDialogOpen}
-                    >
-                      <DialogTrigger asChild>
-                        <Button variant="destructive">
-                          <BanIcon className={"size-4"} />
-                          Ban User
-                        </Button>
-                      </DialogTrigger>
-                      <DialogContent>
-                        <DialogHeader>
-                          <DialogTitle>Ban User 🚨 </DialogTitle>
-                          <DialogDescription>
-                            Are you sure you want to Ban this User? This action
-                            cannot be undone.
-                          </DialogDescription>
-                        </DialogHeader>
-                        <DialogBody>
-                          <div className={"flex justify-end gap-3"}>
-                            <Button
-                              type={"button"}
-                              variant={"secondary"}
-                              onClick={() => setIsBanDialogOpen(false)}
-                            >
-                              Cancel
-                            </Button>
-                            <Button
-                              type={"button"}
-                              variant={"destructive"}
-                              onClick={deleteUser}
-                              disabled={isDeletingUser}
-                            >
-                              {isDeletingUser ? (
-                                <Loader2 className={"size-3 animate-spin"} />
-                              ) : (
-                                "Ban"
-                              )}
-                            </Button>
-                          </div>
-                        </DialogBody>
-                      </DialogContent>
-                    </Dialog>
+                    {user?.banned ? (
+                      <Dialog
+                        open={isUnbanDialogOpen}
+                        onOpenChange={setIsUnbanDialogOpen}
+                      >
+                        <DialogTrigger asChild>
+                          <Button>
+                            <BanIcon className={"size-4"} />
+                            Unban User
+                          </Button>
+                        </DialogTrigger>
+                        <DialogContent>
+                          <DialogHeader>
+                            <DialogTitle>Unban User 🚨 </DialogTitle>
+                            <DialogDescription>
+                              Are you sure you want to Unban this User?
+                            </DialogDescription>
+                          </DialogHeader>
+                          <DialogBody>
+                            <div className={"mt-3 flex justify-end gap-3"}>
+                              <Button
+                                type={"button"}
+                                variant={"secondary"}
+                                onClick={() => setIsUnbanDialogOpen(false)}
+                              >
+                                Cancel
+                              </Button>
+                              <Button
+                                type={"button"}
+                                onClick={unbanUser}
+                                disabled={isUnbanningUser}
+                              >
+                                {isUnbanningUser ? (
+                                  <Loader2 className={"size-3 animate-spin"} />
+                                ) : (
+                                  "Unban"
+                                )}
+                              </Button>
+                            </div>
+                          </DialogBody>
+                        </DialogContent>
+                      </Dialog>
+                    ) : (
+                      <Dialog
+                        open={isBanDialogOpen}
+                        onOpenChange={setIsBanDialogOpen}
+                      >
+                        <DialogTrigger asChild>
+                          <Button variant="destructive">
+                            <BanIcon className={"size-4"} />
+                            Ban User
+                          </Button>
+                        </DialogTrigger>
+                        <DialogContent>
+                          <DialogHeader>
+                            <DialogTitle>Ban User 🚨 </DialogTitle>
+                            <DialogDescription>
+                              Are you sure you want to Ban this User?
+                            </DialogDescription>
+                          </DialogHeader>
+                          <DialogBody>
+                            <Input
+                              placeholder={"Reason for banning"}
+                              value={bannedReason}
+                              onChange={(e) => setBannedReason(e.target.value)}
+                            />
+                            <div className={"mt-3 flex justify-end gap-3"}>
+                              <Button
+                                type={"button"}
+                                variant={"secondary"}
+                                onClick={() => setIsBanDialogOpen(false)}
+                              >
+                                Cancel
+                              </Button>
+                              <Button
+                                type={"button"}
+                                variant={"destructive"}
+                                onClick={banUser}
+                                disabled={isBanningUser}
+                              >
+                                {isBanningUser ? (
+                                  <Loader2 className={"size-3 animate-spin"} />
+                                ) : (
+                                  "Ban"
+                                )}
+                              </Button>
+                            </div>
+                          </DialogBody>
+                        </DialogContent>
+                      </Dialog>
+                    )}
                   </div>
                 </div>
               </form>
