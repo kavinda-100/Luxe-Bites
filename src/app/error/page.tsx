@@ -3,11 +3,17 @@
 import React from "react";
 import { BanIcon } from "lucide-react";
 import Link from "next/link";
-import { useSearchParams } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
+import { BiArrowBack } from "react-icons/bi";
 
 const ErrorPage = () => {
   const searchParams = useSearchParams();
   const message = searchParams.get("message");
+  const router = useRouter();
+
+  const GoBack = () => {
+    router.back();
+  };
 
   return (
     <section
@@ -37,6 +43,13 @@ const ErrorPage = () => {
             Sign In
           </Link>
         </p>
+        <div
+          onClick={GoBack}
+          className={"mt-4 flex cursor-pointer items-center gap-3"}
+        >
+          <BiArrowBack className={"text-primary"} />
+          <p>Go back</p>
+        </div>
       </div>
     </section>
   );
