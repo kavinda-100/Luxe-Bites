@@ -150,3 +150,35 @@ export async function updateAdvertisement({
     throw new Error("Internal server error");
   }
 }
+
+export async function deleteAdvertisements(ids: string | string[]) {
+  try {
+    const user = await checkIsAdmin();
+    if (!user) {
+      throw new Error("Unauthorized");
+    }
+    const adIds = Array.isArray(ids) ? ids : [ids];
+    // check if the advertisements exist
+    const advertisements = await prisma.advertisement.findMany({
+      where: { id: { in: adIds } },
+    });
+    // if any of the advertisements do not exist, throw an error
+    if (advertisements.length !== adIds.length) {
+      throw new Error("Advertisement not found");
+    }
+    // delete the advertisements
+    const deletedAdvertisements = await prisma.advertisement.deleteMany({
+      where: { id: { in: adIds } },
+    });
+    if (!deletedAdvertisements) {
+      throw new Error("Failed to delete advertisements");
+    }
+    return { success: true, message: "Advertisements deleted successfully" };
+  } catch (e: unknown) {
+    console.log("Error deleting advertisements", e);
+    if (e instanceof Error) {
+      throw new Error(e.message);
+    }
+    throw new Error("Internal server error");
+  }
+}

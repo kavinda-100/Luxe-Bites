@@ -18,7 +18,7 @@ import {
   FormMessage,
 } from "../../../../../components/ui/form";
 import { Input } from "../../../../../components/ui/input";
-import { Asterisk } from "lucide-react";
+import { Asterisk, Loader2 } from "lucide-react";
 import { Label } from "../../../../../components/ui/label";
 import { UploadDropzone } from "../../../../../lib/uploadthing";
 import { toast } from "sonner";
@@ -33,16 +33,37 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useGetAdvertisementById } from "../../../../../hooks/api/advertisement/useGetAdvertisementById";
 import { Skeleton } from "../../../../../components/ui/skeleton";
 import { updateAdvertisement } from "../../../../../actions/advertisementsAction";
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "../../../../../components/ui/dialog";
+import { Button } from "../../../../../components/ui/button";
+import { DialogBody } from "next/dist/client/components/react-dev-overlay/internal/components/Dialog";
+import { useDeleteAdvertisements } from "../../../../../hooks/api/advertisement/useDeleteAdvertisments";
+import { useRouter } from "next/navigation";
 
 type ViewAdvertisementPageProps = {
   id: string;
 };
 
 const ViewAdvertisementPage = ({ id }: ViewAdvertisementPageProps) => {
+  // open right sidebar
   const { open } = useRightSideBar();
+  // router
+  const router = useRouter();
+  // query client
   const queryClient = useQueryClient();
-  // 3. Fetch the advertisement data
+  // dialog state
+  const [dialogOpen, setDialogOpen] = React.useState(false);
+  // Fetch the advertisement data
   const { data, isLoading, error } = useGetAdvertisementById(id);
+  // delete advertisement mutation
+  const { deleteAdvertisements, isDeleteAdvertisementsPending } =
+    useDeleteAdvertisements();
 
   React.useEffect(() => {
     open();
@@ -73,6 +94,7 @@ const ViewAdvertisementPage = ({ id }: ViewAdvertisementPageProps) => {
     }
   }, [data, form]);
 
+  // update advertisement mutation
   const { mutate: updateAdvertisementMutation, isPending: isUpdatePending } =
     useMutation({
       mutationFn: async ({
@@ -95,6 +117,19 @@ const ViewAdvertisementPage = ({ id }: ViewAdvertisementPageProps) => {
         toast.error(error.message);
       },
     });
+
+  // delete advertisement
+  const handleDeleteAd = () => {
+    deleteAdvertisements(id, {
+      onSuccess: () => {
+        setDialogOpen(false);
+        router.push("/admin/dashboard/advertisements");
+      },
+      onError: () => {
+        setDialogOpen(false);
+      },
+    });
+  };
 
   // 2. Define a submit handler.
   function onSubmit(values: z.infer<typeof AdvertisementSchema>) {
@@ -285,10 +320,53 @@ const ViewAdvertisementPage = ({ id }: ViewAdvertisementPageProps) => {
                 )}
               />
 
-              <SubmitButton
-                isLoading={isUpdatePending}
-                text={"Edit Advertisement"}
-              />
+              <div className={"flex justify-between gap-3"}>
+                {/*edit button */}
+                <SubmitButton
+                  isLoading={isUpdatePending}
+                  text={"Edit Advertisement"}
+                />
+                {/* delete button */}
+                <Dialog open={dialogOpen} onOpenChange={setDialogOpen}>
+                  <DialogTrigger asChild>
+                    <Button variant={"destructive"}>
+                      Delete Advertisement
+                    </Button>
+                  </DialogTrigger>
+                  <DialogContent>
+                    <DialogHeader>
+                      <DialogTitle>Delete Advertisement 🚨 </DialogTitle>
+                      <DialogDescription>
+                        Are you sure you want to delete this Advertisement? This
+                        action cannot be undone.
+                      </DialogDescription>
+                    </DialogHeader>
+                    <DialogBody>
+                      <div className={"flex justify-end gap-3"}>
+                        <Button
+                          type={"button"}
+                          variant={"secondary"}
+                          onClick={() => setDialogOpen(false)}
+                        >
+                          Cancel
+                        </Button>
+                        <Button
+                          type={"button"}
+                          variant={"destructive"}
+                          onClick={handleDeleteAd}
+                          disabled={isDeleteAdvertisementsPending}
+                        >
+                          {isDeleteAdvertisementsPending ? (
+                            <Loader2 className={"size-3 animate-spin"} />
+                          ) : (
+                            "Delete"
+                          )}
+                        </Button>
+                      </div>
+                    </DialogBody>
+                  </DialogContent>
+                </Dialog>
+              </div>
             </form>
           </Form>
         </CardContent>
