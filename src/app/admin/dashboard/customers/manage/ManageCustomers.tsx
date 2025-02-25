@@ -34,11 +34,23 @@ import {
 } from "@/components/ui/select";
 import { zodUserSchema } from "../../../../../zod/user";
 import SubmitButton from "../../../../../components/SubmitButton";
-import { BanIcon, TrashIcon } from "lucide-react";
+import { BanIcon, Loader2, TrashIcon } from "lucide-react";
 import { useGetUserByEmail } from "../../../../../hooks/api/users/useGetUserByEmail";
 import { useMutation } from "@tanstack/react-query";
-import { updateUserByEmail } from "../../../../../actions/users";
+import {
+  deleteUserByEmail,
+  updateUserByEmail,
+} from "../../../../../actions/users";
 import { toast } from "sonner";
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "../../../../../components/ui/dialog";
+import { DialogBody } from "next/dist/client/components/react-dev-overlay/internal/components/Dialog";
 
 const ManageCustomers = () => {
   // Get the email from the URL query params.
@@ -50,6 +62,10 @@ const ManageCustomers = () => {
   const [search, setSearch] = React.useState("");
   // get the user data
   const { user, isUserLoading, userMutate } = useGetUserByEmail();
+  // dialog for deleting user
+  const [isDeleteDialogOpen, setIsDeleteDialogOpen] = React.useState(false);
+  // dialog for banning user
+  const [isBanDialogOpen, setIsBanDialogOpen] = React.useState(false);
 
   React.useEffect(() => {
     open();
@@ -99,12 +115,31 @@ const ManageCustomers = () => {
     },
   });
 
+  // delete mutation
+  const { mutate: deleteUserMutate, isPending: isDeletingUser } = useMutation({
+    mutationFn: async (email: string) => deleteUserByEmail(email),
+    onSuccess: (data) => {
+      if (data.success) {
+        toast.success("User deleted successfully");
+        setIsDeleteDialogOpen(false);
+      }
+    },
+    onError: (error) => {
+      console.log("Error deleting user", error);
+      toast.error(error.message);
+      setIsDeleteDialogOpen(false);
+    },
+  });
+
   // set the user data to the form
   React.useEffect(() => {
     if (user) {
       form.setValue("name", user?.name ?? "");
       form.setValue("email", user?.email ?? "");
-      form.setValue("role", user?.role ?? "USER");
+      form.setValue(
+        "role",
+        user?.role && user?.role === "ADMIN" ? "ADMIN" : "USER",
+      );
     }
   }, [user, form]);
 
@@ -116,6 +151,15 @@ const ManageCustomers = () => {
       return;
     }
     updateUserMutate({ email: search, data: values });
+  }
+
+  // delete user function
+  function deleteUser() {
+    if (!search) {
+      toast.error("Please search for a user first");
+      return;
+    }
+    deleteUserMutate(search);
   }
 
   return (
@@ -209,14 +253,95 @@ const ManageCustomers = () => {
                   <SubmitButton isLoading={isUpdatingUser} text={"Edit User"} />
 
                   <div className={"flex justify-end gap-3"}>
-                    <Button variant="destructive">
-                      <TrashIcon className={"size-4"} />
-                      Delete User
-                    </Button>
-                    <Button variant="destructive">
-                      <BanIcon className={"size-4"} />
-                      Ban User
-                    </Button>
+                    {/* delete button */}
+                    <Dialog
+                      open={isDeleteDialogOpen}
+                      onOpenChange={setIsDeleteDialogOpen}
+                    >
+                      <DialogTrigger asChild>
+                        <Button variant="destructive">
+                          <TrashIcon className={"size-4"} />
+                          Delete User
+                        </Button>
+                      </DialogTrigger>
+                      <DialogContent>
+                        <DialogHeader>
+                          <DialogTitle>Delete User 🚨 </DialogTitle>
+                          <DialogDescription>
+                            Are you sure you want to delete this User? This
+                            action cannot be undone.
+                          </DialogDescription>
+                        </DialogHeader>
+                        <DialogBody>
+                          <div className={"flex justify-end gap-3"}>
+                            <Button
+                              type={"button"}
+                              variant={"secondary"}
+                              onClick={() => setIsDeleteDialogOpen(false)}
+                            >
+                              Cancel
+                            </Button>
+                            <Button
+                              type={"button"}
+                              variant={"destructive"}
+                              onClick={deleteUser}
+                              disabled={isDeletingUser}
+                            >
+                              {isDeletingUser ? (
+                                <Loader2 className={"size-3 animate-spin"} />
+                              ) : (
+                                "Delete"
+                              )}
+                            </Button>
+                          </div>
+                        </DialogBody>
+                      </DialogContent>
+                    </Dialog>
+
+                    {/* ban button */}
+                    <Dialog
+                      open={isBanDialogOpen}
+                      onOpenChange={setIsBanDialogOpen}
+                    >
+                      <DialogTrigger asChild>
+                        <Button variant="destructive">
+                          <BanIcon className={"size-4"} />
+                          Ban User
+                        </Button>
+                      </DialogTrigger>
+                      <DialogContent>
+                        <DialogHeader>
+                          <DialogTitle>Ban User 🚨 </DialogTitle>
+                          <DialogDescription>
+                            Are you sure you want to Ban this User? This action
+                            cannot be undone.
+                          </DialogDescription>
+                        </DialogHeader>
+                        <DialogBody>
+                          <div className={"flex justify-end gap-3"}>
+                            <Button
+                              type={"button"}
+                              variant={"secondary"}
+                              onClick={() => setIsBanDialogOpen(false)}
+                            >
+                              Cancel
+                            </Button>
+                            <Button
+                              type={"button"}
+                              variant={"destructive"}
+                              onClick={deleteUser}
+                              disabled={isDeletingUser}
+                            >
+                              {isDeletingUser ? (
+                                <Loader2 className={"size-3 animate-spin"} />
+                              ) : (
+                                "Ban"
+                              )}
+                            </Button>
+                          </div>
+                        </DialogBody>
+                      </DialogContent>
+                    </Dialog>
                   </div>
                 </div>
               </form>

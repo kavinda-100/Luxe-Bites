@@ -109,3 +109,35 @@ export async function updateUserByEmail({
     throw new Error("Internal server error");
   }
 }
+
+export async function deleteUserByEmail(email: string) {
+  try {
+    const user = await checkIsAdmin();
+    if (!user) {
+      throw new Error("Unauthorized");
+    }
+    // Check if the user exists.
+    const userExists = await prisma.user.findUnique({
+      where: {
+        email,
+      },
+    });
+    if (!userExists) {
+      throw new Error("User not found");
+    }
+    // Delete the user by email.
+    await prisma.user.delete({
+      where: {
+        email,
+      },
+    });
+
+    return { success: true };
+  } catch (e: unknown) {
+    console.log("Error deleting user by email", e);
+    if (e instanceof Error) {
+      throw new Error(e.message);
+    }
+    throw new Error("Internal server error");
+  }
+}
