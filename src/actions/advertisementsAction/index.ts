@@ -65,3 +65,88 @@ export async function getAllAdvertisements() {
     throw new Error("Internal server error");
   }
 }
+
+export async function getAdvertisementById(id: string) {
+  try {
+    const user = await checkIsAdmin();
+    if (!user) {
+      throw new Error("Unauthorized");
+    }
+    const advertisement = await prisma.advertisement.findUnique({
+      where: {
+        id,
+      },
+    });
+    if (!advertisement) {
+      throw new Error("Advertisement not found");
+    }
+    return {
+      id: advertisement.id,
+      title: advertisement.title,
+      description: advertisement.description,
+      imageUrl: advertisement.imageUrl,
+      videoUrl: advertisement.videoUrl,
+      active: advertisement.active,
+      link: advertisement.link,
+    };
+  } catch (e: unknown) {
+    console.log("Error getting advertisement", e);
+    if (e instanceof Error) {
+      throw new Error(e.message);
+    }
+    throw new Error("Internal server error");
+  }
+}
+
+export async function updateAdvertisement({
+  id,
+  data,
+}: {
+  id: string;
+  data: z.infer<typeof AdvertisementSchema>;
+}) {
+  try {
+    const user = await checkIsAdmin();
+    if (!user) {
+      throw new Error("Unauthorized");
+    }
+    // validate the data
+    const validatedData = AdvertisementSchema.safeParse(data);
+    if (!validatedData.success) {
+      throw new Error("Invalid data");
+    }
+    // check if the advertisement exists
+    const advertisementExists = await prisma.advertisement.findUnique({
+      where: {
+        id,
+      },
+    });
+    if (!advertisementExists) {
+      throw new Error("Advertisement not found");
+    }
+    // update the advertisement
+    const advertisement = await prisma.advertisement.update({
+      where: {
+        id,
+      },
+      data: {
+        title: data.title,
+        description: data.description,
+        imageUrl: data.imageUrl,
+        videoUrl: data.videoUrl,
+        active: data.active,
+        link: data.link,
+      },
+    });
+    if (!advertisement) {
+      throw new Error("Failed to update advertisement");
+    }
+    return { success: true, message: "Advertisement updated successfully" };
+  } catch (e: unknown) {
+    console.log("Error updating advertisement", e);
+    if (e instanceof Error) {
+      throw new Error(e.message);
+    }
+    throw new Error("Internal server error");
+  }
+}
