@@ -41,6 +41,7 @@ const CreateCategoryPage = () => {
   React.useEffect(() => {
     open();
   }, [open]);
+
   // form.
   const form = useForm<z.infer<typeof categoriesSchema>>({
     resolver: zodResolver(categoriesSchema),

@@ -96,3 +96,24 @@ export async function getAllCategories() {
     throw new Error("Internal server error");
   }
 }
+
+export async function getCategoryById(id: string) {
+  try {
+    // get user.
+    const user = await checkIsAdmin();
+    if (!user) {
+      throw new Error("Unauthorized");
+    }
+    const category = await prisma.category.findUnique({
+      where: { id },
+      select: { id: true, name: true, createdAt: true, description: true },
+    });
+    return { category };
+  } catch (e: unknown) {
+    console.log("Error getting category by id", e);
+    if (e instanceof Error) {
+      throw new Error(e.message);
+    }
+    throw new Error("Internal server error");
+  }
+}
