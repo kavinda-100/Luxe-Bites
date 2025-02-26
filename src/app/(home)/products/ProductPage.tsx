@@ -1,7 +1,7 @@
 import React from "react";
 import SearchBar from "./_components/search/SearchBar";
 import Categories from "./_components/categories/Categories";
-import { Skeleton } from "../../../components/ui/skeleton";
+import ProductList from "./_components/products/ProductList";
 
 const ProductPage = () => {
   return (
@@ -17,6 +17,8 @@ const ProductPage = () => {
       </div>
       {/*  categories */}
       <Categories />
+      {/*  products */}
+      <ProductList />
     </section>
   );
 };
