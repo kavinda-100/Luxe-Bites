@@ -88,9 +88,9 @@ const SearchBar = () => {
             )}
             {isSearchLoading &&
               Array.from({ length: 4 }).map((_, index) => (
-                <Skeleton key={index} className={"h-12 w-full"} />
+                <Skeleton key={index} className={"my-2 h-12 w-full"} />
               ))}
-            {searchProducts?.data && searchProducts.data.length > 0 ? (
+            {searchProducts?.data ? (
               searchProducts.data.map((product) => (
                 <SearchList
                   key={product.id}
