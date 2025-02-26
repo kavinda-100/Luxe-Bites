@@ -138,11 +138,7 @@ export async function searchProductsByCategory({
         price: product.price,
         discount: product.discount,
         stock: product.stock,
-        rating: product.rating,
-        categoryId: product.categoryId,
         reviews: product._count.reviews,
-        active: product.active,
-        createdAt: product.createdAt,
       };
     });
 
