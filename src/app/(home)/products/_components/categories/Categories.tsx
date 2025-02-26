@@ -5,9 +5,12 @@ import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area";
 import { useGetAllCategories } from "../../../../../hooks/api/categories/useGetAllCategories";
 import { CirclePlusIcon } from "lucide-react";
 import { Skeleton } from "../../../../../components/ui/skeleton";
+import { useCategorySelectStore } from "../../../../../store/useCategorySelectStore";
+import { cn } from "../../../../../lib/utils";
 
 const Categories = () => {
   const { data, isLoading, error } = useGetAllCategories();
+  const { selectedCategory, setSelectedCategory } = useCategorySelectStore();
 
   return (
     <div className="container mx-auto my-4">
@@ -32,7 +35,14 @@ const Categories = () => {
             return (
               <div
                 key={category.id}
-                className="group flex cursor-pointer items-center gap-2 rounded-md border border-gray-100 bg-muted/30 px-4 py-2 transition-all duration-300 ease-in-out hover:border-gray-300 dark:border-gray-800 dark:hover:border-gray-600"
+                onClick={() => setSelectedCategory(category.name)}
+                className={cn(
+                  "group flex cursor-pointer items-center gap-2 rounded-md border border-gray-100 bg-muted/30 px-4 py-2 transition-all duration-300 ease-in-out hover:border-gray-300 dark:border-gray-800 dark:hover:border-gray-600",
+                  {
+                    "border-primary bg-primary/10 dark:border-primary dark:bg-primary/10":
+                      selectedCategory === category.name,
+                  },
+                )}
               >
                 {/* Circle Icon Inside the Div */}
                 <CirclePlusIcon className="size-4 scale-50 opacity-50 transition-all duration-300 ease-in-out group-hover:scale-100 group-hover:text-primary group-hover:opacity-100" />
