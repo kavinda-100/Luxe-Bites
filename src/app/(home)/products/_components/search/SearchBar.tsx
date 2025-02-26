@@ -6,10 +6,13 @@ import {
   Dialog,
   DialogContent,
   DialogHeader,
+  DialogTitle,
 } from "../../../../../components/ui/dialog";
 import { DialogBody } from "next/dist/client/components/react-dev-overlay/internal/components/Dialog";
 import { useDebounce } from "../../../../../hooks/useDebounce";
 import { useSearchProducts } from "../../../../../hooks/api/users/products/useSearchProducts";
+import { Skeleton } from "../../../../../components/ui/skeleton";
+import SearchList from "./SearchList";
 
 const SearchBar = () => {
   // Dialog open state
@@ -62,6 +65,7 @@ const SearchBar = () => {
       <Dialog open={isOpen} onOpenChange={setIsOpen}>
         <DialogContent>
           <DialogHeader>
+            <DialogTitle className={"sr-only"}>Search for food</DialogTitle>
             <div className={"flex justify-center gap-3 border-b p-2"}>
               <SearchIcon className="size-5" />
               <input
@@ -74,7 +78,35 @@ const SearchBar = () => {
               />
             </div>
           </DialogHeader>
-          <DialogBody></DialogBody>
+          <DialogBody className={"max-h-[400px] overflow-y-auto"}>
+            {searchError && (
+              <div className={"w-full bg-muted p-2"}>
+                <p className={"text-sm font-medium text-red-500"}>
+                  {searchError.message}
+                </p>
+              </div>
+            )}
+            {isSearchLoading &&
+              Array.from({ length: 4 }).map((_, index) => (
+                <Skeleton key={index} className={"h-12 w-full"} />
+              ))}
+            {searchProducts?.data && searchProducts.data.length > 0 ? (
+              searchProducts.data.map((product) => (
+                <SearchList
+                  key={product.id}
+                  id={product.id}
+                  name={product.name}
+                  image={product.image}
+                />
+              ))
+            ) : (
+              <div className={"w-full bg-muted p-2"}>
+                <p className={"text-sm font-medium text-muted-foreground"}>
+                  No results found
+                </p>
+              </div>
+            )}
+          </DialogBody>
         </DialogContent>
       </Dialog>
     </>
