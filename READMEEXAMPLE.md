@@ -15,13 +15,14 @@
 - [x] view/update/delete full product function
 - [x] view/update/delete full advertisement function
 - [x] view/delete/ban full admin function
-- [ ] show all products in a category
-- [ ] show all advertisements in a category
+- [x] show all products in a category
+- [x] let user browse through categories
+- [x] let user browse through products
+- [ ] let user view product details
 - [ ] let user add product to cart
-- [ ] let user browse through categories
-- [ ] let user browse through products
-- [ ] let user browse through advertisements
 - [ ] let user view cart
 - [ ] let user remove product from cart
 - [ ] let user checkout
+- [ ] show all advertisements in a category
+- [ ] let user browse through advertisements
 - 
