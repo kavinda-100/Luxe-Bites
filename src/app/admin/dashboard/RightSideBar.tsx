@@ -27,7 +27,7 @@ const RightSideBar = ({
       {isOpen && (
         <Card
           className={
-            "h-full w-3/12 max-w-[300px] border-none shadow-sm transition-all duration-200 ease-linear"
+            "h-full w-3/12 max-w-[300px] shadow-sm transition-all duration-200 ease-linear"
           }
         >
           <CardHeader>

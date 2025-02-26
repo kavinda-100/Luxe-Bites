@@ -231,7 +231,7 @@ const ManageCustomers = () => {
 
   return (
     <section className={"container mx-auto"}>
-      <Card className={"border-none shadow-sm"}>
+      <Card className={"shadow-sm"}>
         <CardHeader>
           <CardTitle>Manage Customers</CardTitle>
           <CardDescription>

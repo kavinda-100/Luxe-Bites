@@ -77,7 +77,7 @@ const CreateCategoryPage = () => {
 
   return (
     <section className={"container mx-auto flex flex-col space-y-4"}>
-      <Card className={"mx-auto w-full max-w-6xl border-none shadow-sm"}>
+      <Card className={"mx-auto w-full max-w-6xl shadow-sm"}>
         <CardHeader>
           <CardTitle>Create Category</CardTitle>
           <CardDescription>

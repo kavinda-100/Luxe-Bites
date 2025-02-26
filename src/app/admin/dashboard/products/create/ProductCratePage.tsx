@@ -119,7 +119,7 @@ const ProductCratePage = () => {
 
   return (
     <section className={"container mx-auto"}>
-      <Card className={"mx-auto w-full max-w-6xl border-none shadow-sm"}>
+      <Card className={"mx-auto w-full max-w-6xl shadow-sm"}>
         <CardHeader>
           <CardTitle>Create Product</CardTitle>
           <CardDescription>
