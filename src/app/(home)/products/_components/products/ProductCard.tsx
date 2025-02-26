@@ -35,6 +35,15 @@ const ProductCard = ({
   discount,
 }: ProductCardProps) => {
   const router = useRouter();
+  const [position, setPosition] = React.useState({ x: 0, y: 0 });
+
+  const handleMouseMove = (e: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
+    const target = e.target as HTMLDivElement;
+    const { left, top, width, height } = target.getBoundingClientRect();
+    const x = ((e.clientX - left) / width) * 100;
+    const y = ((e.clientY - top) / height) * 100;
+    setPosition({ x, y });
+  };
 
   const handleViewDetails = () => {
     router.push(`/products/${id}`);
@@ -48,11 +57,19 @@ const ProductCard = ({
     >
       <CardHeader className={"relative h-[300px] w-full"}>
         <CardTitle className={"sr-only"}>{name}</CardTitle>
-        <img
-          src={image}
-          alt={name}
-          className={"size-full rounded-md object-cover"}
-        />
+        <div
+          className="image-container"
+          onMouseMove={(e) => handleMouseMove(e)}
+        >
+          <img
+            src={image}
+            alt={name}
+            className={"zoom-image"}
+            style={{
+              transformOrigin: `${position.x}% ${position.y}%`,
+            }}
+          />
+        </div>
       </CardHeader>
       <CardContent className={"text-md flex flex-col gap-2 font-medium"}>
         <div className={"flex justify-between gap-3"}>
