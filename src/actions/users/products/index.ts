@@ -1,6 +1,6 @@
 "use server";
 
-import { checkIsAdmin } from "../../AuthActions";
+import { checkIsUser } from "../../AuthActions";
 import { prisma } from "../../../server/db";
 
 export async function searchProductsByName({
@@ -9,7 +9,7 @@ export async function searchProductsByName({
   searchTerm: string;
 }) {
   try {
-    const user = await checkIsAdmin();
+    const user = await checkIsUser();
     if (!user) {
       throw new Error("Unauthorized");
     }
@@ -51,7 +51,7 @@ export async function searchProductsByCategory({
 }) {
   try {
     // check if user is admin
-    const user = await checkIsAdmin();
+    const user = await checkIsUser();
     if (!user) {
       throw new Error("Unauthorized");
     }
@@ -164,7 +164,7 @@ export async function searchProductsByCategory({
 
 export async function getProductById({ id }: { id: string }) {
   try {
-    const user = await checkIsAdmin();
+    const user = await checkIsUser();
     if (!user) {
       throw new Error("Unauthorized");
     }

@@ -23,7 +23,7 @@ const StarRating = ({ reviews }: StarRatingProps) => {
           />
         ))}
       </div>
-      <span className={"text-sm text-gray-500"}>{reviews} reviews</span>
+      <div className={"text-sm text-gray-500"}>{reviews} reviews</div>
     </div>
   );
 };

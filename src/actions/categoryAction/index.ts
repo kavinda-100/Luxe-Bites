@@ -4,7 +4,7 @@ import type { z } from "zod";
 import { categoriesSchema } from "../../zod/categories";
 import { zodIssueToString } from "../../zod/utils";
 import { prisma } from "../../server/db";
-import { checkIsAdmin } from "../AuthActions";
+import { checkIsAdmin, checkIsUser } from "../AuthActions";
 
 export async function createCategory(data: z.infer<typeof categoriesSchema>) {
   try {
@@ -80,7 +80,7 @@ export async function getResentCategories() {
 export async function getAllCategories() {
   try {
     // get user.
-    const user = await checkIsAdmin();
+    const user = await checkIsUser();
     if (!user) {
       throw new Error("Unauthorized");
     }

@@ -20,6 +20,7 @@ model User {
     profilePicture  String?
     role     Role     @default(USER)
     reviews  Review[]
+    ratings  Rating[]
 
     banned   Boolean  @default(false)
     bannedAt DateTime?
@@ -55,6 +56,7 @@ model Product {
     active      Boolean @default(true)
     rating      Float?
     reviews     Review[]
+    ratings     Rating[]
 
     category    Category @relation(fields: [categoryId], references: [id])
 
@@ -69,6 +71,22 @@ model Review {
     productId String
     userId    String
     comment   String
+    ratingAmount    Int // Rating amount from 1 to 5
+
+    product   Product @relation(fields: [productId], references: [id])
+    user      User    @relation(fields: [userId], references: [kindUserId])
+
+    createdAt DateTime @default(now())
+    updatedAt DateTime @updatedAt
+
+    @@index([id, productId, userId]) // Index for searching by id or productId or userId
+}
+
+model Rating {
+    id        String   @id @default(cuid())
+    productId String
+    userId    String
+    ratingAmount    Int // Rating amount from 1 to 5
 
     product   Product @relation(fields: [productId], references: [id])
     user      User    @relation(fields: [userId], references: [kindUserId])

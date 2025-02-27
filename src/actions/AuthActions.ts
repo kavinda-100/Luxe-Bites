@@ -98,3 +98,18 @@ export async function checkIsAdmin() {
     return null;
   }
 }
+
+export async function checkIsUser() {
+  try {
+    const { getUser } = getKindeServerSession();
+    const user = await getUser();
+    if (!user) {
+      console.log("Unauthorized - Kinde Auth User", { user });
+      return null;
+    }
+    return user;
+  } catch (e: unknown) {
+    console.log("Error in checkIsUser: ", e);
+    return null;
+  }
+}
