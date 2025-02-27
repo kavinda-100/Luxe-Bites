@@ -13,6 +13,7 @@ import {
 import StarRating from "../_components/products/StarRating";
 import { Button } from "../../../../components/ui/button";
 import { HeartIcon, MinusIcon, PlusIcon, ShoppingCartIcon } from "lucide-react";
+import PostReview from "../_components/products/PostReview";
 
 type ViewProductProps = {
   id: string;
@@ -138,6 +139,17 @@ const ViewProduct = ({ id }: ViewProductProps) => {
       </div>
 
       {/*  reviews and sub details */}
+      <div className={"mt-6 flex w-full flex-col gap-12 lg:flex-row"}>
+        {/* reviews */}
+        <div className={"flex w-full flex-col gap-3 lg:w-8/12"}>
+          {/* view reviews */}
+          <div className={"w-full"}></div>
+          {/* post reviews */}
+          <PostReview Id={ProductData?.data.id ?? ""} />
+        </div>
+        {/* reviews chart */}
+        <div className={"w-full lg:w-4/12"}>reviews chart</div>
+      </div>
     </section>
   );
 };
