@@ -8,12 +8,26 @@ import {
   calculateDiscountedPrice,
   cn,
   formatCurrency,
+  formatDate,
   formatLargeNumber,
+  formatRelativeTime,
 } from "../../../../lib/utils";
 import StarRating from "../_components/products/StarRating";
 import { Button } from "../../../../components/ui/button";
-import { HeartIcon, MinusIcon, PlusIcon, ShoppingCartIcon } from "lucide-react";
+import {
+  HeartIcon,
+  MinusIcon,
+  PlusIcon,
+  ShoppingCartIcon,
+  StarIcon,
+  Undo2Icon,
+} from "lucide-react";
 import PostReview from "../_components/products/PostReview";
+import {
+  Avatar,
+  AvatarFallback,
+  AvatarImage,
+} from "../../../../components/ui/avatar";
 
 type ViewProductProps = {
   id: string;
@@ -143,7 +157,28 @@ const ViewProduct = ({ id }: ViewProductProps) => {
         {/* reviews */}
         <div className={"flex w-full flex-col gap-3 lg:w-8/12"}>
           {/* view reviews */}
-          <div className={"w-full"}></div>
+          <div
+            className={
+              "flex max-h-[300px] w-full flex-col gap-3 overflow-y-auto"
+            }
+          >
+            {ProductData?.data.reviews.length === 0 && (
+              <p className={"text-center font-medium text-muted-foreground"}>
+                No reviews yet
+              </p>
+            )}
+            {ProductData?.data.reviews.map((review) => (
+              <ReviewsCard
+                key={review.comment}
+                comment={review.comment}
+                createdAt={review.createdAt}
+                email={review.user.email}
+                image={review.user.profilePicture ?? ""}
+                rating={review.ratingAmount}
+                userName={review.user.name ?? "Anonymous"}
+              />
+            ))}
+          </div>
           {/* post reviews */}
           <PostReview Id={ProductData?.data.id ?? ""} />
         </div>
@@ -154,3 +189,57 @@ const ViewProduct = ({ id }: ViewProductProps) => {
   );
 };
 export default ViewProduct;
+
+type PostReviewProps = {
+  comment: string;
+  rating: number;
+  createdAt: Date;
+  userName: string;
+  email: string;
+  image: string;
+};
+
+function ReviewsCard({
+  comment,
+  createdAt,
+  email,
+  rating,
+  image,
+  userName,
+}: PostReviewProps) {
+  return (
+    <div className={"mb-2 h-auto w-full p-2 shadow-sm"}>
+      {/* user details */}
+      <div className={"flex gap-3"}>
+        <Avatar>
+          <AvatarImage src={image} alt={userName} />
+          <AvatarFallback>{userName.charAt(0).toUpperCase()}</AvatarFallback>
+        </Avatar>
+        <div className={"flex flex-col gap-1"}>
+          <p className={"text-sm font-bold"}>{userName}</p>
+          <p className={"text-xs text-muted-foreground"}>{email}</p>
+          {/* rating and comment */}
+          <div className={"mt-2 flex flex-col gap-2"}>
+            {/* ratings */}
+            <div className={"flex items-center gap-2"}>
+              {Array.from({ length: 5 }, (_, i) => (
+                <StarIcon
+                  key={i}
+                  className={cn("size-5 cursor-pointer", {
+                    "fill-yellow-500 text-yellow-500": i < rating,
+                  })}
+                />
+              ))}
+            </div>
+            {/*  comment */}
+            <p className={"text-pretty text-sm font-normal"}>{comment}</p>
+            {/* date */}
+            <p className={"text-xs text-muted-foreground"}>
+              {formatRelativeTime(createdAt)}
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+}

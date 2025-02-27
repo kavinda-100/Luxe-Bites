@@ -190,6 +190,7 @@ export async function getProductById({ id }: { id: string }) {
         reviews: {
           select: {
             comment: true,
+            ratingAmount: true,
             createdAt: true,
             user: {
               select: {
@@ -210,6 +211,7 @@ export async function getProductById({ id }: { id: string }) {
     const reviews = product.reviews.map((review) => {
       return {
         comment: review.comment,
+        ratingAmount: review.ratingAmount,
         createdAt: review.createdAt,
         user: {
           email: review.user.email,
