@@ -18,7 +18,10 @@
 - [x] show all products in a category
 - [x] let user browse through categories
 - [x] let user browse through products
-- [ ] let user view product details
+- [x] let user view product details
+    - [x] post a review
+    - [x] view all reviews
+    - [ ] view rating/chart
 - [ ] let user add product to cart
 - [ ] let user view cart
 - [ ] let user remove product from cart

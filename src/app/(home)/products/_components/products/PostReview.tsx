@@ -5,13 +5,15 @@ import { Button } from "../../../../../components/ui/button";
 import { Textarea } from "../../../../../components/ui/textarea";
 import { Loader2, SendIcon, StarIcon, Undo2Icon } from "lucide-react";
 import { cn } from "../../../../../lib/utils";
-import { useMutation } from "@tanstack/react-query";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { postReview } from "../../../../../actions/users/Reviews";
 import { toast } from "sonner";
 
 const PostReview = ({ Id }: { Id: string }) => {
   const [rating, setRating] = React.useState(0);
   const [comment, setComment] = React.useState("");
+
+  const queryClient = useQueryClient();
 
   const handleRating = (index: number) => {
     setRating(index + 1);
@@ -33,12 +35,12 @@ const PostReview = ({ Id }: { Id: string }) => {
       rating: number;
       productId: string;
     }) => postReview({ comment, rating, productId }),
-    onSuccess: (data) => {
+    onSuccess: async (data) => {
       if (data.success) {
         toast.success(data.message);
         setRating(0);
         setComment("");
-        //TODO: re-validate reviews
+        await queryClient.invalidateQueries({ queryKey: ["product", Id] });
       }
     },
     onError: (e) => {
