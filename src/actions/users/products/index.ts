@@ -204,6 +204,21 @@ export async function getProductById({ id }: { id: string }) {
       },
     });
 
+    const ratingCounts = await prisma.review.groupBy({
+      by: ["ratingAmount"],
+      where: {
+        productId: id,
+      },
+      _count: {
+        ratingAmount: true,
+      },
+    });
+
+    const totalRatings = ratingCounts.reduce(
+      (sum, rating) => sum + rating._count.ratingAmount,
+      0,
+    );
+
     if (!product) {
       throw new Error("Product not found");
     }
@@ -231,7 +246,7 @@ export async function getProductById({ id }: { id: string }) {
         price: product.price,
         discount: product.discount,
         stock: product.stock,
-        rating: product.rating,
+        rating: totalRatings,
         reviewsCount: product._count.reviews,
         createdAt: product.createdAt,
         reviews: reviews,

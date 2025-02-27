@@ -21,7 +21,8 @@
 - [x] let user view product details
     - [x] post a review
     - [x] view all reviews
-    - [ ] view rating/chart
+    - [x] view rating/chart
+    - [ ] add product to wishlist
 - [ ] let user add product to cart
 - [ ] let user view cart
 - [ ] let user remove product from cart

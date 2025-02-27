@@ -82,6 +82,7 @@ model Review {
     @@index([id, productId, userId]) // Index for searching by id or productId or userId
 }
 
+//! don't use this Rating model in the database, instead use the Review model
 model Rating {
     id        String   @id @default(cuid())
     productId String
