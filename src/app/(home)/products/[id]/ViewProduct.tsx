@@ -28,6 +28,7 @@ import {
   AvatarFallback,
   AvatarImage,
 } from "../../../../components/ui/avatar";
+import ReviewChat from "../_components/products/ReviewChat";
 
 type ViewProductProps = {
   id: string;
@@ -183,7 +184,9 @@ const ViewProduct = ({ id }: ViewProductProps) => {
           <PostReview Id={ProductData?.data.id ?? ""} />
         </div>
         {/* reviews chart */}
-        <div className={"w-full lg:w-4/12"}>reviews chart</div>
+        <div className={"w-full lg:w-4/12"}>
+          <ReviewChat productId={ProductData?.data.id ?? ""} />
+        </div>
       </div>
     </section>
   );

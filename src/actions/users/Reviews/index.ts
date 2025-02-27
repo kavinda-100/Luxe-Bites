@@ -42,3 +42,41 @@ export async function postReview({
     throw new Error("Internal Server Error");
   }
 }
+
+export async function getReviews(productId: string) {
+  try {
+    const user = await checkIsUser();
+    if (!user) {
+      throw new Error("Unauthorized");
+    }
+
+    const ratingCounts = await prisma.review.groupBy({
+      by: ["ratingAmount"],
+      where: { productId },
+      _count: {
+        ratingAmount: true,
+      },
+    });
+
+    const ratingSummary = {
+      1: 0,
+      2: 0,
+      3: 0,
+      4: 0,
+      5: 0,
+    };
+
+    ratingCounts.forEach((rating) => {
+      ratingSummary[rating.ratingAmount as 1 | 2 | 3 | 4 | 5] =
+        rating._count.ratingAmount;
+    });
+
+    return ratingSummary;
+  } catch (e: unknown) {
+    console.log("Error in getReviews", e);
+    if (e instanceof Error) {
+      throw new Error(e.message);
+    }
+    throw new Error("Internal Server Error");
+  }
+}
