@@ -161,3 +161,85 @@ export async function searchProductsByCategory({
     throw new Error("Internal Server Error");
   }
 }
+
+export async function getProductById({ id }: { id: string }) {
+  try {
+    const user = await checkIsAdmin();
+    if (!user) {
+      throw new Error("Unauthorized");
+    }
+    const product = await prisma.product.findUnique({
+      where: {
+        id,
+      },
+      select: {
+        id: true,
+        name: true,
+        image: true,
+        description: true,
+        price: true,
+        discount: true,
+        stock: true,
+        rating: true,
+        _count: {
+          select: {
+            reviews: true,
+          },
+        },
+        createdAt: true,
+        reviews: {
+          select: {
+            comment: true,
+            createdAt: true,
+            user: {
+              select: {
+                email: true,
+                name: true,
+                profilePicture: true,
+              },
+            },
+          },
+        },
+      },
+    });
+
+    if (!product) {
+      throw new Error("Product not found");
+    }
+
+    const reviews = product.reviews.map((review) => {
+      return {
+        comment: review.comment,
+        createdAt: review.createdAt,
+        user: {
+          email: review.user.email,
+          name: review.user.name,
+          profilePicture: review.user.profilePicture,
+        },
+      };
+    });
+
+    return {
+      success: true,
+      data: {
+        id: product.id,
+        name: product.name,
+        image: product.image,
+        description: product.description,
+        price: product.price,
+        discount: product.discount,
+        stock: product.stock,
+        rating: product.rating,
+        reviewsCount: product._count.reviews,
+        createdAt: product.createdAt,
+        reviews: reviews,
+      },
+    };
+  } catch (e: unknown) {
+    console.log("Error in useSearchProducts", e);
+    if (e instanceof Error) {
+      throw new Error(e.message);
+    }
+    throw new Error("Internal Server Error");
+  }
+}

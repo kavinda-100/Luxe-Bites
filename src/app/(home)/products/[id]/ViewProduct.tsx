@@ -1,12 +1,144 @@
 "use client";
 
 import React from "react";
+import { useGetProductById } from "../../../../hooks/api/users/products/useGetProductById";
+import { Skeleton } from "../../../../components/ui/skeleton";
+import { useZoomImage } from "../../../../hooks/useZoomImage";
+import {
+  calculateDiscountedPrice,
+  cn,
+  formatCurrency,
+  formatLargeNumber,
+} from "../../../../lib/utils";
+import StarRating from "../_components/products/StarRating";
+import { Button } from "../../../../components/ui/button";
+import { HeartIcon, MinusIcon, PlusIcon, ShoppingCartIcon } from "lucide-react";
 
 type ViewProductProps = {
   id: string;
 };
 
 const ViewProduct = ({ id }: ViewProductProps) => {
-  return <section className={"container mx-auto"}>ViewProduct : {id}</section>;
+  const { ProductData, isProductDataLoading, isProductDataError } =
+    useGetProductById(id);
+  const { position, handleMouseMove } = useZoomImage();
+  const [quantity, setQuantity] = React.useState(1);
+
+  const addQuantity = () => {
+    setQuantity((prev) => prev + 1);
+  };
+  const subtractQuantity = () => {
+    if (quantity > 1) {
+      setQuantity((prev) => prev - 1);
+    }
+  };
+
+  return (
+    <section className={"container mx-auto mt-6"}>
+      <div className={"w-full"}>
+        {isProductDataLoading && <Skeleton className={"h-screen w-full"} />}
+        {isProductDataError && (
+          <p className={"mt-4 text-center font-medium text-red-500"}>
+            {isProductDataError.message}
+          </p>
+        )}
+        {/* Image and main details */}
+        {ProductData && (
+          <div className={"flex flex-col gap-12 lg:flex-row"}>
+            {/* image */}
+            <div
+              className="image-container"
+              style={{
+                height: "400px",
+                maxWidth: "600px",
+              }}
+              onMouseMove={(e) => handleMouseMove(e)}
+            >
+              <img
+                src={ProductData.data.image}
+                alt={ProductData.data.name}
+                className={"zoom-image"}
+                style={{
+                  transformOrigin: `${position.x}% ${position.y}%`,
+                  maxWidth: "600px",
+                }}
+              />
+            </div>
+            {/* details */}
+            <div className={"flex flex-col gap-4"}>
+              <h1 className={"text-pretty text-3xl font-bold"}>
+                {ProductData.data.name}
+              </h1>
+              <p
+                className={
+                  "text-pretty text-lg font-medium text-muted-foreground"
+                }
+              >
+                {ProductData.data.description}
+              </p>
+              <div className={"flex justify-between gap-3"}>
+                <p className={"flex gap-3 text-3xl"}>
+                  <span
+                    className={cn("font-semibold", {
+                      "text-muted-foreground line-through":
+                        ProductData.data.discount != null &&
+                        ProductData.data.discount > 0,
+                    })}
+                  >
+                    {formatCurrency(ProductData.data.price)}
+                  </span>
+                  {ProductData.data.discount != null &&
+                    ProductData.data.discount > 0 && (
+                      <span className={"font-extrabold"}>
+                        {formatCurrency(
+                          calculateDiscountedPrice(
+                            ProductData.data.price,
+                            ProductData.data.discount ?? 0,
+                          ),
+                        )}
+                      </span>
+                    )}
+                </p>
+                <p className={"text-xl font-bold"}>
+                  {ProductData.data.discount}% off
+                </p>
+              </div>
+              <div className={"flex flex-col gap-2"}>
+                <StarRating reviews={ProductData.data.reviewsCount} />
+                <p className={"text-md font-medium"}>
+                  {formatLargeNumber(ProductData.data.stock)}{" "}
+                  <span className={"text-muted-foreground"}>In Stocks</span>
+                </p>
+                <p className={"text-md font-medium"}>
+                  {formatLargeNumber(ProductData.data.rating ?? 0)}{" "}
+                  <span className={"text-muted-foreground"}>Ratings</span>
+                </p>
+              </div>
+              <div className={"flex items-center gap-3"}>
+                <Button variant={"outline"} onClick={addQuantity}>
+                  <PlusIcon className={"size-6"} />
+                </Button>
+                <p className={"text-xl font-bold"}>{quantity}</p>
+                <Button variant={"outline"} onClick={subtractQuantity}>
+                  <MinusIcon className={"size-6"} />
+                </Button>
+              </div>
+              <div className={"flex items-center gap-3"}>
+                <Button className={"w-full"}>
+                  <ShoppingCartIcon className={"size-6"} />
+                  Add to Cart
+                </Button>
+                <Button variant={"outline"} className={"max-w-[150px]"}>
+                  <HeartIcon className={"size-6"} />
+                </Button>
+              </div>
+            </div>
+          </div>
+        )}
+      </div>
+
+      {/*  reviews and sub details */}
+    </section>
+  );
 };
 export default ViewProduct;

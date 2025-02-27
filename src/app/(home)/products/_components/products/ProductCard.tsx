@@ -8,10 +8,15 @@ import {
   CardHeader,
   CardTitle,
 } from "../../../../../components/ui/card";
-import { formatCurrency, formatLargeNumber } from "../../../../../lib/utils";
+import {
+  calculateDiscountedPrice,
+  cn,
+  formatCurrency,
+} from "../../../../../lib/utils";
 import { Button } from "../../../../../components/ui/button";
 import { ChevronRight } from "lucide-react";
 import { useRouter } from "next/navigation";
+import { useZoomImage } from "../../../../../hooks/useZoomImage";
 
 type ProductCardProps = {
   id: string;
@@ -28,22 +33,12 @@ const ProductCard = ({
   id,
   name,
   description,
-  reviews,
   price,
-  stock,
   image,
   discount,
 }: ProductCardProps) => {
   const router = useRouter();
-  const [position, setPosition] = React.useState({ x: 0, y: 0 });
-
-  const handleMouseMove = (e: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
-    const target = e.target as HTMLDivElement;
-    const { left, top, width, height } = target.getBoundingClientRect();
-    const x = ((e.clientX - left) / width) * 100;
-    const y = ((e.clientY - top) / height) * 100;
-    setPosition({ x, y });
-  };
+  const { position, handleMouseMove } = useZoomImage();
 
   const handleViewDetails = () => {
     router.push(`/products/${id}`);
@@ -52,13 +47,16 @@ const ProductCard = ({
   return (
     <Card
       className={
-        "flex cursor-pointer flex-col justify-between border-none p-0 shadow-sm hover:bg-muted/30 hover:shadow-md"
+        "flex cursor-pointer flex-col justify-between border-none p-0 shadow-none hover:bg-muted/30 hover:shadow-md"
       }
     >
       <CardHeader className={"relative h-[300px] w-full"}>
         <CardTitle className={"sr-only"}>{name}</CardTitle>
         <div
           className="image-container"
+          style={{
+            height: "300px",
+          }}
           onMouseMove={(e) => handleMouseMove(e)}
         >
           <img
@@ -71,29 +69,29 @@ const ProductCard = ({
           />
         </div>
       </CardHeader>
-      <CardContent className={"text-md flex flex-col gap-2 font-medium"}>
-        <div className={"flex justify-between gap-3"}>
-          <HighlightWrapper>
-            <p>{formatCurrency(price)}</p>
-          </HighlightWrapper>
-          <HighlightWrapper>
-            <p>{discount}% off</p>
-          </HighlightWrapper>
-        </div>
-        <p className={"text-md line-clamp-2 text-pretty font-medium"}>
+      <CardContent className={"text-md flex flex-col gap-2"}>
+        <div
+          className={"text-md text-pretty font-medium text-muted-foreground"}
+        >
           {description}
-        </p>
+        </div>
         <div className={"flex justify-between gap-3"}>
-          <p className={"text-sm font-semibold text-muted-foreground"}>
-            <span className={"text-md font-mono text-primary"}>{stock}</span> in
-            stocks
+          <p className={"flex gap-2 text-lg"}>
+            <span
+              className={cn("font-mono font-semibold", {
+                "text-muted-foreground line-through":
+                  discount != null && discount > 0,
+              })}
+            >
+              {formatCurrency(price)}
+            </span>
+            {discount != null && discount > 0 && (
+              <span className={"font-mono font-extrabold"}>
+                {formatCurrency(calculateDiscountedPrice(price, discount ?? 0))}
+              </span>
+            )}
           </p>
-          <p className={"text-sm font-semibold text-muted-foreground"}>
-            <span className={"text-md font-mono text-primary"}>
-              {formatLargeNumber(reviews)}
-            </span>{" "}
-            reviews
-          </p>
+          <p className={"font-mono text-lg font-bold"}>{discount}% off</p>
         </div>
       </CardContent>
       <CardFooter>
@@ -110,15 +108,3 @@ const ProductCard = ({
   );
 };
 export default ProductCard;
-
-const HighlightWrapper = ({ children }: { children: React.ReactNode }) => {
-  return (
-    <span
-      className={
-        "inline-flex w-fit items-center rounded-md bg-primary/10 px-2 py-1 font-mono text-sm font-bold text-primary ring-1 ring-inset ring-primary/10"
-      }
-    >
-      {children}
-    </span>
-  );
-};

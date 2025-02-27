@@ -1,4 +1,4 @@
-import { clsx, type ClassValue } from "clsx";
+import { type ClassValue, clsx } from "clsx";
 import { twMerge } from "tailwind-merge";
 
 export function cn(...inputs: ClassValue[]) {
@@ -28,4 +28,12 @@ export function formatLargeNumber(num: number): string {
     return (num / 1_000).toFixed(1).replace(/\.0$/, "") + "k";
   }
   return num.toString();
+}
+
+export function calculateDiscountedPrice(
+  price: number,
+  discount: number,
+): number {
+  const discountAmount = (price * discount) / 100;
+  return price - discountAmount;
 }
