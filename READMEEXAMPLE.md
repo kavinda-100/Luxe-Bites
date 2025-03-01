@@ -30,6 +30,7 @@
     - [x] let user add product to cart
     - [x] let user remove product from cart
     - [x] let user update product quantity in cart
+    - [x] let user clear cart
     - [ ] let user checkout
 - [ ] show all advertisements in a category
 - [ ] let user browse through advertisements

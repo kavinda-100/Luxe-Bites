@@ -184,3 +184,27 @@ export async function removeCartItem({ cartItemId }: { cartItemId: string }) {
     throw new Error("Internal Server Error");
   }
 }
+
+export async function clearCart() {
+  try {
+    const user = await checkIsUser();
+    if (!user) {
+      throw new Error("User not found");
+    }
+
+    await prisma.cart.deleteMany({
+      where: { userId: user.id },
+    });
+
+    return {
+      success: true,
+      message: "Cart cleared successfully",
+    };
+  } catch (e: unknown) {
+    console.error("Error clearing cart", e);
+    if (e instanceof Error) {
+      throw new Error(e.message);
+    }
+    throw new Error("Internal Server Error");
+  }
+}
