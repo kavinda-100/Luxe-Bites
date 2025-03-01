@@ -153,3 +153,34 @@ export async function updateCartItemQuantity({
     throw new Error("Internal Server Error");
   }
 }
+
+export async function removeCartItem({ cartItemId }: { cartItemId: string }) {
+  try {
+    const user = await checkIsUser();
+    if (!user) {
+      throw new Error("User not found");
+    }
+    // check if the cart item exists
+    const cartItem = await prisma.cart.findUnique({
+      where: { id: cartItemId },
+    });
+    if (!cartItem) {
+      throw new Error("Cart item not found");
+    }
+
+    await prisma.cart.delete({
+      where: { id: cartItemId },
+    });
+
+    return {
+      success: true,
+      message: "Cart item removed successfully",
+    };
+  } catch (e: unknown) {
+    console.error("Error removing cart item", e);
+    if (e instanceof Error) {
+      throw new Error(e.message);
+    }
+    throw new Error("Internal Server Error");
+  }
+}

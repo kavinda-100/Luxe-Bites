@@ -23,10 +23,14 @@
     - [x] view all reviews
     - [x] view rating/chart
     - [x] add product to wishlist
-- [ ] let user add product to cart
-- [ ] let user view cart
-- [ ] let user remove product from cart
-- [ ] let user checkout
+    - [x] let user view wishlist
+        - [x] let user add product to wishlist
+        - [x] let user remove product from wishlist
+- [x] let user view cart
+    - [x] let user add product to cart
+    - [x] let user remove product from cart
+    - [x] let user update product quantity in cart
+    - [ ] let user checkout
 - [ ] show all advertisements in a category
 - [ ] let user browse through advertisements
 - 

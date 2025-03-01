@@ -2,8 +2,11 @@
 
 import React from "react";
 import Image from "next/image";
-import { useQuery } from "@tanstack/react-query";
-import { getCartItems } from "../../../actions/users/products/cart";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import {
+  getCartItems,
+  removeCartItem,
+} from "../../../actions/users/products/cart";
 import { ChangeButtons } from "./_components/ChangeButtons";
 import {
   Table,
@@ -21,9 +24,10 @@ import {
   AvatarImage,
 } from "../../../components/ui/avatar";
 import { Button } from "../../../components/ui/button";
-import { TrashIcon } from "lucide-react";
+import { Loader2, TrashIcon } from "lucide-react";
 import { formatCurrency } from "../../../lib/utils";
 import { Skeleton } from "../../../components/ui/skeleton";
+import { toast } from "sonner";
 
 const CartPage = () => {
   const { data, isLoading, error } = useQuery({
@@ -112,9 +116,7 @@ const CartPage = () => {
                         <ChangeButtons id={item.id} quantity={item.quantity} />
                       </TableCell>
                       <TableCell className="text-right">
-                        <Button variant={"ghost"} size={"sm"}>
-                          <TrashIcon className={"size-4 text-red-500"} />
-                        </Button>
+                        <DeleteCartItem Id={item.id} />
                       </TableCell>
                     </TableRow>
                   ))}
@@ -136,3 +138,44 @@ const CartPage = () => {
   );
 };
 export default CartPage;
+
+// cart item delete component
+function DeleteCartItem({ Id }: { Id: string }) {
+  const queryClient = useQueryClient();
+
+  const { mutate, isPending } = useMutation({
+    mutationFn: ({ cartItemId }: { cartItemId: string }) =>
+      removeCartItem({ cartItemId }),
+    onSuccess: async (r) => {
+      if (r.success) {
+        toast.success(r.message);
+        await queryClient.invalidateQueries({ queryKey: ["cart-items"] });
+      }
+    },
+    onError: (e) => {
+      toast.error(e.message);
+      console.log("Error removing cart item", e);
+    },
+  });
+
+  const handleRemoveCartItem = (cartItemId: string) => {
+    mutate({ cartItemId });
+  };
+
+  return (
+    <>
+      <Button
+        variant={"ghost"}
+        size={"sm"}
+        onClick={() => handleRemoveCartItem(Id)}
+        disabled={isPending}
+      >
+        {isPending ? (
+          <Loader2 className={"size-4 animate-spin text-red-500"} />
+        ) : (
+          <TrashIcon className={"size-4 text-red-500"} />
+        )}
+      </Button>
+    </>
+  );
+}
