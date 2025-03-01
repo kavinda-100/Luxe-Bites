@@ -127,6 +127,19 @@ export async function searchProductsByCategory({
         },
       });
     }
+    // get the wishlists for the user and the products
+    const wishlists = await prisma.wishlist.findMany({
+      where: {
+        userId: user.id,
+        productId: {
+          in: products.map((product) => product.id),
+        },
+      },
+      select: {
+        id: true,
+        productId: true,
+      },
+    });
 
     // format products
     const FormatedProducts = products.map((product) => {
@@ -139,6 +152,9 @@ export async function searchProductsByCategory({
         discount: product.discount,
         stock: product.stock,
         reviews: product._count.reviews,
+        wishlists: wishlists.filter(
+          (wishlist) => wishlist.productId === product.id,
+        ),
       };
     });
 
@@ -201,6 +217,16 @@ export async function getProductById({ id }: { id: string }) {
             },
           },
         },
+        wishlists: {
+          where: {
+            userId: user.id,
+            productId: id,
+          },
+          select: {
+            id: true,
+            productId: true,
+          },
+        },
       },
     });
 
@@ -236,6 +262,10 @@ export async function getProductById({ id }: { id: string }) {
       };
     });
 
+    const isProductInWishList = product.wishlists.some(
+      (wishlist) => wishlist.productId === id,
+    );
+
     return {
       success: true,
       data: {
@@ -250,6 +280,8 @@ export async function getProductById({ id }: { id: string }) {
         reviewsCount: product._count.reviews,
         createdAt: product.createdAt,
         reviews: reviews,
+        wishlists: product.wishlists,
+        isProductInWishList,
       },
     };
   } catch (e: unknown) {

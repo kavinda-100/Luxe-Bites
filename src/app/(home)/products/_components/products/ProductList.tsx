@@ -81,6 +81,7 @@ const ProductList = () => {
                 discount={product.discount}
                 stock={product.stock}
                 reviews={product.reviews}
+                wishlists={product.wishlists}
               />
             ));
           })}

@@ -8,7 +8,6 @@ import {
   calculateDiscountedPrice,
   cn,
   formatCurrency,
-  formatDate,
   formatLargeNumber,
   formatRelativeTime,
 } from "../../../../lib/utils";
@@ -16,11 +15,11 @@ import StarRating from "../_components/products/StarRating";
 import { Button } from "../../../../components/ui/button";
 import {
   HeartIcon,
+  Loader2,
   MinusIcon,
   PlusIcon,
   ShoppingCartIcon,
   StarIcon,
-  Undo2Icon,
 } from "lucide-react";
 import PostReview from "../_components/products/PostReview";
 import {
@@ -29,6 +28,8 @@ import {
   AvatarImage,
 } from "../../../../components/ui/avatar";
 import ReviewChat from "../_components/products/ReviewChat";
+import { useAddRemoveFromWishList } from "../../../../hooks/api/products/useAddRemoveFromWishList";
+import WishListButton from "../_components/products/WishListButton";
 
 type ViewProductProps = {
   id: string;
@@ -144,9 +145,11 @@ const ViewProduct = ({ id }: ViewProductProps) => {
                   <ShoppingCartIcon className={"size-6"} />
                   Add to Cart
                 </Button>
-                <Button variant={"outline"} className={"max-w-[150px]"}>
-                  <HeartIcon className={"size-6"} />
-                </Button>
+                <WishListButton
+                  id={id ?? ProductData.data.id}
+                  wishlists={ProductData.data.wishlists}
+                  variant={"outline"}
+                />
               </div>
             </div>
           </div>

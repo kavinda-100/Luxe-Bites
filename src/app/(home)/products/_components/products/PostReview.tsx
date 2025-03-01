@@ -6,7 +6,7 @@ import { Textarea } from "../../../../../components/ui/textarea";
 import { Loader2, SendIcon, StarIcon, Undo2Icon } from "lucide-react";
 import { cn } from "../../../../../lib/utils";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { postReview } from "../../../../../actions/users/Reviews";
+import { postReview } from "../../../../../actions/users/products/Reviews";
 import { toast } from "sonner";
 
 const PostReview = ({ Id }: { Id: string }) => {

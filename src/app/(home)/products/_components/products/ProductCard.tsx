@@ -17,6 +17,7 @@ import { Button } from "../../../../../components/ui/button";
 import { ChevronRight } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { useZoomImage } from "../../../../../hooks/useZoomImage";
+import WishListButton from "./WishListButton";
 
 type ProductCardProps = {
   id: string;
@@ -27,6 +28,7 @@ type ProductCardProps = {
   discount: number | null;
   stock: number;
   reviews: number;
+  wishlists: { productId: string; id: string }[];
 };
 
 const ProductCard = ({
@@ -36,6 +38,7 @@ const ProductCard = ({
   price,
   image,
   discount,
+  wishlists,
 }: ProductCardProps) => {
   const router = useRouter();
   const { position, handleMouseMove } = useZoomImage();
@@ -47,7 +50,7 @@ const ProductCard = ({
   return (
     <Card
       className={
-        "flex cursor-pointer flex-col justify-between border-none p-0 shadow-none hover:bg-muted/30 hover:shadow-md"
+        "group flex cursor-pointer flex-col justify-between border-none p-0 shadow-none hover:bg-muted/30 hover:shadow-md"
       }
     >
       <CardHeader className={"relative h-[300px] w-full"}>
@@ -67,6 +70,9 @@ const ProductCard = ({
               transformOrigin: `${position.x}% ${position.y}%`,
             }}
           />
+        </div>
+        <div className={"absolute right-5 top-5 hidden p-2 group-hover:block"}>
+          <WishListButton id={id} wishlists={wishlists} variant={"outline"} />
         </div>
       </CardHeader>
       <CardContent className={"text-md flex flex-col gap-2"}>

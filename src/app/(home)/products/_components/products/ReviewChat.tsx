@@ -4,7 +4,7 @@ import React from "react";
 import { StarIcon } from "lucide-react";
 import { cn } from "../../../../../lib/utils";
 import { useQuery } from "@tanstack/react-query";
-import { getReviews } from "../../../../../actions/users/Reviews";
+import { getReviews } from "../../../../../actions/users/products/Reviews";
 import { Skeleton } from "../../../../../components/ui/skeleton";
 
 const ReviewChart = ({ productId }: { productId: string }) => {

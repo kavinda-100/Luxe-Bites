@@ -1,7 +1,7 @@
 "use server";
 
-import { checkIsUser } from "../../AuthActions";
-import { prisma } from "../../../server/db";
+import { checkIsUser } from "../../../AuthActions";
+import { prisma } from "../../../../server/db";
 
 type PostReviewProps = {
   productId: string;

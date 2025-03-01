@@ -21,6 +21,7 @@ model User {
     role     Role     @default(USER)
     reviews  Review[]
     ratings  Rating[]
+    wishlists Wishlist[]
 
     banned   Boolean  @default(false)
     bannedAt DateTime?
@@ -57,6 +58,7 @@ model Product {
     rating      Float?
     reviews     Review[]
     ratings     Rating[]
+    wishlists   Wishlist[]
 
     category    Category @relation(fields: [categoryId], references: [id])
 
@@ -64,6 +66,19 @@ model Product {
     updatedAt DateTime @updatedAt
 
     @@index([id, name, categoryId]) // Index for searching by id or name or categoryId
+}
+
+model Wishlist {
+    id        String   @id @default(cuid())
+    userId    String
+    productId String
+    product   Product @relation(fields: [productId], references: [id])
+    user      User    @relation(fields: [userId], references: [kindUserId])
+
+    createdAt DateTime @default(now())
+    updatedAt DateTime @updatedAt
+
+    @@index([id, userId, productId]) // Index for searching by id or userId or productId
 }
 
 model Review {
@@ -82,21 +97,6 @@ model Review {
     @@index([id, productId, userId]) // Index for searching by id or productId or userId
 }
 
-//! don't use this Rating model in the database, instead use the Review model
-model Rating {
-    id        String   @id @default(cuid())
-    productId String
-    userId    String
-    ratingAmount    Int // Rating amount from 1 to 5
-
-    product   Product @relation(fields: [productId], references: [id])
-    user      User    @relation(fields: [userId], references: [kindUserId])
-
-    createdAt DateTime @default(now())
-    updatedAt DateTime @updatedAt
-
-    @@index([id, productId, userId]) // Index for searching by id or productId or userId
-}
 
 model Advertisement {
     id          String   @id @default(cuid())
@@ -111,4 +111,20 @@ model Advertisement {
     updatedAt DateTime @updatedAt
 
     @@index([id, title]) // Index for searching by id or title
+}
+
+//! don't use this Rating model in the database, instead use the Review model
+model Rating {
+    id        String   @id @default(cuid())
+    productId String
+    userId    String
+    ratingAmount    Int // Rating amount from 1 to 5
+
+    product   Product @relation(fields: [productId], references: [id])
+    user      User    @relation(fields: [userId], references: [kindUserId])
+
+    createdAt DateTime @default(now())
+    updatedAt DateTime @updatedAt
+
+    @@index([id, productId, userId]) // Index for searching by id or productId or userId
 }
