@@ -46,6 +46,9 @@ export async function getCartItems() {
       include: {
         product: true,
       },
+      orderBy: {
+        createdAt: "desc",
+      },
     });
 
     return {
@@ -114,6 +117,36 @@ export async function addToCart({
     };
   } catch (e: unknown) {
     console.log("Error in addToCart", e);
+    if (e instanceof Error) {
+      throw new Error(e.message);
+    }
+    throw new Error("Internal Server Error");
+  }
+}
+
+export async function updateCartItemQuantity({
+  cartItemId,
+  newQuantity,
+}: {
+  cartItemId: string;
+  newQuantity: number;
+}) {
+  try {
+    const user = await checkIsUser();
+    if (!user) {
+      throw new Error("User not found");
+    }
+
+    await prisma.cart.update({
+      where: { id: cartItemId },
+      data: { quantity: newQuantity },
+    });
+
+    return {
+      success: true,
+    };
+  } catch (e: unknown) {
+    console.error("Error updating cart item quantity", e);
     if (e instanceof Error) {
       throw new Error(e.message);
     }

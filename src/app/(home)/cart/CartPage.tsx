@@ -1,10 +1,29 @@
 "use client";
 
 import React from "react";
+import Image from "next/image";
 import { useQuery } from "@tanstack/react-query";
 import { getCartItems } from "../../../actions/users/products/cart";
-import { ProductCardSkeleton } from "../../../components/ProductCardSkeleton";
-import Image from "next/image";
+import { ChangeButtons } from "./_components/ChangeButtons";
+import {
+  Table,
+  TableBody,
+  TableCaption,
+  TableCell,
+  TableFooter,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from "@/components/ui/table";
+import {
+  Avatar,
+  AvatarFallback,
+  AvatarImage,
+} from "../../../components/ui/avatar";
+import { Button } from "../../../components/ui/button";
+import { TrashIcon } from "lucide-react";
+import { formatCurrency } from "../../../lib/utils";
+import { Skeleton } from "../../../components/ui/skeleton";
 
 const CartPage = () => {
   const { data, isLoading, error } = useQuery({
@@ -15,34 +34,104 @@ const CartPage = () => {
   const isNoItems = data?.cartItems.length === 0;
 
   if (isLoading) {
-    return <ProductCardSkeleton length={6} />;
+    return <Skeleton className={"container mx-auto min-h-screen w-full"} />;
   }
 
   if (error) {
     return <div>Error: {error.message}</div>;
   }
 
+  const total = data?.cartItems.reduce((acc, item) => {
+    return acc + item.product.price * item.quantity;
+  }, 0);
+
   return (
     <section className={"container mx-auto"}>
-      {isNoItems ? (
-        <div
-          className={
-            "container mx-auto flex h-fit w-full flex-col items-center justify-center gap-2"
-          }
-        >
-          <p className={"animate-bounce text-center font-semibold"}>
-            Ops! No products found
-          </p>
-          <Image
-            src={"/animations/Cooking.gif"}
-            alt={"no products found"}
-            width={300}
-            height={300}
-          />
-        </div>
-      ) : (
-        <div>Cart items</div>
-      )}
+      <section className={"w-full lg:w-9/12"}>
+        {isNoItems ? (
+          <div
+            className={
+              "container mx-auto flex h-fit w-full flex-col items-center justify-center gap-2"
+            }
+          >
+            <p className={"animate-bounce text-center font-semibold"}>
+              Ops! No products found
+            </p>
+            <Image
+              src={"/animations/Cooking.gif"}
+              alt={"no products found"}
+              width={300}
+              height={300}
+            />
+          </div>
+        ) : (
+          <>
+            <div className={"mt-10 flex flex-col gap-3"}>
+              <Table>
+                <TableCaption>
+                  Your cart contains {data?.cartItems.length} items
+                </TableCaption>
+                <TableHeader>
+                  <TableRow>
+                    <TableHead className="w-[100px]">Number</TableHead>
+                    <TableHead>Image</TableHead>
+                    <TableHead>Product Name</TableHead>
+                    <TableHead className="text-right">Price</TableHead>
+                    <TableHead className="text-right">Discount</TableHead>
+                    <TableHead className="text-right">Total</TableHead>
+                    <TableHead className="text-right">Change</TableHead>
+                    <TableHead className="text-right">Remove</TableHead>
+                  </TableRow>
+                </TableHeader>
+                <TableBody>
+                  {data?.cartItems.map((item, index) => (
+                    <TableRow key={item.id}>
+                      <TableCell className="font-medium">{index + 1}</TableCell>
+                      <TableCell>
+                        <Avatar>
+                          <AvatarImage
+                            src={item.product.image}
+                            alt={item.product.name}
+                          />
+                          <AvatarFallback>
+                            {item.product.name.charAt(0).toUpperCase()}
+                          </AvatarFallback>
+                        </Avatar>
+                      </TableCell>
+                      <TableCell>{item.product.name}</TableCell>
+                      <TableCell className="text-right">
+                        {formatCurrency(item.product.price)}
+                      </TableCell>
+                      <TableCell className="text-right">
+                        {formatCurrency(item.product.discount ?? 0)}
+                      </TableCell>
+                      <TableCell className="text-right">
+                        {formatCurrency(item.product.price * item.quantity)}
+                      </TableCell>
+                      <TableCell className="text-right">
+                        <ChangeButtons id={item.id} quantity={item.quantity} />
+                      </TableCell>
+                      <TableCell className="text-right">
+                        <Button variant={"ghost"} size={"sm"}>
+                          <TrashIcon className={"size-4 text-red-500"} />
+                        </Button>
+                      </TableCell>
+                    </TableRow>
+                  ))}
+                </TableBody>
+                <TableFooter>
+                  <TableRow>
+                    <TableCell colSpan={7}>Total</TableCell>
+                    <TableCell className="text-md text-right font-bold">
+                      {formatCurrency(total ?? 0)}
+                    </TableCell>
+                  </TableRow>
+                </TableFooter>
+              </Table>
+            </div>
+          </>
+        )}
+      </section>
     </section>
   );
 };
