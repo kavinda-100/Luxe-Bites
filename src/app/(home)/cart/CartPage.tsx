@@ -250,7 +250,7 @@ function CheckOutSection({
         </div>
         <div className={"flex justify-between"}>
           <p className={"text-md font-semibold text-muted-foreground"}>
-            Total Price
+            Total Payable
           </p>
           <p className={"text-md font-semibold"}>
             {formatCurrency(totalPrice)}
