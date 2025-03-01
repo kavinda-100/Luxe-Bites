@@ -11,7 +11,13 @@ import {
   SheetTitle,
   SheetTrigger,
 } from "@/components/ui/sheet";
-import { ChevronDownIcon, HeartIcon, Menu, UserIcon } from "lucide-react";
+import {
+  ChevronDownIcon,
+  HeartIcon,
+  Menu,
+  ShoppingCartIcon,
+  UserIcon,
+} from "lucide-react";
 
 // Kinde auth Imports
 import {
@@ -26,6 +32,7 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "./ui/dropdown-menu";
+import CartIcon from "../app/(home)/cart/_components/CartIcon";
 
 const Header = async () => {
   const { isAuthenticated, getUser } = getKindeServerSession();
@@ -85,6 +92,12 @@ const Header = async () => {
               </Link>
             </DropdownMenuItem>
             <DropdownMenuItem>
+              <Link href={"/cart"} className={"flex items-center gap-2"}>
+                <ShoppingCartIcon className={"size-3"} />
+                <span>Cart</span>
+              </Link>
+            </DropdownMenuItem>
+            <DropdownMenuItem>
               <Link href={"/profile"} className={"flex items-center gap-2"}>
                 <UserIcon className={"size-3"} />
                 <span>Profile</span>
@@ -92,6 +105,7 @@ const Header = async () => {
             </DropdownMenuItem>
           </DropdownMenuContent>
         </DropdownMenu>
+        <CartIcon />
         <ModeToggle size={"icon"} />
       </div>
       <div className={"block lg:hidden"}>
@@ -162,6 +176,12 @@ const MobileHeader = async () => {
                 <Link href={"/wishlist"} className={"flex items-center gap-2"}>
                   <HeartIcon className={"size-3"} />
                   <span>Wishlist</span>
+                </Link>
+              </Button>
+              <Button variant={"outline"} asChild className={"w-full"}>
+                <Link href={"/cart"} className={"flex items-center gap-2"}>
+                  <ShoppingCartIcon className={"size-3"} />
+                  <span>Cart</span>
                 </Link>
               </Button>
               <Button variant={"outline"} asChild className={"w-full"}>

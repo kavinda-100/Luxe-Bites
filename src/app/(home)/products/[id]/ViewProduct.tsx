@@ -14,7 +14,6 @@ import {
 import StarRating from "../_components/products/StarRating";
 import { Button } from "../../../../components/ui/button";
 import {
-  HeartIcon,
   Loader2,
   MinusIcon,
   PlusIcon,
@@ -28,8 +27,8 @@ import {
   AvatarImage,
 } from "../../../../components/ui/avatar";
 import ReviewChat from "../_components/products/ReviewChat";
-import { useAddRemoveFromWishList } from "../../../../hooks/api/products/useAddRemoveFromWishList";
 import WishListButton from "../_components/products/WishListButton";
+import { useAddToCart } from "../../../../hooks/api/cart/useAddToCart";
 
 type ViewProductProps = {
   id: string;
@@ -38,6 +37,7 @@ type ViewProductProps = {
 const ViewProduct = ({ id }: ViewProductProps) => {
   const { ProductData, isProductDataLoading, isProductDataError } =
     useGetProductById(id);
+  const { addToCartMutate, addToCartIsPending } = useAddToCart();
   const { position, handleMouseMove } = useZoomImage();
   const [quantity, setQuantity] = React.useState(1);
 
@@ -48,6 +48,10 @@ const ViewProduct = ({ id }: ViewProductProps) => {
     if (quantity > 1) {
       setQuantity((prev) => prev - 1);
     }
+  };
+
+  const handleAddToCart = () => {
+    addToCartMutate({ productId: id, quantity });
   };
 
   return (
@@ -141,9 +145,19 @@ const ViewProduct = ({ id }: ViewProductProps) => {
                 </Button>
               </div>
               <div className={"flex items-center gap-3"}>
-                <Button className={"w-full"}>
-                  <ShoppingCartIcon className={"size-6"} />
-                  Add to Cart
+                <Button
+                  className={"w-full"}
+                  onClick={handleAddToCart}
+                  disabled={addToCartIsPending}
+                >
+                  {addToCartIsPending ? (
+                    <Loader2 className={"size-5 animate-spin"} />
+                  ) : (
+                    <div className={"flex items-center gap-2"}>
+                      <ShoppingCartIcon className={"size-5"} />
+                      <span>Add to Cart</span>
+                    </div>
+                  )}
                 </Button>
                 <WishListButton
                   id={id ?? ProductData.data.id}

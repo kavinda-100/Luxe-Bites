@@ -47,6 +47,7 @@ const WishListButton = ({
       onClick={handleAddToWishList}
       variant={variant}
       className={cn("max-w-[150px]", className)}
+      disabled={isWisListIsPending}
     >
       {isWisListIsPending ? (
         <Loader2 className={"size-6 animate-spin"} />

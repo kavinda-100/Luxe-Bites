@@ -22,7 +22,7 @@
     - [x] post a review
     - [x] view all reviews
     - [x] view rating/chart
-    - [ ] add product to wishlist
+    - [x] add product to wishlist
 - [ ] let user add product to cart
 - [ ] let user view cart
 - [ ] let user remove product from cart
