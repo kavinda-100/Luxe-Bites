@@ -65,3 +65,68 @@ export async function addOrRemoveFromWishList({
     throw new Error("Internal server error");
   }
 }
+
+export async function getWishList({ pageParam }: { pageParam: number }) {
+  try {
+    const user = await checkIsUser();
+    if (!user) {
+      throw new Error("Unauthorized");
+    }
+    const take = 5;
+    const skip = (pageParam - 1) * take;
+
+    const wishList = await prisma.wishlist.findMany({
+      where: {
+        userId: user.id,
+      },
+      select: {
+        id: true,
+        productId: true,
+      },
+    });
+    // get the product details
+    const products = await prisma.product.findMany({
+      where: {
+        id: {
+          in: wishList.map((w) => w.productId),
+        },
+      },
+      select: {
+        id: true,
+        name: true,
+        price: true,
+        image: true,
+        description: true,
+        stock: true,
+        discount: true,
+        _count: {
+          select: {
+            reviews: true,
+          },
+        },
+      },
+      take,
+      skip,
+    });
+
+    return products.map((p) => {
+      return {
+        id: p.id,
+        name: p.name,
+        image: p.image,
+        description: p.description,
+        price: p.price,
+        discount: p.discount,
+        stock: p.stock,
+        reviews: p._count.reviews,
+        wishlists: wishList.filter((w) => w.productId === p.id),
+      };
+    });
+  } catch (e: unknown) {
+    console.log("Error in getWishList", e);
+    if (e instanceof Error) {
+      throw new Error(e.message);
+    }
+    throw new Error("Internal server error");
+  }
+}

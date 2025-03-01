@@ -11,7 +11,7 @@ import {
   SheetTitle,
   SheetTrigger,
 } from "@/components/ui/sheet";
-import { Menu } from "lucide-react";
+import { ChevronDownIcon, HeartIcon, Menu, UserIcon } from "lucide-react";
 
 // Kinde auth Imports
 import {
@@ -20,6 +20,12 @@ import {
   LogoutLink,
 } from "@kinde-oss/kinde-auth-nextjs/components";
 import { getKindeServerSession } from "@kinde-oss/kinde-auth-nextjs/server";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from "./ui/dropdown-menu";
 
 const Header = async () => {
   const { isAuthenticated, getUser } = getKindeServerSession();
@@ -59,12 +65,33 @@ const Header = async () => {
             </Button>
           </>
         )}
-        <Avatar>
-          <AvatarImage src={user?.picture ?? " "} />
-          <AvatarFallback>
-            {user?.family_name?.charAt(0).toUpperCase()}
-          </AvatarFallback>
-        </Avatar>
+        <DropdownMenu>
+          <DropdownMenuTrigger asChild>
+            <div className={"flex cursor-pointer items-center gap-2"}>
+              <Avatar>
+                <AvatarImage src={user?.picture ?? " "} />
+                <AvatarFallback>
+                  {user?.family_name?.charAt(0).toUpperCase()}
+                </AvatarFallback>
+              </Avatar>
+              <ChevronDownIcon className={"size-3"} />
+            </div>
+          </DropdownMenuTrigger>
+          <DropdownMenuContent align={"end"}>
+            <DropdownMenuItem>
+              <Link href={"/wishlist"} className={"flex items-center gap-2"}>
+                <HeartIcon className={"size-3"} />
+                <span>Wishlist</span>
+              </Link>
+            </DropdownMenuItem>
+            <DropdownMenuItem>
+              <Link href={"/profile"} className={"flex items-center gap-2"}>
+                <UserIcon className={"size-3"} />
+                <span>Profile</span>
+              </Link>
+            </DropdownMenuItem>
+          </DropdownMenuContent>
+        </DropdownMenu>
         <ModeToggle size={"icon"} />
       </div>
       <div className={"block lg:hidden"}>
@@ -129,6 +156,20 @@ const MobileHeader = async () => {
                   <LogoutLink>Sign Out</LogoutLink>
                 </Button>
               )}
+            </div>
+            <div className={"mt-3 flex w-full flex-col gap-3"}>
+              <Button variant={"outline"} asChild className={"w-full"}>
+                <Link href={"/wishlist"} className={"flex items-center gap-2"}>
+                  <HeartIcon className={"size-3"} />
+                  <span>Wishlist</span>
+                </Link>
+              </Button>
+              <Button variant={"outline"} asChild className={"w-full"}>
+                <Link href={"/profile"} className={"flex items-center gap-2"}>
+                  <UserIcon className={"size-3"} />
+                  <span>Profile</span>
+                </Link>
+              </Button>
             </div>
           </SheetContent>
         </SheetHeader>

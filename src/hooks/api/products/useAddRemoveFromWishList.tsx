@@ -20,7 +20,9 @@ export function useAddRemoveFromWishList() {
         await queryClient.invalidateQueries({
           queryKey: ["searchProductsByCategory"],
         });
-        //TODO: Revalidate the wishlist
+        await queryClient.invalidateQueries({
+          queryKey: ["wishList"],
+        });
       }
     },
     onError: (e) => {
