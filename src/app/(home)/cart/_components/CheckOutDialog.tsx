@@ -24,10 +24,15 @@ import {
 import { Input } from "@/components/ui/input";
 import { zodCartShippingDetails } from "../../../../zod/cart";
 import { PhoneInput } from "../../../../components/ui/phone-input";
+import { useMutation } from "@tanstack/react-query";
+import { stripePayment } from "../../../../actions/users/products/cart/stripePayment";
+import { toast } from "sonner";
+import { useRouter } from "next/navigation";
+import { Loader2 } from "lucide-react";
 
 const CheckOutDialog = () => {
+  const router = useRouter();
   const [isOpen, setIsOpen] = React.useState(false);
-  const [phone, setPhone] = React.useState("");
 
   // 1. Define your form.
   const form = useForm<z.infer<typeof zodCartShippingDetails>>({
@@ -44,11 +49,27 @@ const CheckOutDialog = () => {
     },
   });
 
+  // checkout mutation
+  const { mutate, isPending } = useMutation({
+    mutationFn: async (data: z.infer<typeof zodCartShippingDetails>) =>
+      stripePayment(data),
+    onSuccess: (res) => {
+      if (res.success) {
+        toast.success(res.message);
+        toast.success("Redirecting to payment gateway");
+        setIsOpen(false);
+        router.push(res.url ?? "/cart");
+      }
+    },
+    onError: (e) => {
+      toast.error(e.message);
+    },
+  });
+
   // 2. Define a submit handler.
   function onSubmit(values: z.infer<typeof zodCartShippingDetails>) {
-    // Do something with the form values.
-    // ✅ This will be type-safe and validated.
     console.log(values);
+    mutate(values);
   }
 
   return (
@@ -178,9 +199,15 @@ const CheckOutDialog = () => {
                   )}
                 />
               </div>
-              <Button type="submit">
-                <MdOutlineShoppingCartCheckout className={"size-4"} />
-                Check Out
+              <Button type="submit" disabled={isPending}>
+                {isPending ? (
+                  <Loader2 className={"size-4 animate-spin"} />
+                ) : (
+                  <div className={"flex items-center gap-2"}>
+                    <MdOutlineShoppingCartCheckout className={"size-4"} />
+                    Check Out
+                  </div>
+                )}
               </Button>
             </form>
           </Form>
