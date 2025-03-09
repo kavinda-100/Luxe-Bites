@@ -88,7 +88,9 @@ export const stripePayment = async (
           product_data: {
             name: item.product.name,
             description: item.product.description,
-            images: [item.product.image],
+            images: Array.isArray(item.product.image)
+              ? item.product.image
+              : [item.product.image],
           },
           unit_amount: covertToCents(item.product.price), // convert to cents
         },
@@ -118,12 +120,6 @@ export const stripePayment = async (
     if (!session) {
       throw new Error("Error creating stripe session");
     }
-    // clear the cart
-    await prisma.cart.deleteMany({
-      where: {
-        userId: user.id,
-      },
-    });
     // return the session url
     return {
       success: true,

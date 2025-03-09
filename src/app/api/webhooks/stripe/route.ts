@@ -4,11 +4,17 @@ import { headers } from "next/headers";
 import { stripe } from "@/lib/stripe";
 import type Stripe from "stripe";
 import { prisma } from "../../../../server/db";
+import { getKindeServerSession } from "@kinde-oss/kinde-auth-nextjs/server";
 
 const STRIPE_WEBHOOK_SECRET_KEY = process.env.STRIPE_WEBHOOK_SECRET_KEY;
 
 export async function POST(req: Request) {
   console.log("POST /api/webhooks/stripe route hit.");
+  const { getUser } = getKindeServerSession();
+  const kindeUser = await getUser();
+  if (!kindeUser) {
+    return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+  }
   let user: User | null = null;
   try {
     const body = await req.text();
