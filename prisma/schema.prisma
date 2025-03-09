@@ -23,6 +23,8 @@ model User {
     ratings  Rating[]
     wishlists Wishlist[]
     carts    Cart[]
+    shippingDetails ShippingDetails[]
+    orders   Order[]
 
     banned   Boolean  @default(false)
     bannedAt DateTime?
@@ -128,6 +130,67 @@ model Advertisement {
 
     @@index([id, title]) // Index for searching by id or title
 }
+
+enum OrderStatus {
+    PENDING
+    PROCESSING
+    SHIPPED
+    DELIVERED
+    CANCELLED
+}
+
+model Order {
+    id          String   @id @default(cuid())
+    userId      String
+    productIds   String[]
+    quantity    Int
+    totalAmount Float
+    status      OrderStatus @default(PENDING)
+    isPaid      Boolean @default(false)
+    shippingDetails ShippingDetails[]
+
+    user        User    @relation(fields: [userId], references: [kindUserId])
+
+    createdAt DateTime @default(now())
+    updatedAt DateTime @updatedAt
+
+    @@index([id, userId]) // Index for searching by id or userId or productId
+}
+
+model ShippingDetails {
+    id          String   @id @default(cuid())
+    userId      String
+    orderId     String
+    firstName  String
+    lastName String
+    address String
+    city String
+    state String
+    zip String
+    country String
+    phone String
+
+    user      User    @relation(fields: [userId], references: [kindUserId])
+    order     Order   @relation(fields: [orderId], references: [id])
+
+    createdAt DateTime @default(now())
+    updatedAt DateTime @updatedAt
+
+    @@index([id, userId, orderId]) // Index for searching by id or userId or orderId
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 //! don't use this Rating model in the database, instead use the Review model
 model Rating {
