@@ -13,6 +13,8 @@ const CartIcon = () => {
     queryFn: getCartItemsCount,
   });
 
+  console.log({ error: error });
+
   return (
     <div className={"relative"}>
       {isLoading ? (
@@ -31,20 +33,6 @@ const CartIcon = () => {
             )}
           >
             {data?.count ?? 0}
-          </span>
-        </>
-      )}
-      {error && (
-        <>
-          <Link href={"/cart"}>
-            <ShoppingCartIcon className={"size-5"} />
-          </Link>
-          <span
-            className={
-              "absolute -right-2 -top-2 rounded-full px-0.5 py-0.5 text-xs"
-            }
-          >
-            0
           </span>
         </>
       )}

@@ -165,6 +165,7 @@ export default CartPage;
 function DeleteCartItem({ Id }: { Id: string }) {
   const queryClient = useQueryClient();
 
+  // remove cart item mutation
   const { mutate, isPending } = useMutation({
     mutationFn: ({ cartItemId }: { cartItemId: string }) =>
       removeCartItem({ cartItemId }),
@@ -214,6 +215,7 @@ function CheckOutSection({
 }) {
   const queryClient = useQueryClient();
 
+  // clear cart mutation
   const { mutate: clearMutation, isPending: isClearCartPending } = useMutation({
     mutationFn: () => clearCart(),
     onSuccess: async (r) => {
