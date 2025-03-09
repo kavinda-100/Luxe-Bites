@@ -31,6 +31,8 @@ export async function POST(req: Request) {
       STRIPE_WEBHOOK_SECRET_KEY,
     );
 
+    console.log("Webhook event received:", event);
+
     const data = event.data;
     const eventType = event.type;
 
@@ -45,7 +47,7 @@ export async function POST(req: Request) {
         const customerId = session.customer as string;
         const customerDetails = session.customer_details!;
         const lineItems = session.line_items?.data ?? [];
-        console.log("lineItems -checkout.session.completed", lineItems);
+        const { orderId } = session.metadata as { orderId: string };
 
         if (customerDetails.email) {
           user = await prisma.user.findUnique({
@@ -60,8 +62,8 @@ export async function POST(req: Request) {
             );
           }
           console.log("User found -checkout.session.completed", user);
-          if (!user.StripeId) {
-            const updatedUser = await prisma.user.update({
+          if (user.StripeId === null) {
+            await prisma.user.update({
               where: {
                 email: customerDetails.email,
               },
@@ -69,30 +71,44 @@ export async function POST(req: Request) {
                 StripeId: customerId,
               },
             });
-            if (updatedUser) {
-              console.log(
-                "User StripeId is updated -checkout.session.completed",
-                updatedUser,
-              );
-            } else {
-              console.log(
-                "User StripeId is not updated -checkout.session.completed",
-                updatedUser,
-              );
+          }
+          for (const lineItem of lineItems) {
+            console.log("lineItem", lineItem);
+            const updatedOrder = await prisma.order.update({
+              where: {
+                id: orderId,
+              },
+              data: {
+                status: "PROCESSING",
+                isPaid: true,
+              },
+            });
+            if (!updatedOrder) {
+              console.log("Error updating order in checkout.session.completed");
             }
           }
-          // onetime purchase
-          const { orderId } = session.metadata as { orderId: string };
+        }
+        break;
+      }
+      case "charge.succeeded":
+      case "payment_intent.succeeded": {
+        const paymentIntent = data.object as Stripe.PaymentIntent;
+        const { orderId } = paymentIntent.metadata as { orderId: string };
 
-          await prisma.order.update({
-            where: {
-              id: orderId,
-            },
-            data: {
-              status: "PROCESSING",
-              isPaid: true,
-            },
-          });
+        const updatedOrder = await prisma.order.update({
+          where: {
+            id: orderId,
+          },
+          data: {
+            status: "PROCESSING",
+            isPaid: true,
+          },
+        });
+
+        if (!updatedOrder) {
+          console.log(
+            "Error updating order in charge.succeeded or payment_intent.succeeded",
+          );
         }
         break;
       }

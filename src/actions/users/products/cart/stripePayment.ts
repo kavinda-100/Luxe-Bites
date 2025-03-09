@@ -98,15 +98,7 @@ export const stripePayment = async (
       };
     });
     // Check if customer already exists
-    const customers = await stripe.customers.list({
-      email: user.email!,
-      limit: 1,
-    });
-    // create customer if not exists
-    const customer =
-      customers.data.length === 0
-        ? await stripe.customers.create({ email: user.email! })
-        : customers.data[0];
+    const customer = await stripe.customers.create({ email: user.email! });
     // create checkout session
     const session = await stripe.checkout.sessions.create({
       payment_method_types: ["card"],
@@ -120,7 +112,7 @@ export const stripePayment = async (
       shipping_address_collection: {
         allowed_countries: AllowedCountries,
       },
-      customer: customer?.id,
+      customer: customer.id,
       // expires at 30 minutes (min value is 30 minutes)
       expires_at: Math.floor(Date.now() / 1000) + 60 * 30,
     });
