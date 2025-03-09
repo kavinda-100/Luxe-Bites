@@ -1,11 +1,20 @@
+"use client";
+
 import React from "react";
 import Image from "next/image";
 import { buttonVariants } from "../../../../../components/ui/button";
 import { ArrowRightIcon, CheckCircleIcon } from "lucide-react";
 import Link from "next/link";
 import { cn } from "../../../../../lib/utils";
+import { useClearCart } from "../../../../../hooks/api/cart/useClearCart";
 
 const SuccessPage = () => {
+  const { clearCartMutate } = useClearCart();
+
+  React.useEffect(() => {
+    clearCartMutate();
+  }, [clearCartMutate]);
+
   return (
     <section
       className={

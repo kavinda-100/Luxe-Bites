@@ -4,7 +4,6 @@ import React from "react";
 import Image from "next/image";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import {
-  clearCart,
   getCartItems,
   removeCartItem,
 } from "../../../actions/users/products/cart";
@@ -31,6 +30,7 @@ import { Skeleton } from "../../../components/ui/skeleton";
 import { toast } from "sonner";
 import { IoBagCheckOutline } from "react-icons/io5";
 import CheckOutDialog from "./_components/CheckOutDialog";
+import { useClearCart } from "../../../hooks/api/cart/useClearCart";
 
 const CartPage = () => {
   const { data, isLoading, error } = useQuery({
@@ -213,21 +213,7 @@ function CheckOutSection({
   totalPrice: number;
   totalDiscount: number;
 }) {
-  const queryClient = useQueryClient();
-
-  // clear cart mutation
-  const { mutate: clearMutation, isPending: isClearCartPending } = useMutation({
-    mutationFn: () => clearCart(),
-    onSuccess: async (r) => {
-      if (r.success) {
-        toast.success(r.message);
-        await queryClient.invalidateQueries({ queryKey: ["cart-items"] });
-      }
-    },
-    onError: (e) => {
-      toast.error(e.message);
-    },
-  });
+  const { clearCartMutate, isClearCartPending } = useClearCart();
 
   return (
     <section className={"w-full p-2"}>
@@ -264,7 +250,7 @@ function CheckOutSection({
         <Button
           variant={"outline"}
           className={"text-red-500"}
-          onClick={() => clearMutation()}
+          onClick={() => clearCartMutate()}
           disabled={isClearCartPending}
         >
           {isClearCartPending ? (
