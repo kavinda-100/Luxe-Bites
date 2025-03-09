@@ -30,7 +30,7 @@ import { formatCurrency } from "../../../lib/utils";
 import { Skeleton } from "../../../components/ui/skeleton";
 import { toast } from "sonner";
 import { IoBagCheckOutline } from "react-icons/io5";
-import { MdOutlineShoppingCartCheckout } from "react-icons/md";
+import CheckOutDialog from "./_components/CheckOutDialog";
 
 const CartPage = () => {
   const { data, isLoading, error } = useQuery({
@@ -260,10 +260,7 @@ function CheckOutSection({
         </div>
       </div>
       <div className={"mt-6 flex flex-col gap-3"}>
-        <Button>
-          <MdOutlineShoppingCartCheckout className={"size-4"} />
-          Check Out
-        </Button>
+        <CheckOutDialog />
         <Button
           variant={"outline"}
           className={"text-red-500"}
