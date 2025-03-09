@@ -74,7 +74,7 @@ main()
     console.log("Seeding successful.");
   })
   .catch((e) => {
-    console.error("Seeding failed with error:", e);
+    console.error("Seeding failed with cancel:", e);
   })
   .finally(() => {
     console.log("Closing database connection...");

@@ -28,7 +28,7 @@ export async function getAllUsers() {
     if (e instanceof Error) {
       throw new Error(e.message);
     }
-    throw new Error("Internal server error");
+    throw new Error("Internal server cancel");
   }
 }
 
@@ -64,7 +64,7 @@ export async function getUserByEmail(email: string) {
     if (e instanceof Error) {
       throw new Error(e.message);
     }
-    throw new Error("Internal server error");
+    throw new Error("Internal server cancel");
   }
 }
 
@@ -110,7 +110,7 @@ export async function updateUserByEmail({
     if (e instanceof Error) {
       throw new Error(e.message);
     }
-    throw new Error("Internal server error");
+    throw new Error("Internal server cancel");
   }
 }
 
@@ -142,7 +142,7 @@ export async function deleteUserByEmail(email: string) {
     if (e instanceof Error) {
       throw new Error(e.message);
     }
-    throw new Error("Internal server error");
+    throw new Error("Internal server cancel");
   }
 }
 
@@ -185,7 +185,7 @@ export async function banUserByEmail({
     if (e instanceof Error) {
       throw new Error(e.message);
     }
-    throw new Error("Internal server error");
+    throw new Error("Internal server cancel");
   }
 }
 
@@ -222,6 +222,6 @@ export async function unbanUserByEmail(email: string) {
     if (e instanceof Error) {
       throw new Error(e.message);
     }
-    throw new Error("Internal server error");
+    throw new Error("Internal server cancel");
   }
 }

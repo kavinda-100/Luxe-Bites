@@ -19,6 +19,7 @@ model User {
     name     String?
     profilePicture  String?
     role     Role     @default(USER)
+    StripeId String?
     reviews  Review[]
     ratings  Rating[]
     wishlists Wishlist[]

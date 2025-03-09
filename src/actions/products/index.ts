@@ -49,7 +49,7 @@ export async function createProduct(product: z.infer<typeof productSchema>) {
     if (e instanceof Error) {
       throw new Error(e.message);
     }
-    throw new Error("Internal server error");
+    throw new Error("Internal server cancel");
   }
 }
 
@@ -82,7 +82,7 @@ export async function getAllProducts() {
     if (e instanceof Error) {
       throw new Error(e.message);
     }
-    throw new Error("Internal server error");
+    throw new Error("Internal server cancel");
   }
 }
 
@@ -131,7 +131,7 @@ export async function getProductById(id: string) {
     if (e instanceof Error) {
       throw new Error(e.message);
     }
-    throw new Error("Internal server error");
+    throw new Error("Internal server cancel");
   }
 }
 
@@ -182,7 +182,7 @@ export async function updateProduct({
     if (e instanceof Error) {
       throw new Error(e.message);
     }
-    throw new Error("Internal server error");
+    throw new Error("Internal server cancel");
   }
 }
 
@@ -197,7 +197,7 @@ export async function deleteProducts(ids: string | string[]) {
     const products = await prisma.product.findMany({
       where: { id: { in: productIds } },
     });
-    // if not all products exist, throw error
+    // if not all products exist, throw cancel
     if (products.length !== productIds.length) {
       throw new Error("Product not found");
     }
@@ -217,6 +217,6 @@ export async function deleteProducts(ids: string | string[]) {
     if (e instanceof Error) {
       throw new Error(e.message);
     }
-    throw new Error("Internal server error");
+    throw new Error("Internal server cancel");
   }
 }

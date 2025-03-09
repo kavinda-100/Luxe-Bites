@@ -62,7 +62,7 @@ export async function addOrRemoveFromWishList({
     if (e instanceof Error) {
       throw new Error(e.message);
     }
-    throw new Error("Internal server error");
+    throw new Error("Internal server cancel");
   }
 }
 
@@ -127,6 +127,6 @@ export async function getWishList({ pageParam }: { pageParam: number }) {
     if (e instanceof Error) {
       throw new Error(e.message);
     }
-    throw new Error("Internal server error");
+    throw new Error("Internal server cancel");
   }
 }

@@ -184,7 +184,7 @@ async function main() {
 
 main()
   .catch((e) => {
-    console.error("Seeding failed with error:", e);
+    console.error("Seeding failed with cancel:", e);
   })
   .finally(() => {
     console.log("Closing database connection...");

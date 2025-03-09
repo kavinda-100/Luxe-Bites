@@ -23,6 +23,11 @@ const envSchema = z.object({
   KINDE_POST_LOGIN_REDIRECT_URL: z
     .string({ message: "KINDE_POST_LOGIN_REDIRECT_URL is required" })
     .url({ message: "KINDE_POST_LOGIN_REDIRECT_URL is not a valid URL" }),
+  STRIPE_SECRET_KEY: z.string({ message: "STRIPE_SECRET_KEY is required" }),
+  STRIPE_WEBHOOK_SECRET_KEY: z.string({
+    message: "STRIPE_WEBHOOK_SECRET_KEY is required",
+  }),
+  DOMAIN_NAME: z.string().url({ message: "DOMAIN_NAME is not a valid URL" }),
 });
 
 const env = envSchema.safeParse(process.env);

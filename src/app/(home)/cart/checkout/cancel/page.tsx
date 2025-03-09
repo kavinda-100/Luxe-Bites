@@ -15,7 +15,7 @@ const ErrorPage = () => {
     >
       <div className={"flex flex-col gap-3"}>
         <Image
-          src={"/animations/error.svg"}
+          src={"/animations/cancel.svg"}
           alt={"delivery-Boy"}
           width={400}
           height={200}
@@ -23,12 +23,10 @@ const ErrorPage = () => {
         />
         <div className={"flex w-full items-center justify-center gap-3"}>
           <MdErrorOutline className={"size-6 text-red-500"} />
-          <p className={"font-semibold"}>
-            Something went wrong while processing your order
-          </p>
+          <p className={"font-semibold"}>Cancelled the order.</p>
         </div>
-        <Link href={"/dashboard"} className={cn(buttonVariants())}>
-          See the order
+        <Link href={"/cart"} className={cn(buttonVariants())}>
+          Back to Cart
           <ArrowRightIcon className={"size-4"} />
         </Link>
       </div>

@@ -20,7 +20,7 @@ export async function createCategory(data: z.infer<typeof categoriesSchema>) {
       throw new Error(zodIssueToString(validData.error.errors));
       // return {
       //   success: false,
-      //   message: zodIssueToString(validData.error.errors),
+      //   message: zodIssueToString(validData.cancel.errors),
       // };
     }
     // check if category exists.
@@ -50,7 +50,7 @@ export async function createCategory(data: z.infer<typeof categoriesSchema>) {
     if (e instanceof Error) {
       throw new Error(e.message);
     }
-    throw new Error("Internal server error");
+    throw new Error("Internal server cancel");
   }
 }
 
@@ -73,7 +73,7 @@ export async function getResentCategories() {
     if (e instanceof Error) {
       throw new Error(e.message);
     }
-    throw new Error("Internal server error");
+    throw new Error("Internal server cancel");
   }
 }
 
@@ -93,7 +93,7 @@ export async function getAllCategories() {
     if (e instanceof Error) {
       throw new Error(e.message);
     }
-    throw new Error("Internal server error");
+    throw new Error("Internal server cancel");
   }
 }
 
@@ -114,7 +114,7 @@ export async function getCategoryById(id: string) {
     if (e instanceof Error) {
       throw new Error(e.message);
     }
-    throw new Error("Internal server error");
+    throw new Error("Internal server cancel");
   }
 }
 
@@ -160,7 +160,7 @@ export async function updateCategory({
     if (e instanceof Error) {
       throw new Error(e.message);
     }
-    throw new Error("Internal server error");
+    throw new Error("Internal server cancel");
   }
 }
 
@@ -204,6 +204,6 @@ export async function deleteCategories(ids: string | string[]) {
     if (e instanceof Error) {
       throw new Error(e.message);
     }
-    throw new Error("Internal server error");
+    throw new Error("Internal server cancel");
   }
 }

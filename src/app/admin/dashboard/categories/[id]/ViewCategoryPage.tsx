@@ -136,7 +136,7 @@ const ViewCategoryPage = ({ id }: ViewCategoryPageProps) => {
     );
   }
 
-  // error.
+  // cancel.
   if (error) {
     return <div className={"container mx-auto"}>Error: {error.message}</div>;
   }

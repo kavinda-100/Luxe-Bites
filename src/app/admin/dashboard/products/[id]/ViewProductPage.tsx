@@ -155,7 +155,7 @@ const ViewProductPage = ({ id }: ViewProductPageProps) => {
       </section>
     );
   }
-  // if the product is not found, show an error
+  // if the product is not found, show an cancel
   if (isProductError) {
     router.push(`/error?message=${isProductError.message}`);
   }
@@ -197,7 +197,7 @@ const ViewProductPage = ({ id }: ViewProductPageProps) => {
     );
   }
 
-  // error.
+  // cancel.
   if (error) {
     return <div className={"container mx-auto"}>Error: {error.message}</div>;
   }

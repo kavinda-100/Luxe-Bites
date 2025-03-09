@@ -38,7 +38,7 @@ export async function createAdvertisement(
     if (e instanceof Error) {
       throw new Error(e.message);
     }
-    throw new Error("Internal server error");
+    throw new Error("Internal server cancel");
   }
 }
 
@@ -62,7 +62,7 @@ export async function getAllAdvertisements() {
     if (e instanceof Error) {
       throw new Error(e.message);
     }
-    throw new Error("Internal server error");
+    throw new Error("Internal server cancel");
   }
 }
 
@@ -94,7 +94,7 @@ export async function getAdvertisementById(id: string) {
     if (e instanceof Error) {
       throw new Error(e.message);
     }
-    throw new Error("Internal server error");
+    throw new Error("Internal server cancel");
   }
 }
 
@@ -147,7 +147,7 @@ export async function updateAdvertisement({
     if (e instanceof Error) {
       throw new Error(e.message);
     }
-    throw new Error("Internal server error");
+    throw new Error("Internal server cancel");
   }
 }
 
@@ -162,7 +162,7 @@ export async function deleteAdvertisements(ids: string | string[]) {
     const advertisements = await prisma.advertisement.findMany({
       where: { id: { in: adIds } },
     });
-    // if any of the advertisements do not exist, throw an error
+    // if any of the advertisements do not exist, throw an cancel
     if (advertisements.length !== adIds.length) {
       throw new Error("Advertisement not found");
     }
@@ -179,6 +179,6 @@ export async function deleteAdvertisements(ids: string | string[]) {
     if (e instanceof Error) {
       throw new Error(e.message);
     }
-    throw new Error("Internal server error");
+    throw new Error("Internal server cancel");
   }
 }
