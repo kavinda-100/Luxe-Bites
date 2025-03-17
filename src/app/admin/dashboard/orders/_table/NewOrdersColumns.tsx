@@ -1,7 +1,12 @@
 import type { OrderStatus } from "@prisma/client";
 import type { ColumnDef } from "@tanstack/react-table";
 import { Button } from "../../../../../components/ui/button";
-import { ArrowUpDown, CopyIcon, MoreHorizontal } from "lucide-react";
+import {
+  ArrowUpDown,
+  CopyIcon,
+  MoreHorizontal,
+  PencilIcon,
+} from "lucide-react";
 import { cn, formatCurrency, formatDate } from "../../../../../lib/utils";
 import { toast } from "sonner";
 import {
@@ -11,6 +16,7 @@ import {
   DropdownMenuLabel,
   DropdownMenuTrigger,
 } from "../../../../../components/ui/dropdown-menu";
+import Link from "next/link";
 
 type NewOrdersColumnsType = {
   orderId: string;
@@ -155,6 +161,15 @@ export const NewOrdersColumns: ColumnDef<NewOrdersColumnsType>[] = [
           </DropdownMenuTrigger>
           <DropdownMenuContent align="end">
             <DropdownMenuLabel>Actions</DropdownMenuLabel>
+            <DropdownMenuItem asChild>
+              <Link
+                href={`/admin/dashboard/orders/manage?orderId=${orderId}`}
+                className={"flex cursor-pointer items-center gap-3"}
+              >
+                <PencilIcon className={"size-3"} />
+                View Order
+              </Link>
+            </DropdownMenuItem>
             <DropdownMenuItem
               onClick={() => copyOrderId()}
               className={"flex cursor-pointer items-center gap-3"}
