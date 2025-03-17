@@ -31,15 +31,15 @@
     - [x] let user remove product from cart
     - [x] let user update product quantity in cart
     - [x] let user clear cart
-    - [ ] let user checkout
-    - [ ] checkout dialog
-- [x] let user view orders
-    - [x] let user view order details
-    - [x] let user cancel order
-- [x] let user view profile
-    - [x] let user update profile
-    - [x] let user delete profile
+    - [x] let user checkout
+    - [x] checkout dialog
+- [ ] let user view orders
+    - [ ] let user view order details
+    - [ ] let user cancel order
+- [ ] let user view profile
+    - [ ] let user update profile
+    - [ ] let user delete profile
 - [ ] show all advertisements in a category
-- [ ] let user browse through advertisements
+- [ ] Home page
 - [ ] about us page
 - [ ] contact us page
