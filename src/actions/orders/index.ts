@@ -77,3 +77,83 @@ export const getOrders = async ({ status, date }: getOrdersResponse) => {
     throw new Error("Internal server error");
   }
 };
+
+export const getOrderById = async (orderId: string) => {
+  try {
+    const { getUser } = getKindeServerSession();
+    const user = await getUser();
+    if (!user) throw new Error("Unauthorized");
+
+    const order = await prisma.order.findUnique({
+      where: {
+        id: orderId,
+      },
+      include: {
+        user: true,
+      },
+    });
+
+    if (!order) throw new Error("Order not found");
+
+    //get the shipping details
+    const shippingDetails = await prisma.shippingDetails.findMany({
+      where: {
+        orderId: orderId,
+        userId: order.userId,
+      },
+    });
+
+    //get the first object from the shipping details
+    const shipping = shippingDetails[0];
+
+    // find the products in the order
+    const products = await prisma.product.findMany({
+      where: {
+        id: {
+          in: order.productIds,
+        },
+      },
+    });
+
+    const formatedProducts = products.map((product) => ({
+      id: product.id,
+      name: product.name,
+      price: product.price,
+      quantity: order.productIds.filter((id) => id === product.id).length,
+      image: product.image,
+    }));
+
+    return {
+      orderId: order?.id,
+      productCount: order?.productIds.length,
+      quantity: order?.quantity,
+      totalAmount: order?.totalAmount,
+      status: order?.status,
+      isPaid: order?.isPaid,
+      createdAt: order?.createdAt,
+      user: {
+        id: order?.user.id,
+        kindeUserId: order?.user.kindUserId,
+        email: order?.user.email,
+        avatar: order?.user.profilePicture,
+      },
+      products: formatedProducts,
+      shippingDetails: {
+        address: shipping?.address,
+        city: shipping?.city,
+        country: shipping?.country,
+        zipCode: shipping?.zip,
+        state: shipping?.state,
+        phone: shipping?.phone,
+        firstName: shipping?.firstName,
+        lastName: shipping?.lastName,
+      },
+    };
+  } catch (e: unknown) {
+    console.log("Error in getOrderById", e);
+    if (e instanceof Error) {
+      throw new Error(e.message);
+    }
+    throw new Error("Internal server error");
+  }
+};
