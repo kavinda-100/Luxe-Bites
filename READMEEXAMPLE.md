@@ -5,9 +5,10 @@
 
 ## left to do
 
+- for the Admin
 - [x] create a category function
 - [x] create a product function
-- [x] create a advertisement function
+- [x] create an advertisement function
 - [x] display all category functions
 - [x] display all product functions
 - [x] display all advertisement functions
@@ -16,6 +17,11 @@
 - [x] view/update/delete full advertisement function
 - [x] view/delete/ban full admin function
 - [x] show all products in a category
+- [ ] All orders
+- [ ] today's orders
+- [ ] manage orders
+
+- for the user
 - [x] let user browse through categories
 - [x] let user browse through products
 - [x] let user view product details
