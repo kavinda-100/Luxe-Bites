@@ -105,6 +105,7 @@ export const stripePayment = async (
       line_items: lineItems,
       metadata: {
         orderId: order.id,
+        customerEmail: user.email!,
       },
       mode: "payment",
       success_url: `${DOMAIN_NAME}/cart/checkout/success?order_id=${order.id}`,
