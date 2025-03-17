@@ -6,6 +6,7 @@ import { getResentCategories } from "../../../../../actions/categoryAction";
 import { Skeleton } from "../../../../../components/ui/skeleton";
 import { formatDate } from "../../../../../lib/utils";
 import StatusMessage from "../../../../../components/status/StatusMessage";
+import { CirclePlus, Clock } from "lucide-react";
 
 const ResentCategories = () => {
   const { data, isLoading, error } = useQuery({
@@ -34,15 +35,25 @@ const ResentCategories = () => {
       {data?.resentCategories?.map((category) => (
         <div
           className={
-            "container mx-auto space-y-4 rounded-md bg-muted p-4 shadow-sm"
+            "container mx-auto space-y-4 rounded-md bg-muted/50 p-4 shadow-sm"
           }
           key={category.id}
         >
           <div className={"flex w-full justify-between gap-6"}>
-            <p className={"truncate text-sm font-medium"}>{category.name}</p>
-            <p className={"text-sm font-medium text-muted-foreground"}>
+            <div
+              className={"flex items-center gap-2 truncate text-sm font-medium"}
+            >
+              <CirclePlus className={"size-3"} />
+              {category.name}
+            </div>
+            <div
+              className={
+                "flex items-center gap-2 text-sm font-medium text-muted-foreground"
+              }
+            >
+              <Clock className={"size-3"} />
               {formatDate(category.createdAt)}
-            </p>
+            </div>
           </div>
           <div className={"w-full"}>
             <p
