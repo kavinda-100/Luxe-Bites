@@ -23,9 +23,10 @@ export const getOrders = async ({ status, date }: getOrdersResponse) => {
     if (!user) throw new Error("Unauthorized");
 
     let dateFilter: Date;
+    const today = new Date();
     switch (date) {
       case "Today":
-        dateFilter = new Date();
+        dateFilter = new Date(today.setHours(0, 0, 0, 0));
         break;
       case "Yesterday":
         dateFilter = subDays(new Date(), 1);
