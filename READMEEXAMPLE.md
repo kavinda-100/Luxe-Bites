@@ -17,8 +17,8 @@
 - [x] view/update/delete full advertisement function
 - [x] view/delete/ban full admin function
 - [x] show all products in a category
-- [ ] All orders
-- [ ] today's orders
+- [x] All orders
+- [x] today's orders
 - [ ] manage orders
 
 - for the user
