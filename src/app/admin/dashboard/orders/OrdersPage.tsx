@@ -65,16 +65,18 @@ const OrdersPage = () => {
                 </SelectContent>
               </Select>
             </div>
-
+            {/*PENDING PROCESSING SHIPPED DELIVERED CANCELLED*/}
             <div>
-              <Select>
+              <Select value={status} onValueChange={setStatus as any}>
                 <SelectTrigger className="w-[180px]">
-                  <SelectValue placeholder="Theme" />
+                  <SelectValue placeholder="Status" />
                 </SelectTrigger>
                 <SelectContent>
-                  <SelectItem value="light">Light</SelectItem>
-                  <SelectItem value="dark">Dark</SelectItem>
-                  <SelectItem value="system">System</SelectItem>
+                  <SelectItem value="PENDING">Pending</SelectItem>
+                  <SelectItem value="PROCESSING">Processing</SelectItem>
+                  <SelectItem value="SHIPPED">Shipped</SelectItem>
+                  <SelectItem value="DELIVERED">Delivered</SelectItem>
+                  <SelectItem value="CANCELLED">Cancelled</SelectItem>
                 </SelectContent>
               </Select>
             </div>
