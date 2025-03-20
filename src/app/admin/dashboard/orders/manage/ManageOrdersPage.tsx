@@ -16,12 +16,18 @@ import {
   ClipboardCopy,
   CopyIcon,
   FolderIcon,
+  Loader2,
   ShoppingBasket,
   Truck,
   User,
 } from "lucide-react";
 import Image from "next/image";
 import { useRightSideBar } from "../../../../../store/useRightSideBar";
+import {
+  Avatar,
+  AvatarFallback,
+  AvatarImage,
+} from "../../../../../components/ui/avatar";
 
 const ManageOrdersPage = () => {
   const { close } = useRightSideBar();
@@ -40,11 +46,11 @@ const ManageOrdersPage = () => {
   }, [close]);
 
   React.useEffect(() => {
-    if (newOrderId) {
-      setOrderId(newOrderId);
+    if (orderId) {
+      setOrderId(orderId);
       setEnableQuery(true);
     }
-  }, [newOrderId, setEnableQuery, setOrderId]);
+  }, [orderId, setEnableQuery, setOrderId]);
 
   if (isLoading) {
     return <Skeleton className={"container mx-auto h-screen"} />;
@@ -75,13 +81,21 @@ const ManageOrdersPage = () => {
             value={newOrderId}
             onChange={(e) => setNewOrderId(e.target.value)}
           />
-          <Button variant={"secondary"} onClick={handleSearch}>
-            Search
+          <Button
+            variant={"secondary"}
+            onClick={handleSearch}
+            disabled={isLoading}
+          >
+            {isLoading ? (
+              <Loader2 className={"size-3 animate-spin"} />
+            ) : (
+              "Search"
+            )}
           </Button>
         </div>
       </div>
 
-      {!orderId ? (
+      {!newOrderId ? (
         <div
           className={
             "container mx-auto flex h-full flex-col items-center justify-center"
@@ -204,13 +218,19 @@ const ManageOrdersPage = () => {
               </CardTitle>
             </CardHeader>
             <CardContent className="flex items-center gap-4">
-              <img
-                src={data?.user.avatar ?? "/placeholder-avatar.png"}
-                alt="User Avatar"
-                width={50}
-                height={50}
-                className="rounded-full"
-              />
+              <Avatar>
+                <AvatarImage
+                  src={data?.user.avatar ?? ""}
+                  alt={data?.user.email}
+                  style={{
+                    width: 40,
+                    height: 40,
+                  }}
+                />
+                <AvatarFallback>
+                  {data?.user.email.charAt(0).toUpperCase()}
+                </AvatarFallback>
+              </Avatar>
               <div>
                 <p className="font-semibold">{data?.user.email}</p>
                 <p className="text-sm text-muted-foreground">
