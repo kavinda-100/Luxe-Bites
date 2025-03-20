@@ -43,7 +43,7 @@ const ResentCategories = () => {
             <div
               className={"flex items-center gap-2 truncate text-sm font-medium"}
             >
-              <CirclePlus className={"size-3"} />
+              <CirclePlus className={"size-3 text-primary"} />
               {category.name}
             </div>
             <div
@@ -51,7 +51,7 @@ const ResentCategories = () => {
                 "flex items-center gap-2 text-sm font-medium text-muted-foreground"
               }
             >
-              <Clock className={"size-3"} />
+              <Clock className={"size-3 text-primary"} />
               {formatDate(category.createdAt)}
             </div>
           </div>
