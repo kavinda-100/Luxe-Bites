@@ -99,6 +99,7 @@ const ChangeStatus = ({ orderStatus, orderID }: ChangeStatusProps) => {
         await queryClient.invalidateQueries({
           queryKey: ["orders", "order", orderID],
         });
+        window.location.reload();
       }
     },
     onError: (error) => {
