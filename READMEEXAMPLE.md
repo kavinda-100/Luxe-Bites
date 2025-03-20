@@ -26,8 +26,13 @@
     - [x] undo cancel order
     - [x] delete order
 - [ ] admin dashboard
-    - [ ] overview
-    - [ ] analytics
+    - [ ] overview and analytics
+        - [ ] overview cards
+        - [ ] sales
+        - [ ] orders
+        - [ ] users
+    - [ ] Notifications
+        - [ ] new orders
 
 - `for the user`
 - [x] let user browse through categories
