@@ -28,6 +28,7 @@ import {
   AvatarFallback,
   AvatarImage,
 } from "../../../../../components/ui/avatar";
+import ModifyOrder from "./_modify/ModifyOrder";
 
 const ManageOrdersPage = () => {
   const { close } = useRightSideBar();
@@ -316,6 +317,11 @@ const ManageOrdersPage = () => {
               </div>
             </CardContent>
           </Card>
+
+          {/* modify the order */}
+          <section className={"container mx-auto"}>
+            <ModifyOrder />
+          </section>
         </>
       )}
     </section>
