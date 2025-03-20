@@ -52,7 +52,7 @@ const WishListPage = () => {
   }
 
   return (
-    <section className={"container mx-auto"}>
+    <section className={"container mx-auto mt-6"}>
       {noProductsFound && (
         <div
           className={
