@@ -9,10 +9,10 @@ import { useGetOrderById } from "../../../../../hooks/api/orders/useGetOrderById
 import { Skeleton } from "../../../../../components/ui/skeleton";
 import { toast } from "sonner";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { formatDate } from "../../../../../lib/utils";
+import { cn, formatCurrency, formatDate } from "../../../../../lib/utils";
 import { Separator } from "@/components/ui/separator";
 import { Badge } from "@/components/ui/badge";
-import { CopyIcon } from "lucide-react";
+import { ClipboardCopy, CopyIcon } from "lucide-react";
 
 const ManageOrdersPage = () => {
   // Get the email from the URL query params.
@@ -21,6 +21,7 @@ const ManageOrdersPage = () => {
   const [newOrderId, setNewOrderId] = React.useState<string | undefined>(
     orderId ?? "",
   );
+  const [isOrderIdCopied, setIsOrderIdCopied] = React.useState(false);
   const { data, isLoading, error, setOrderId, setEnableQuery } =
     useGetOrderById();
 
@@ -48,7 +49,6 @@ const ManageOrdersPage = () => {
     setOrderId(newOrderId);
     setEnableQuery(true);
   };
-  console.log({ data });
 
   return (
     <section className={"container mx-auto"}>
@@ -85,28 +85,76 @@ const ManageOrdersPage = () => {
                 }
               >
                 {data?.orderId}
-                <CopyIcon
-                  className={"size-3 cursor-pointer text-emerald-500"}
-                />
+                {isOrderIdCopied ? (
+                  <ClipboardCopy
+                    className={"size-4 cursor-pointer text-emerald-500"}
+                  />
+                ) : (
+                  <CopyIcon
+                    className={"size-4 cursor-pointer text-emerald-500"}
+                    onClick={async () => {
+                      await navigator.clipboard.writeText(data?.orderId ?? "");
+                      setIsOrderIdCopied(true);
+                      toast.success("Order ID copied to clipboard");
+                      setInterval(() => {
+                        setIsOrderIdCopied(false);
+                      }, 3000);
+                    }}
+                  />
+                )}
               </span>
             </span>
-            <Badge variant={data?.isPaid ? "success" : "destructive"}>
+            <Badge variant={data?.isPaid ? "default" : "destructive"}>
               {data?.isPaid ? "Paid" : "Pending Payment"}
             </Badge>
           </div>
-          <div className="grid grid-cols-2 gap-4 md:grid-cols-4">
-            <p>
-              <strong>Status:</strong> {data?.status}
+          <div className="flex flex-col gap-2">
+            <p className={"flex justify-between gap-2"}>
+              <strong>Status:</strong>
+              <span
+                className={cn("rounded-md border px-2 py-1", {
+                  "border-green-200 bg-green-100 text-green-700":
+                    data?.status === "DELIVERED",
+                  "border-yellow-200 bg-yellow-100 text-yellow-700":
+                    data?.status === "SHIPPED",
+                  "border-blue-200 bg-blue-100 text-blue-700":
+                    data?.status === "PROCESSING",
+                  "border-gray-200 bg-gray-100 text-gray-700":
+                    data?.status === "PENDING",
+                  "border-red-200 bg-red-100 text-red-700":
+                    data?.status === "CANCELLED",
+                })}
+              >
+                {data?.status === "DELIVERED"
+                  ? "Delivered"
+                  : data?.status === "SHIPPED"
+                    ? "Shipped"
+                    : data?.status === "PROCESSING"
+                      ? "Processing"
+                      : data?.status === "PENDING"
+                        ? "Pending"
+                        : data?.status === "CANCELLED"
+                          ? "Cancelled"
+                          : "Unknown"}
+              </span>
             </p>
-            <p>
-              <strong>Product Count:</strong> {data?.productCount}
+            <p className={"text-md flex justify-between gap-2"}>
+              <strong>Product Count:</strong>
+              <span className={"font-mono text-lg text-muted-foreground"}>
+                {data?.productCount}
+              </span>
             </p>
-            <p>
-              <strong>Total Amount:</strong> ${data?.totalAmount}
+            <p className={"text-md flex justify-between gap-2"}>
+              <strong>Total Amount:</strong>
+              <span className={"font-mono text-lg text-muted-foreground"}>
+                {formatCurrency(data?.totalAmount ?? 0)}
+              </span>
             </p>
-            <p>
-              <strong>Ordered At:</strong>{" "}
-              {formatDate(data?.createdAt ?? new Date())}
+            <p className={"text-md flex justify-between gap-2"}>
+              <strong>Ordered At:</strong>
+              <span className={"text-lg text-muted-foreground"}>
+                {formatDate(data?.createdAt ?? new Date())}
+              </span>
             </p>
           </div>
         </CardContent>
