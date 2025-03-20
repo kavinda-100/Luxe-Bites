@@ -22,7 +22,10 @@ import {
 import { Separator } from "../../../../../../components/ui/separator";
 import type { OrderStatus } from "@prisma/client";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { updateOrderStatus } from "../../../../../../actions/orders";
+import {
+  undoCancelOrder,
+  updateOrderStatus,
+} from "../../../../../../actions/orders";
 import { toast } from "sonner";
 import { useCancelOrder } from "../../../../../../hooks/api/orders/useCancelOrder";
 
@@ -42,7 +45,7 @@ const ModifyOrder = ({
       {isOrderCancelled ? (
         <>
           {/*  undo Cancel the order */}
-          <UndoCancelOrder />
+          <UndoCancelOrder orderID={orderID} />
         </>
       ) : (
         <>
@@ -189,6 +192,7 @@ const CancelOrder = ({ orderID }: CancelOrderProps) => {
         className={"w-fit"}
         variant={"outline"}
         onClick={handleCancelOrder}
+        disabled={isPending}
       >
         {isPending ? (
           <Loader2 className={"size-3 animate-spin"} />
@@ -204,7 +208,27 @@ const CancelOrder = ({ orderID }: CancelOrderProps) => {
 };
 
 // undo the cancel order
-const UndoCancelOrder = () => {
+type UndoCancelOrderProps = {
+  orderID: string;
+};
+const UndoCancelOrder = ({ orderID }: UndoCancelOrderProps) => {
+  const queryClient = useQueryClient();
+  const { mutate, isPending } = useMutation({
+    mutationFn: async () => undoCancelOrder({ orderId: orderID }),
+    onSuccess: async (res) => {
+      if (res.success) {
+        toast.success(res.message);
+        await queryClient.invalidateQueries({
+          queryKey: ["orders", "order", orderID],
+        });
+        window.location.reload();
+      }
+    },
+    onError: (e) => {
+      console.log("Error in UndoCancelOrder", e);
+      toast.error(e.message);
+    },
+  });
   return (
     <section
       className={
@@ -219,8 +243,20 @@ const UndoCancelOrder = () => {
           Are you sure you want to undo the cancel order?
         </AlertDescription>
       </Alert>
-      <Button className={"w-fit"} variant={"outline"}>
-        Undo Cancel
+      <Button
+        className={"w-fit"}
+        variant={"outline"}
+        disabled={isPending}
+        onClick={() => mutate()}
+      >
+        {isPending ? (
+          <Loader2 className={"size-3 animate-spin"} />
+        ) : (
+          <div className={"flex items-center gap-2"}>
+            <BanIcon className="h-4 w-4" />
+            Undo Cancel
+          </div>
+        )}
       </Button>
     </section>
   );

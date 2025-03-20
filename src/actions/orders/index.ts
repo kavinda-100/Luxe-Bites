@@ -250,6 +250,45 @@ export async function CancelOrder({
   }
 }
 
+export async function undoCancelOrder({ orderId }: { orderId: string }) {
+  try {
+    const { getUser } = getKindeServerSession();
+    const user = await getUser();
+    if (!user) throw new Error("Unauthorized");
+
+    const order = await prisma.order.findUnique({
+      where: {
+        id: orderId,
+      },
+    });
+
+    if (!order) throw new Error("Order not found");
+
+    await prisma.order.update({
+      where: {
+        id: orderId,
+      },
+      data: {
+        status: "PENDING",
+        cnacelReason: null,
+        canceledBy: null,
+        cancelAt: null,
+      },
+    });
+
+    return {
+      success: true,
+      message: "Order canceled undo successfully",
+    };
+  } catch (e: unknown) {
+    console.log("Error in undoCancelOrder", e);
+    if (e instanceof Error) {
+      throw new Error(e.message);
+    }
+    throw new Error("Internal server error");
+  }
+}
+
 export async function deleteOrder(orderId: string) {
   try {
     const { getUser } = getKindeServerSession();
