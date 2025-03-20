@@ -19,10 +19,8 @@ import {
   Grid2X2Icon,
   Home,
   LogOutIcon,
-  ScreenShareIcon,
   ShoppingBagIcon,
   ShoppingBasketIcon,
-  TvIcon,
   User2,
   UserIcon,
   UsersIcon,
@@ -94,19 +92,6 @@ const categories = [
     title: "Create Category",
     url: "/admin/dashboard/categories/create", // create category
     icon: Grid2X2Icon,
-  },
-];
-
-const advertisements = [
-  {
-    title: "All Advertisements",
-    url: "/admin/dashboard/advertisements", // all advertisements
-    icon: TvIcon,
-  },
-  {
-    title: "Create Advertisement",
-    url: "/admin/dashboard/advertisements/create", // create advertisement
-    icon: ScreenShareIcon,
   },
 ];
 
@@ -185,24 +170,6 @@ export async function AppSidebar() {
           <SidebarGroupContent>
             <SidebarMenu>
               {categories.map((item) => (
-                <SidebarMenuItem key={item.title}>
-                  <SidebarMenuButton asChild>
-                    <Link href={item.url}>
-                      <item.icon />
-                      <span>{item.title}</span>
-                    </Link>
-                  </SidebarMenuButton>
-                </SidebarMenuItem>
-              ))}
-            </SidebarMenu>
-          </SidebarGroupContent>
-        </SidebarGroup>
-        {/* Advertisements */}
-        <SidebarGroup>
-          <SidebarGroupLabel>Advertisements</SidebarGroupLabel>
-          <SidebarGroupContent>
-            <SidebarMenu>
-              {advertisements.map((item) => (
                 <SidebarMenuItem key={item.title}>
                   <SidebarMenuButton asChild>
                     <Link href={item.url}>

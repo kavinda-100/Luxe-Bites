@@ -116,22 +116,6 @@ model Review {
     @@index([id, productId, userId]) // Index for searching by id or productId or userId
 }
 
-
-model Advertisement {
-    id          String   @id @default(cuid())
-    title       String
-    description String?
-    imageUrl    String?
-    videoUrl    String?
-    active      Boolean @default(true)
-    link        String // Link to the product or category eg: www.example.com/product/1 or www.example.com/category/1
-
-    createdAt DateTime @default(now())
-    updatedAt DateTime @updatedAt
-
-    @@index([id, title]) // Index for searching by id or title
-}
-
 enum OrderStatus {
     PENDING
     PROCESSING
