@@ -318,6 +318,8 @@ const ManageOrdersPage = () => {
             </CardContent>
           </Card>
 
+          <Separator className="my-6" />
+
           {/* modify the order */}
           <section className={"container mx-auto"}>
             <ModifyOrder />
