@@ -289,11 +289,37 @@ export async function undoCancelOrder({ orderId }: { orderId: string }) {
   }
 }
 
-export async function deleteOrder(orderId: string) {
+export async function deleteOrder({ orderId }: { orderId: string }) {
   try {
     const { getUser } = getKindeServerSession();
     const user = await getUser();
     if (!user) throw new Error("Unauthorized");
+
+    const order = await prisma.order.findUnique({
+      where: {
+        id: orderId,
+      },
+    });
+
+    if (!order) throw new Error("Order not found");
+
+    await prisma.$transaction([
+      prisma.shippingDetails.deleteMany({
+        where: {
+          orderId: orderId,
+        },
+      }),
+      prisma.order.delete({
+        where: {
+          id: orderId,
+        },
+      }),
+    ]);
+
+    return {
+      success: true,
+      message: "Order deleted successfully",
+    };
   } catch (e: unknown) {
     console.log("Error in deleteOrder", e);
     if (e instanceof Error) {

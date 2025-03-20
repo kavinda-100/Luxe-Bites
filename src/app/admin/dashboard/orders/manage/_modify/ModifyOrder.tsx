@@ -23,11 +23,13 @@ import { Separator } from "../../../../../../components/ui/separator";
 import type { OrderStatus } from "@prisma/client";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import {
+  deleteOrder,
   undoCancelOrder,
   updateOrderStatus,
 } from "../../../../../../actions/orders";
 import { toast } from "sonner";
 import { useCancelOrder } from "../../../../../../hooks/api/orders/useCancelOrder";
+import { useRouter } from "next/navigation";
 
 type ModifyOrderProps = {
   orderID: string;
@@ -267,6 +269,25 @@ type DeleteOrderProps = {
   orderID: string;
 };
 const DeleteOrder = ({ orderID }: DeleteOrderProps) => {
+  const queryClient = useQueryClient();
+  const router = useRouter();
+
+  const { mutate, isPending } = useMutation({
+    mutationFn: async () => deleteOrder({ orderId: orderID }),
+    onSuccess: async (res) => {
+      if (res.success) {
+        toast.success(res.message);
+        await queryClient.invalidateQueries({
+          queryKey: ["orders", "order", orderID],
+        });
+        router.push("/admin/dashboard/orders");
+      }
+    },
+    onError: (e) => {
+      console.log("Error in DeleteOrder", e);
+      toast.error(e.message);
+    },
+  });
   return (
     <section
       className={
@@ -282,9 +303,20 @@ const DeleteOrder = ({ orderID }: DeleteOrderProps) => {
           order?
         </AlertDescription>
       </Alert>
-      <Button className={"w-fit"} variant={"destructive"}>
-        <TrashIcon className="h-4 w-4" />
-        Delete
+      <Button
+        className={"w-fit"}
+        variant={"destructive"}
+        disabled={isPending}
+        onClick={() => mutate()}
+      >
+        {isPending ? (
+          <Loader2 className={"size-3 animate-spin"} />
+        ) : (
+          <div className={"flex items-center gap-2"}>
+            <TrashIcon className="h-4 w-4" />
+            Delete
+          </div>
+        )}
       </Button>
     </section>
   );
