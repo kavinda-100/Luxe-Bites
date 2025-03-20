@@ -70,40 +70,40 @@ const ManageOrdersPage = () => {
       <Separator className="my-6" />
 
       {/* Order Details */}
-      <Card className="border-none shadow-sm">
+      <Card className="border-none bg-muted/50 shadow-sm">
         <CardHeader>
           <CardTitle className="text-xl">Order Summary</CardTitle>
         </CardHeader>
-        <CardContent>
-          {/* Order Status */}
-          <div className="mb-4 flex items-center justify-between">
-            <span className="flex items-center gap-2 font-bold">
-              Order ID:{" "}
-              <span
-                className={
-                  "ml-2 flex items-center gap-2 font-medium text-muted-foreground"
-                }
-              >
-                {data?.orderId}
-                {isOrderIdCopied ? (
-                  <ClipboardCopy
-                    className={"size-4 cursor-pointer text-emerald-500"}
-                  />
-                ) : (
-                  <CopyIcon
-                    className={"size-4 cursor-pointer text-emerald-500"}
-                    onClick={async () => {
-                      await navigator.clipboard.writeText(data?.orderId ?? "");
-                      setIsOrderIdCopied(true);
-                      toast.success("Order ID copied to clipboard");
-                      setInterval(() => {
-                        setIsOrderIdCopied(false);
-                      }, 3000);
-                    }}
-                  />
-                )}
-              </span>
+        <CardContent className={"flex flex-col gap-4"}>
+          <div className="flex justify-between gap-2">
+            <strong>Order ID:</strong>
+            <span
+              className={
+                "ml-2 flex items-center gap-2 font-medium text-muted-foreground"
+              }
+            >
+              {isOrderIdCopied ? (
+                <ClipboardCopy
+                  className={"size-4 cursor-pointer text-emerald-500"}
+                />
+              ) : (
+                <CopyIcon
+                  className={"size-4 cursor-pointer text-emerald-500"}
+                  onClick={async () => {
+                    await navigator.clipboard.writeText(data?.orderId ?? "");
+                    setIsOrderIdCopied(true);
+                    toast.success("Order ID copied to clipboard");
+                    setInterval(() => {
+                      setIsOrderIdCopied(false);
+                    }, 3000);
+                  }}
+                />
+              )}
+              {data?.orderId}
             </span>
+          </div>
+          <div className={"flex justify-between gap-2"}>
+            <strong>Pay:</strong>
             <Badge variant={data?.isPaid ? "default" : "destructive"}>
               {data?.isPaid ? "Paid" : "Pending Payment"}
             </Badge>
@@ -112,17 +112,12 @@ const ManageOrdersPage = () => {
             <p className={"flex justify-between gap-2"}>
               <strong>Status:</strong>
               <span
-                className={cn("rounded-md border px-2 py-1", {
-                  "border-green-200 bg-green-100 text-green-700":
-                    data?.status === "DELIVERED",
-                  "border-yellow-200 bg-yellow-100 text-yellow-700":
-                    data?.status === "SHIPPED",
-                  "border-blue-200 bg-blue-100 text-blue-700":
-                    data?.status === "PROCESSING",
-                  "border-gray-200 bg-gray-100 text-gray-700":
-                    data?.status === "PENDING",
-                  "border-red-200 bg-red-100 text-red-700":
-                    data?.status === "CANCELLED",
+                className={cn("text-md", {
+                  "text-green-700": data?.status === "DELIVERED",
+                  "text-yellow-700": data?.status === "SHIPPED",
+                  "text-blue-700": data?.status === "PROCESSING",
+                  "text-gray-700": data?.status === "PENDING",
+                  "text-red-700": data?.status === "CANCELLED",
                 })}
               >
                 {data?.status === "DELIVERED"
@@ -163,7 +158,7 @@ const ManageOrdersPage = () => {
       <Separator className="my-6" />
 
       {/* User Information */}
-      <Card className="shadow-md">
+      <Card className="border-none bg-muted/50 shadow-sm">
         <CardHeader>
           <CardTitle className="text-xl">User Information</CardTitle>
         </CardHeader>
@@ -177,7 +172,9 @@ const ManageOrdersPage = () => {
           />
           <div>
             <p className="font-semibold">{data?.user.email}</p>
-            <p className="text-sm text-gray-600">User ID: {data?.user.id}</p>
+            <p className="text-sm text-muted-foreground">
+              User ID: {data?.user.id}
+            </p>
           </div>
         </CardContent>
       </Card>
@@ -185,7 +182,7 @@ const ManageOrdersPage = () => {
       <Separator className="my-6" />
 
       {/* Shipping Information */}
-      <Card className="shadow-md">
+      <Card className="border-none bg-muted/50 shadow-sm">
         <CardHeader>
           <CardTitle className="text-xl">Shipping Details</CardTitle>
         </CardHeader>
@@ -213,7 +210,7 @@ const ManageOrdersPage = () => {
       <Separator className="my-6" />
 
       {/* Products Ordered */}
-      <Card className="shadow-md">
+      <Card className="border-none bg-muted/50 shadow-sm">
         <CardHeader>
           <CardTitle className="text-xl">Products Ordered</CardTitle>
         </CardHeader>
