@@ -157,3 +157,47 @@ export const getOrderById = async (orderId: string) => {
     throw new Error("Internal server error");
   }
 };
+
+type UpdateOrderStatusType = {
+  orderId: string;
+  status: "PENDING" | "PROCESSING" | "SHIPPED" | "DELIVERED" | "CANCELLED";
+};
+
+export async function updateOrderStatus({
+  orderId,
+  status,
+}: UpdateOrderStatusType) {
+  try {
+    const { getUser } = getKindeServerSession();
+    const user = await getUser();
+    if (!user) throw new Error("Unauthorized");
+
+    const order = await prisma.order.findUnique({
+      where: {
+        id: orderId,
+      },
+    });
+
+    if (!order) throw new Error("Order not found");
+
+    await prisma.order.update({
+      where: {
+        id: orderId,
+      },
+      data: {
+        status,
+      },
+    });
+
+    return {
+      success: true,
+      message: "Order status updated successfully",
+    };
+  } catch (e: unknown) {
+    console.log("Error in updateOrderStatus", e);
+    if (e instanceof Error) {
+      throw new Error(e.message);
+    }
+    throw new Error("Internal server error");
+  }
+}

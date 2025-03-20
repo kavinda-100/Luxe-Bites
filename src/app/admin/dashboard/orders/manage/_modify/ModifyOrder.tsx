@@ -12,9 +12,18 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { AlertCircle, BanIcon, PencilIcon, TrashIcon } from "lucide-react";
+import {
+  AlertCircle,
+  BanIcon,
+  Loader2,
+  PencilIcon,
+  TrashIcon,
+} from "lucide-react";
 import { Separator } from "../../../../../../components/ui/separator";
 import type { OrderStatus } from "@prisma/client";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { updateOrderStatus } from "../../../../../../actions/orders";
+import { toast } from "sonner";
 
 type ModifyOrderProps = {
   orderID: string;
@@ -41,16 +50,13 @@ const ModifyOrder = ({ orderID, orderStatus }: ModifyOrderProps) => {
 };
 export default ModifyOrder;
 
+// change the order status
 type ChangeStatusProps = {
   orderID: string;
   orderStatus: OrderStatus;
 };
 const ChangeStatus = ({ orderStatus, orderID }: ChangeStatusProps) => {
-  // PENDING
-  // PROCESSING
-  // SHIPPED
-  // DELIVERED
-  // CANCELLED
+  const queryClient = useQueryClient();
   const oldStatus =
     orderStatus === "PENDING"
       ? "PENDING"
@@ -61,8 +67,26 @@ const ChangeStatus = ({ orderStatus, orderID }: ChangeStatusProps) => {
           : orderStatus === "DELIVERED"
             ? "DELIVERED"
             : "CANCELLED";
-  const disabledButton = orderStatus === "CANCELLED";
-  const [status, setStatus] = React.useState(oldStatus);
+  const [status, setStatus] = React.useState<
+    "PENDING" | "PROCESSING" | "SHIPPED" | "DELIVERED" | "CANCELLED"
+  >(oldStatus);
+
+  const { mutate, isPending } = useMutation({
+    mutationFn: async () => updateOrderStatus({ orderId: orderID, status }),
+    onSuccess: async (res) => {
+      if (res.success) {
+        toast.success(res.message);
+        await queryClient.invalidateQueries({
+          queryKey: ["products", "product", orderID],
+        });
+      }
+    },
+    onError: (error) => {
+      toast.error(error.message);
+    },
+  });
+
+  const disabledButton = orderStatus === "CANCELLED" || isPending;
 
   return (
     <section
@@ -71,7 +95,7 @@ const ChangeStatus = ({ orderStatus, orderID }: ChangeStatusProps) => {
       }
     >
       <Label className={"text-md font-semibold"}>Change order status</Label>
-      <Select value={status} onValueChange={setStatus}>
+      <Select value={status} onValueChange={setStatus as any}>
         <SelectTrigger className="w-[180px]">
           <SelectValue placeholder={status} />
         </SelectTrigger>
@@ -90,14 +114,26 @@ const ChangeStatus = ({ orderStatus, orderID }: ChangeStatusProps) => {
           </SelectItem>
         </SelectContent>
       </Select>
-      <Button className={"w-fit"} variant={"outline"} disabled={disabledButton}>
-        <PencilIcon className="h-4 w-4" />
-        Change
+      <Button
+        className={"w-fit"}
+        variant={"outline"}
+        disabled={disabledButton}
+        onClick={() => mutate()}
+      >
+        {isPending ? (
+          <Loader2 className={"size-3 animate-spin"} />
+        ) : (
+          <div className={"flex items-center gap-2"}>
+            <PencilIcon className="h-4 w-4" />
+            Change
+          </div>
+        )}
       </Button>
     </section>
   );
 };
 
+// Cancel the order
 type CancelOrderProps = {
   orderID: string;
 };
@@ -125,6 +161,7 @@ const CancelOrder = ({ orderID }: CancelOrderProps) => {
   );
 };
 
+// delete the order
 type DeleteOrderProps = {
   orderID: string;
 };
