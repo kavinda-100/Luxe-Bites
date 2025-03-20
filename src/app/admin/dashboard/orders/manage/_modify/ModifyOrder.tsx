@@ -77,7 +77,7 @@ const ChangeStatus = ({ orderStatus, orderID }: ChangeStatusProps) => {
       if (res.success) {
         toast.success(res.message);
         await queryClient.invalidateQueries({
-          queryKey: ["products", "product", orderID],
+          queryKey: ["orders", "order", orderID],
         });
       }
     },
