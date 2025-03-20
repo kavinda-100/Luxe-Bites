@@ -134,6 +134,10 @@ model Order {
     isPaid      Boolean @default(false)
     shippingDetails ShippingDetails[]
 
+    canceledBy  Role?
+    cnacelReason String?
+    cancelAt DateTime?
+
     user        User    @relation(fields: [userId], references: [kindUserId])
 
     createdAt DateTime @default(now())
