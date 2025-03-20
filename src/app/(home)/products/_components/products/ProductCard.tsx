@@ -50,11 +50,15 @@ const ProductCard = ({
   return (
     <Card
       className={
-        "group flex cursor-pointer flex-col justify-between border-none p-0 shadow-none hover:bg-muted/30 hover:shadow-md"
+        "group flex cursor-pointer flex-col justify-between p-0 shadow-none hover:bg-muted/30 hover:shadow-md"
       }
+      onClick={handleViewDetails}
     >
-      <CardHeader className={"relative h-[300px] w-full"}>
+      <CardHeader className={"sr-only"}>
         <CardTitle className={"sr-only"}>{name}</CardTitle>
+      </CardHeader>
+      {/* image */}
+      <div className={"relative mb-2 h-[300px] w-full"}>
         <div
           className="image-container"
           style={{
@@ -74,7 +78,7 @@ const ProductCard = ({
         <div className={"absolute right-5 top-5 hidden p-2 group-hover:block"}>
           <WishListButton id={id} wishlists={wishlists} variant={"outline"} />
         </div>
-      </CardHeader>
+      </div>
       <CardContent className={"text-md flex flex-col gap-2"}>
         <div
           className={"text-md text-pretty font-medium text-muted-foreground"}
@@ -100,16 +104,16 @@ const ProductCard = ({
           <p className={"font-mono text-lg font-bold"}>{discount}% off</p>
         </div>
       </CardContent>
-      <CardFooter>
-        <Button
-          onClick={handleViewDetails}
-          className={"w-full"}
-          variant={"outline"}
-        >
-          View Details
-          <ChevronRight className={"size-4"} />
-        </Button>
-      </CardFooter>
+      {/*<CardFooter>*/}
+      {/*  <Button*/}
+      {/*    onClick={handleViewDetails}*/}
+      {/*    className={"w-full"}*/}
+      {/*    variant={"outline"}*/}
+      {/*  >*/}
+      {/*    View Details*/}
+      {/*    <ChevronRight className={"size-4"} />*/}
+      {/*  </Button>*/}
+      {/*</CardFooter>*/}
     </Card>
   );
 };
