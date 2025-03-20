@@ -251,7 +251,7 @@ const ManageOrdersPage = () => {
               </CardTitle>
             </CardHeader>
             <CardContent>
-              <div className="grid grid-cols-1 gap-4 text-gray-600 dark:text-gray-300 md:grid-cols-2">
+              <div className="grid grid-cols-1 gap-4 text-pretty text-gray-600 dark:text-gray-300 md:grid-cols-2">
                 <p>
                   <strong>Name:</strong> {data?.shippingDetails.firstName}{" "}
                   {data?.shippingDetails.lastName}
@@ -260,13 +260,19 @@ const ManageOrdersPage = () => {
                   <strong>Phone:</strong> {data?.shippingDetails.phone}
                 </p>
                 <p>
-                  <strong>Address:</strong> {data?.shippingDetails.address},{" "}
-                  {data?.shippingDetails.city}
+                  <strong>Address:</strong> {data?.shippingDetails.address}
                 </p>
                 <p>
-                  <strong>State:</strong> {data?.shippingDetails.state},{" "}
-                  {data?.shippingDetails.country} -{" "}
-                  {data?.shippingDetails.zipCode}
+                  <strong>City:</strong> {data?.shippingDetails.city}
+                </p>
+                <p>
+                  <strong>State:</strong> {data?.shippingDetails.state}
+                </p>
+                <p>
+                  <strong>Country:</strong> {data?.shippingDetails.country}
+                </p>
+                <p>
+                  <strong>Zip Code:</strong> {data?.shippingDetails.zipCode}
                 </p>
               </div>
             </CardContent>
@@ -290,7 +296,7 @@ const ManageOrdersPage = () => {
                     className="flex gap-4 rounded-lg border p-3"
                   >
                     <img
-                      src={product.image || "/placeholder-product.png"}
+                      src={product.image || "/placeholder.jpg"}
                       alt={product.name}
                       width={80}
                       height={80}
