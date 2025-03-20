@@ -24,6 +24,7 @@ import type { OrderStatus } from "@prisma/client";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { updateOrderStatus } from "../../../../../../actions/orders";
 import { toast } from "sonner";
+import { useCancelOrder } from "../../../../../../hooks/api/orders/useCancelOrder";
 
 type ModifyOrderProps = {
   orderID: string;
@@ -139,6 +140,23 @@ type CancelOrderProps = {
 };
 const CancelOrder = ({ orderID }: CancelOrderProps) => {
   const [cancelReason, setCancelReason] = React.useState("");
+  const { mutate, isPending } = useCancelOrder();
+
+  const handleCancelOrder = () => {
+    if (cancelReason.trim() === "") {
+      toast.error("Please provide a reason for canceling the order");
+      return;
+    }
+    mutate(
+      { orderId: orderID, cancelReason, cancelBy: "Admin" },
+      {
+        onSuccess: () => {
+          setCancelReason("");
+          window.location.reload();
+        },
+      },
+    );
+  };
   return (
     <section
       className={
@@ -153,9 +171,19 @@ const CancelOrder = ({ orderID }: CancelOrderProps) => {
         value={cancelReason}
         onChange={(e) => setCancelReason(e.target.value)}
       />
-      <Button className={"w-fit"} variant={"outline"}>
-        <BanIcon className="h-4 w-4" />
-        Cancel
+      <Button
+        className={"w-fit"}
+        variant={"outline"}
+        onClick={handleCancelOrder}
+      >
+        {isPending ? (
+          <Loader2 className={"size-3 animate-spin"} />
+        ) : (
+          <div className={"flex items-center gap-2"}>
+            <BanIcon className="h-4 w-4" />
+            Cancel
+          </div>
+        )}
       </Button>
     </section>
   );

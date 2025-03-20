@@ -201,3 +201,64 @@ export async function updateOrderStatus({
     throw new Error("Internal server error");
   }
 }
+
+export async function CancelOrder({
+  orderId,
+  cancelReason,
+  cancelBy,
+}: {
+  orderId: string;
+  cancelReason: string;
+  cancelBy: "Admin" | "User";
+}) {
+  try {
+    const { getUser } = getKindeServerSession();
+    const user = await getUser();
+    if (!user) throw new Error("Unauthorized");
+
+    const order = await prisma.order.findUnique({
+      where: {
+        id: orderId,
+      },
+    });
+
+    if (!order) throw new Error("Order not found");
+
+    await prisma.order.update({
+      where: {
+        id: orderId,
+      },
+      data: {
+        status: "CANCELLED",
+        cnacelReason: cancelReason,
+        canceledBy: cancelBy === "Admin" ? "ADMIN" : "USER",
+        cancelAt: new Date(),
+      },
+    });
+
+    return {
+      success: true,
+      message: "Order canceled successfully",
+    };
+  } catch (e: unknown) {
+    console.log("Error in CancelOrder", e);
+    if (e instanceof Error) {
+      throw new Error(e.message);
+    }
+    throw new Error("Internal server error");
+  }
+}
+
+export async function deleteOrder(orderId: string) {
+  try {
+    const { getUser } = getKindeServerSession();
+    const user = await getUser();
+    if (!user) throw new Error("Unauthorized");
+  } catch (e: unknown) {
+    console.log("Error in deleteOrder", e);
+    if (e instanceof Error) {
+      throw new Error(e.message);
+    }
+    throw new Error("Internal server error");
+  }
+}
