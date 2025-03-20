@@ -325,6 +325,9 @@ const ManageOrdersPage = () => {
             <ModifyOrder
               orderID={data?.orderId ?? ""}
               orderStatus={data?.status ?? "PENDING"}
+              isOrderCancelled={
+                data?.status === "CANCELLED" || data?.canceledAt != null
+              }
             />
           </section>
         </>

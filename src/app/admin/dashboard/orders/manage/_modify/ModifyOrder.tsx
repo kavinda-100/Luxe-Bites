@@ -29,18 +29,32 @@ import { useCancelOrder } from "../../../../../../hooks/api/orders/useCancelOrde
 type ModifyOrderProps = {
   orderID: string;
   orderStatus: OrderStatus;
+  isOrderCancelled: boolean;
 };
 
-const ModifyOrder = ({ orderID, orderStatus }: ModifyOrderProps) => {
+const ModifyOrder = ({
+  orderID,
+  orderStatus,
+  isOrderCancelled,
+}: ModifyOrderProps) => {
   return (
     <section className={"container mx-auto p-2"}>
-      {/*  change the order status */}
-      <ChangeStatus orderID={orderID} orderStatus={orderStatus} />
+      {isOrderCancelled ? (
+        <>
+          {/*  undo Cancel the order */}
+          <UndoCancelOrder />
+        </>
+      ) : (
+        <>
+          {/*  change the order status */}
+          <ChangeStatus orderID={orderID} orderStatus={orderStatus} />
 
-      <Separator className="my-6" />
+          <Separator className="my-6" />
 
-      {/* Cancel the order */}
-      <CancelOrder orderID={orderID} />
+          {/* Cancel the order */}
+          <CancelOrder orderID={orderID} />
+        </>
+      )}
 
       <Separator className="my-6" />
 
@@ -184,6 +198,29 @@ const CancelOrder = ({ orderID }: CancelOrderProps) => {
             Cancel
           </div>
         )}
+      </Button>
+    </section>
+  );
+};
+
+// undo the cancel order
+const UndoCancelOrder = () => {
+  return (
+    <section
+      className={
+        "container mx-auto flex flex-col gap-4 rounded-md bg-muted/40 p-4"
+      }
+    >
+      <Label className={"text-md font-semibold"}>Undo Cancel Order</Label>
+      <Alert variant="destructive">
+        <AlertCircle className="h-4 w-4" />
+        <AlertTitle>Hold On!</AlertTitle>
+        <AlertDescription>
+          Are you sure you want to undo the cancel order?
+        </AlertDescription>
+      </Alert>
+      <Button className={"w-fit"} variant={"outline"}>
+        Undo Cancel
       </Button>
     </section>
   );

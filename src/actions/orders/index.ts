@@ -131,6 +131,7 @@ export const getOrderById = async (orderId: string) => {
       status: order?.status,
       isPaid: order?.isPaid,
       createdAt: order?.createdAt,
+      canceledAt: order?.cancelAt,
       user: {
         id: order?.user.id,
         kindeUserId: order?.user.kindUserId,
