@@ -187,7 +187,7 @@ const ViewProduct = ({ id }: ViewProductProps) => {
             )}
             {ProductData?.data.reviews.map((review) => (
               <ReviewsCard
-                key={review.comment}
+                key={`${review.ratingAmount}-${review.createdAt.toLocaleString()}`}
                 comment={review.comment}
                 createdAt={review.createdAt}
                 email={review.user.email}
