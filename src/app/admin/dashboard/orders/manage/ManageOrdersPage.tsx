@@ -322,7 +322,10 @@ const ManageOrdersPage = () => {
 
           {/* modify the order */}
           <section className={"container mx-auto"}>
-            <ModifyOrder />
+            <ModifyOrder
+              orderID={data?.orderId ?? ""}
+              orderStatus={data?.status ?? "PENDING"}
+            />
           </section>
         </>
       )}
