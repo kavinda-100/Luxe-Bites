@@ -84,7 +84,9 @@ const ManageOrdersPage = () => {
             Order Summary
           </CardTitle>
         </CardHeader>
-        <CardContent className={"flex flex-col gap-4"}>
+        <CardContent
+          className={"flex flex-col gap-4 text-gray-600 dark:text-gray-300"}
+        >
           <div className="flex justify-between gap-2">
             <strong>Order ID:</strong>
             <span
@@ -203,7 +205,7 @@ const ManageOrdersPage = () => {
           </CardTitle>
         </CardHeader>
         <CardContent>
-          <div className="grid grid-cols-1 gap-4 text-gray-600 md:grid-cols-2">
+          <div className="grid grid-cols-1 gap-4 text-gray-600 dark:text-gray-300 md:grid-cols-2">
             <p>
               <strong>Name:</strong> {data?.shippingDetails.firstName}{" "}
               {data?.shippingDetails.lastName}
@@ -249,8 +251,12 @@ const ManageOrdersPage = () => {
                 />
                 <div>
                   <p className="font-semibold">{product.name}</p>
-                  <p className="text-gray-600">Price: ${product.price}</p>
-                  <p className="text-gray-600">Quantity: {product.quantity}</p>
+                  <p className="text-gray-600 dark:text-gray-300">
+                    Price: ${product.price}
+                  </p>
+                  <p className="text-gray-600 dark:text-gray-300">
+                    Quantity: {product.quantity}
+                  </p>
                 </div>
               </div>
             ))}
