@@ -12,7 +12,14 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { cn, formatCurrency, formatDate } from "../../../../../lib/utils";
 import { Separator } from "@/components/ui/separator";
 import { Badge } from "@/components/ui/badge";
-import { ClipboardCopy, CopyIcon } from "lucide-react";
+import {
+  ClipboardCopy,
+  CopyIcon,
+  FolderIcon,
+  ShoppingBasket,
+  Truck,
+  User,
+} from "lucide-react";
 
 const ManageOrdersPage = () => {
   // Get the email from the URL query params.
@@ -54,7 +61,7 @@ const ManageOrdersPage = () => {
     <section className={"container mx-auto"}>
       {/* search */}
       <div className={"flex w-full flex-col gap-3"}>
-        <Label>Order ID</Label>
+        <Label>Search By Order ID</Label>
         <div className={"flex items-center gap-2 lg:w-1/2"}>
           <Input
             placeholder={"Enter order ID"}
@@ -72,7 +79,10 @@ const ManageOrdersPage = () => {
       {/* Order Details */}
       <Card className="border-none bg-muted/50 shadow-sm">
         <CardHeader>
-          <CardTitle className="text-xl">Order Summary</CardTitle>
+          <CardTitle className="flex items-center gap-2 text-xl">
+            <FolderIcon className={"size-6 text-primary"} />
+            Order Summary
+          </CardTitle>
         </CardHeader>
         <CardContent className={"flex flex-col gap-4"}>
           <div className="flex justify-between gap-2">
@@ -160,7 +170,10 @@ const ManageOrdersPage = () => {
       {/* User Information */}
       <Card className="border-none bg-muted/50 shadow-sm">
         <CardHeader>
-          <CardTitle className="text-xl">User Information</CardTitle>
+          <CardTitle className="flex items-center gap-2 text-xl">
+            <User className={"size-6 text-primary"} />
+            User Information
+          </CardTitle>
         </CardHeader>
         <CardContent className="flex items-center gap-4">
           <img
@@ -184,7 +197,10 @@ const ManageOrdersPage = () => {
       {/* Shipping Information */}
       <Card className="border-none bg-muted/50 shadow-sm">
         <CardHeader>
-          <CardTitle className="text-xl">Shipping Details</CardTitle>
+          <CardTitle className="flex items-center gap-2 text-xl">
+            <Truck className={"size-6 text-primary"} />
+            Shipping Details
+          </CardTitle>
         </CardHeader>
         <CardContent>
           <div className="grid grid-cols-1 gap-4 text-gray-600 md:grid-cols-2">
@@ -212,7 +228,10 @@ const ManageOrdersPage = () => {
       {/* Products Ordered */}
       <Card className="border-none bg-muted/50 shadow-sm">
         <CardHeader>
-          <CardTitle className="text-xl">Products Ordered</CardTitle>
+          <CardTitle className="flex items-center gap-2 text-xl">
+            <ShoppingBasket className={"size-6 text-primary"} />
+            Products Ordered
+          </CardTitle>
         </CardHeader>
         <CardContent>
           <div className="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3">
