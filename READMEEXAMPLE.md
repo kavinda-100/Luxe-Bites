@@ -19,7 +19,11 @@
 - [x] show all products in a category
 - [x] All orders
 - [x] today's orders
-- [ ] manage orders
+- [x] manage orders
+    - [x] view order details
+    - [ ] update order status
+    - [ ] cancel order
+    - [ ] delete order
 
 - for the user
 - [x] let user browse through categories
@@ -45,7 +49,6 @@
 - [ ] let user view profile
     - [ ] let user update profile
     - [ ] let user delete profile
-- [ ] show all advertisements in a category
 - [ ] Home page
 - [ ] about us page
 - [ ] contact us page
