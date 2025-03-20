@@ -52,7 +52,6 @@ const ProductCard = ({
       className={
         "group flex cursor-pointer flex-col justify-between p-0 shadow-none hover:bg-muted/30 hover:shadow-md"
       }
-      onClick={handleViewDetails}
     >
       <CardHeader className={"sr-only"}>
         <CardTitle className={"sr-only"}>{name}</CardTitle>
@@ -79,7 +78,10 @@ const ProductCard = ({
           <WishListButton id={id} wishlists={wishlists} variant={"outline"} />
         </div>
       </div>
-      <CardContent className={"text-md flex flex-col gap-2"}>
+      <CardContent
+        className={"text-md flex flex-col gap-2"}
+        onClick={handleViewDetails}
+      >
         <div
           className={"text-md text-pretty font-medium text-muted-foreground"}
         >
