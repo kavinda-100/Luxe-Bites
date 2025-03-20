@@ -5,7 +5,7 @@
 
 ## left to do
 
-- for the Admin
+- `for the Admin`
 - [x] create a category function
 - [x] create a product function
 - [x] create an advertisement function
@@ -21,11 +21,13 @@
 - [x] today's orders
 - [x] manage orders
     - [x] view order details
-    - [ ] update order status
-    - [ ] cancel order
-    - [ ] delete order
+    - [x] update order status
+    - [x] cancel order
+    - [x] undo cancel order
+    - [x] delete order
+- [ ] admin dashboard
 
-- for the user
+- `for the user`
 - [x] let user browse through categories
 - [x] let user browse through products
 - [x] let user view product details
