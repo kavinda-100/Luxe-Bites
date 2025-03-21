@@ -59,6 +59,51 @@ const StatsSection = () => {
           percentageChange={data?.revenue.percentageChange ?? 0}
           icon={CirclePlusIcon}
         />
+        <StatsCard
+          label={"Orders"}
+          total={data?.order.total ?? 0}
+          lastMonth={data?.order.lastMonth ?? 0}
+          thisMonth={data?.order.thisMonth ?? 0}
+          isIncreasing={data?.order.isIncreasing ?? false}
+          percentageChange={data?.order.percentageChange ?? 0}
+          icon={CirclePlusIcon}
+        />
+        <StatsCard
+          label={"Categories"}
+          total={data?.category.total ?? 0}
+          lastMonth={data?.category.lastMonth ?? 0}
+          thisMonth={data?.category.thisMonth ?? 0}
+          isIncreasing={data?.category.isIncreasing ?? false}
+          percentageChange={data?.category.percentageChange ?? 0}
+          icon={CirclePlusIcon}
+        />
+        <StatsCard
+          label={"Products"}
+          total={data?.product.total ?? 0}
+          lastMonth={data?.product.lastMonth ?? 0}
+          thisMonth={data?.product.thisMonth ?? 0}
+          isIncreasing={data?.product.isIncreasing ?? false}
+          percentageChange={data?.product.percentageChange ?? 0}
+          icon={CirclePlusIcon}
+        />
+        <StatsCard
+          label={"Active Products"}
+          total={data?.productActive.total ?? 0}
+          lastMonth={data?.productActive.lastMonth ?? 0}
+          thisMonth={data?.productActive.thisMonth ?? 0}
+          isIncreasing={data?.productActive.isIncreasing ?? false}
+          percentageChange={data?.productActive.percentageChange ?? 0}
+          icon={CirclePlusIcon}
+        />
+        <StatsCard
+          label={"Users"}
+          total={data?.user.total ?? 0}
+          lastMonth={data?.user.lastMonth ?? 0}
+          thisMonth={data?.user.thisMonth ?? 0}
+          isIncreasing={data?.user.isIncreasing ?? false}
+          percentageChange={data?.user.percentageChange ?? 0}
+          icon={CirclePlusIcon}
+        />
       </div>
     </section>
   );
@@ -121,9 +166,15 @@ const StatsCard = ({
       <CardFooter>
         <div className={"text-sm font-normal text-foreground/60"}>
           {isIncreasing ? (
-            <p>Increased By {Math.floor(percentageChange)}%</p>
+            <p>
+              Increased By{" "}
+              {Math.ceil(percentageChange === -100 ? 0 : percentageChange)}%
+            </p>
           ) : (
-            <p>Decreased By {Math.floor(percentageChange)}%</p>
+            <p>
+              Decreased By{" "}
+              {Math.ceil(percentageChange === -100 ? 0 : percentageChange)}%
+            </p>
           )}
         </div>
       </CardFooter>
