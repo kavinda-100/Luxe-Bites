@@ -25,12 +25,12 @@
     - [x] cancel order
     - [x] undo cancel order
     - [x] delete order
-- [ ] admin dashboard
-    - [ ] overview and analytics
-        - [ ] overview cards
-        - [ ] sales
-        - [ ] orders
-        - [ ] users
+- [x] admin dashboard
+    - [x] overview and analytics
+        - [x] overview cards
+        - [x] sales chart
+        - [x] orders chart
+        - [x] users chart
     - [ ] Notifications
         - [ ] new orders
 
