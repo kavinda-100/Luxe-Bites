@@ -7,8 +7,13 @@ import { Skeleton } from "../../../../components/ui/skeleton";
 import {
   ArrowDown01,
   ArrowUp10,
-  CirclePlusIcon,
-  LucideIcon,
+  CircleDollarSignIcon,
+  FoldersIcon,
+  Grid2X2Icon,
+  type LucideIcon,
+  ShoppingBagIcon,
+  ShoppingBasketIcon,
+  UserIcon,
 } from "lucide-react";
 import {
   Card,
@@ -58,7 +63,7 @@ const StatsSection = () => {
           thisMonth={data?.revenue.thisMonth ?? 0}
           isIncreasing={data?.revenue.isIncreasing ?? false}
           percentageChange={data?.revenue.percentageChange ?? 0}
-          icon={CirclePlusIcon}
+          icon={CircleDollarSignIcon}
           isMoney={true}
         />
         <StatsCard
@@ -68,7 +73,7 @@ const StatsSection = () => {
           thisMonth={data?.order.thisMonth ?? 0}
           isIncreasing={data?.order.isIncreasing ?? false}
           percentageChange={data?.order.percentageChange ?? 0}
-          icon={CirclePlusIcon}
+          icon={FoldersIcon}
         />
         <StatsCard
           label={"Categories"}
@@ -77,7 +82,7 @@ const StatsSection = () => {
           thisMonth={data?.category.thisMonth ?? 0}
           isIncreasing={data?.category.isIncreasing ?? false}
           percentageChange={data?.category.percentageChange ?? 0}
-          icon={CirclePlusIcon}
+          icon={Grid2X2Icon}
         />
         <StatsCard
           label={"Products"}
@@ -86,7 +91,7 @@ const StatsSection = () => {
           thisMonth={data?.product.thisMonth ?? 0}
           isIncreasing={data?.product.isIncreasing ?? false}
           percentageChange={data?.product.percentageChange ?? 0}
-          icon={CirclePlusIcon}
+          icon={ShoppingBagIcon}
         />
         <StatsCard
           label={"Active Products"}
@@ -95,7 +100,7 @@ const StatsSection = () => {
           thisMonth={data?.productActive.thisMonth ?? 0}
           isIncreasing={data?.productActive.isIncreasing ?? false}
           percentageChange={data?.productActive.percentageChange ?? 0}
-          icon={CirclePlusIcon}
+          icon={ShoppingBasketIcon}
         />
         <StatsCard
           label={"Users"}
@@ -104,7 +109,7 @@ const StatsSection = () => {
           thisMonth={data?.user.thisMonth ?? 0}
           isIncreasing={data?.user.isIncreasing ?? false}
           percentageChange={data?.user.percentageChange ?? 0}
-          icon={CirclePlusIcon}
+          icon={UserIcon}
         />
       </div>
     </section>
