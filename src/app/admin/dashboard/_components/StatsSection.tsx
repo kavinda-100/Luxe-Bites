@@ -17,6 +17,7 @@ import {
   CardHeader,
   CardTitle,
 } from "../../../../components/ui/card";
+import { NumberTicker } from "../../../../components/animations/magicui/NumberTicker";
 
 const StatsSection = () => {
   const { data, isLoading, error } = useQuery({
@@ -58,6 +59,7 @@ const StatsSection = () => {
           isIncreasing={data?.revenue.isIncreasing ?? false}
           percentageChange={data?.revenue.percentageChange ?? 0}
           icon={CirclePlusIcon}
+          isMoney={true}
         />
         <StatsCard
           label={"Orders"}
@@ -118,6 +120,7 @@ type cardProps = {
   isIncreasing: boolean;
   percentageChange: number;
   icon: LucideIcon;
+  isMoney?: boolean;
 };
 
 const StatsCard = ({
@@ -128,6 +131,7 @@ const StatsCard = ({
   thisMonth,
   lastMonth,
   isIncreasing,
+  isMoney = false,
 }: cardProps) => {
   return (
     <Card>
@@ -139,15 +143,43 @@ const StatsCard = ({
       </CardHeader>
       <CardContent className={"flex justify-between gap-3"}>
         <div className={"flex flex-col gap-3"}>
-          <p className={"font-mono text-3xl font-semibold"}>{total}</p>
+          {isMoney ? (
+            <span className={"flex items-center gap-1 text-3xl"}>
+              $
+              <NumberTicker
+                value={total}
+                decimalPlaces={2}
+                className={"font-mono text-3xl font-semibold"}
+              />
+            </span>
+          ) : (
+            <NumberTicker
+              value={total}
+              className={"font-mono text-3xl font-semibold"}
+            />
+          )}
           <p className={"text-md font-normal"}>Total</p>
         </div>
 
         <div className={"text-md flex flex-col items-center gap-2 font-normal"}>
           <p>
-            <span className={"font-mono text-lg font-semibold"}>
-              {thisMonth}
-            </span>{" "}
+            {isMoney ? (
+              <>
+                $
+                <NumberTicker
+                  value={thisMonth}
+                  className={"font-mono text-lg font-semibold"}
+                  decimalPlaces={2}
+                />{" "}
+              </>
+            ) : (
+              <>
+                <NumberTicker
+                  value={thisMonth}
+                  className={"font-mono text-lg font-semibold"}
+                />{" "}
+              </>
+            )}
             This month
           </p>
           {isIncreasing ? (
@@ -156,9 +188,23 @@ const StatsCard = ({
             <ArrowDown01 className={"size-5 text-red-500"} />
           )}
           <p>
-            <span className={"font-mono text-lg font-semibold"}>
-              {lastMonth}
-            </span>{" "}
+            {isMoney ? (
+              <>
+                $
+                <NumberTicker
+                  value={lastMonth}
+                  className={"font-mono text-lg font-semibold"}
+                  decimalPlaces={2}
+                />{" "}
+              </>
+            ) : (
+              <>
+                <NumberTicker
+                  value={lastMonth}
+                  className={"font-mono text-lg font-semibold"}
+                />{" "}
+              </>
+            )}
             Last month
           </p>
         </div>
