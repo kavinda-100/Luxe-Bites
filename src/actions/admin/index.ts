@@ -215,28 +215,45 @@ export async function getAdminStatistics() {
 
     const revenuePercentageChange =
       revenueLastMonth === 0
-        ? 0
+        ? revenueThisMonth > 0
+          ? 100
+          : 0
         : ((revenueThisMonth - revenueLastMonth) / revenueLastMonth) * 100;
+
     const ordersPercentageChange =
       ordersLastMonth === 0
-        ? 0
+        ? ordersThisMonth > 0
+          ? 100
+          : 0
         : ((ordersThisMonth - ordersLastMonth) / ordersLastMonth) * 100;
+
     const usersPercentageChange =
       usersLastMonth === 0
-        ? 0
+        ? usersThisMonth > 0
+          ? 100
+          : 0
         : ((usersThisMonth - usersLastMonth) / usersLastMonth) * 100;
+
     const productsPercentageChange =
       productsLastMonth === 0
-        ? 0
+        ? productsThisMonth > 0
+          ? 100
+          : 0
         : ((productsThisMonth - productsLastMonth) / productsLastMonth) * 100;
+
     const categoriesPercentageChange =
       categoriesLastMonth === 0
-        ? 0
+        ? categoriesThisMonth > 0
+          ? 100
+          : 0
         : ((categoriesThisMonth - categoriesLastMonth) / categoriesLastMonth) *
           100;
+
     const productsActivePercentageChange =
       productsActiveLastMonth === 0
-        ? 0
+        ? productsActiveThisMonth > 0
+          ? 100
+          : 0
         : ((productsActiveThisMonth - productsActiveLastMonth) /
             productsActiveLastMonth) *
           100;
