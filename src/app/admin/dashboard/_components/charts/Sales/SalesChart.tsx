@@ -25,10 +25,11 @@ import {
   SelectTrigger,
   SelectValue,
 } from "../../../../../../components/ui/select";
+import type { period } from "../../../../../../actions/admin";
 
 type SalesChartType = {
-  timeRange: string;
-  setTimeRange: React.Dispatch<React.SetStateAction<string>>;
+  timeRange: period;
+  setTimeRange: React.Dispatch<React.SetStateAction<period>>;
   chartConfig: ChartConfig;
   chartData: any[];
 };
@@ -62,7 +63,7 @@ export function SalesChart({
           <CardTitle>Sales Chart</CardTitle>
           <CardDescription>Showing total Sales of {timeRange}</CardDescription>
         </div>
-        <Select value={timeRange} onValueChange={setTimeRange}>
+        <Select value={timeRange} onValueChange={setTimeRange as any}>
           <SelectTrigger
             className="w-[160px] rounded-lg sm:ml-auto"
             aria-label="Select a value"
@@ -70,6 +71,9 @@ export function SalesChart({
             <SelectValue placeholder="Last 3 months" />
           </SelectTrigger>
           <SelectContent className="rounded-xl">
+            <SelectItem value="365d" className="rounded-lg">
+              Last year
+            </SelectItem>
             <SelectItem value="90d" className="rounded-lg">
               Last 3 months
             </SelectItem>

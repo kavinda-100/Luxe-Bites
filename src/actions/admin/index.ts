@@ -1,7 +1,7 @@
 "use server";
 
 import { getKindeServerSession } from "@kinde-oss/kinde-auth-nextjs/server";
-import { subMonths, startOfMonth, endOfMonth } from "date-fns";
+import { endOfMonth, format, startOfMonth, subDays, subMonths } from "date-fns";
 import { prisma } from "../../server/db";
 
 export type period = "7d" | "30d" | "90d" | "365d";
@@ -312,7 +312,15 @@ export async function getAdminStatistics() {
   }
 }
 
-// get sales data for the last 30, 90 days and 1 year as a data set for the chart.
+/** get sales data for the last 7, 30, 90 days and 1 year as a data set for the chart.
+ * return type:-
+ * chartData = [
+ *   { date: "2025-03-01", orders: 222, revenue: 150 },
+ *   { date: "2025-03-02", orders: 97, revenue: 180 },
+ *   { date: "2025-03-03", orders: 167, revenue: 120 },
+ *   { date: "2025-03-04", orders: 242, revenue: 260 },
+ * ];
+ * **/
 export async function getAdminSales({ period }: { period: period }) {
   try {
     const { getUser } = getKindeServerSession();
@@ -320,6 +328,48 @@ export async function getAdminSales({ period }: { period: period }) {
     if (!user) {
       throw new Error("Unauthorized");
     }
+
+    const now = new Date();
+    let startDate: Date;
+
+    switch (period) {
+      case "7d":
+        startDate = subDays(now, 7);
+        break;
+      case "30d":
+        startDate = subDays(now, 30);
+        break;
+      case "90d":
+        startDate = subDays(now, 90);
+        break;
+      case "365d":
+        startDate = subDays(now, 365);
+        break;
+      default:
+        throw new Error("Invalid period");
+    }
+
+    const salesData = await prisma.order.groupBy({
+      by: ["createdAt"],
+      where: {
+        createdAt: {
+          gte: startDate,
+          lte: now,
+        },
+      },
+      _count: {
+        id: true,
+      },
+      _sum: {
+        totalAmount: true,
+      },
+    });
+
+    return salesData.map((order) => ({
+      date: format(order.createdAt, "yyyy-MM-dd"),
+      orders: order._count.id,
+      revenue: order._sum.totalAmount,
+    }));
   } catch (e: unknown) {
     console.error("Error in getAdminSales", e);
     if (e instanceof Error) {
