@@ -1,11 +1,46 @@
 "use server";
 
 import { getKindeServerSession } from "@kinde-oss/kinde-auth-nextjs/server";
+import { subMonths, startOfMonth, endOfMonth } from "date-fns";
+import { prisma } from "../../server/db";
 
 export type period = "last30" | "last90" | "last365";
 
-// get the statistics like the number of users, number of products, number of orders,
-// number of categories, and revenue (compare last moth and current moth value as well).
+/**@description get the statistics like the number of users, number of products, number of orders,
+ number of categories, and revenue (compare last moth and current moth value as well).
+ @returns {
+  order: {
+  total: number;
+  lastMonth: number;
+  thisMonth: number;
+  isIncreasing: boolean;
+  },
+  user: {
+  total: number;
+  lastMonth: number;
+  thisMonth: number;
+  isIncreasing: boolean;
+  },
+  product: {
+  total: number;
+  lastMonth: number;
+  thisMonth: number;
+  isIncreasing: boolean;
+  },
+  category: {
+  total: number;
+  lastMonth: number;
+  thisMonth: number;
+  isIncreasing: boolean;
+  },
+  revenue: {
+  total: number;
+  lastMonth: number;
+  thisMonth: number;
+  isIncreasing: boolean;
+  },
+  }
+ **/
 export async function getAdminStatistics() {
   try {
     const { getUser } = getKindeServerSession();
@@ -13,6 +48,165 @@ export async function getAdminStatistics() {
     if (!user) {
       throw new Error("Unauthorized");
     }
+
+    const now = new Date();
+    const startOfCurrentMonth = startOfMonth(now);
+    const endOfCurrentMonth = endOfMonth(now);
+    const startOfLastMonth = startOfMonth(subMonths(now, 1));
+    const endOfLastMonth = endOfMonth(subMonths(now, 1));
+
+    const [
+      totalOrders,
+      ordersLastMonth,
+      ordersThisMonth,
+      totalUsers,
+      usersLastMonth,
+      usersThisMonth,
+      totalProducts,
+      productsLastMonth,
+      productsThisMonth,
+      totalCategories,
+      categoriesLastMonth,
+      categoriesThisMonth,
+      totalRevenue,
+      revenueLastMonth,
+      revenueThisMonth,
+    ] = await Promise.all([
+      prisma.order.count(),
+      prisma.order.count({
+        where: {
+          createdAt: {
+            gte: startOfLastMonth,
+            lte: endOfLastMonth,
+          },
+        },
+      }),
+      prisma.order.count({
+        where: {
+          createdAt: {
+            gte: startOfCurrentMonth,
+            lte: endOfCurrentMonth,
+          },
+        },
+      }),
+      prisma.user.count(),
+      prisma.user.count({
+        where: {
+          createdAt: {
+            gte: startOfLastMonth,
+            lte: endOfLastMonth,
+          },
+        },
+      }),
+      prisma.user.count({
+        where: {
+          createdAt: {
+            gte: startOfCurrentMonth,
+            lte: endOfCurrentMonth,
+          },
+        },
+      }),
+      prisma.product.count(),
+      prisma.product.count({
+        where: {
+          createdAt: {
+            gte: startOfLastMonth,
+            lte: endOfLastMonth,
+          },
+        },
+      }),
+      prisma.product.count({
+        where: {
+          createdAt: {
+            gte: startOfCurrentMonth,
+            lte: endOfCurrentMonth,
+          },
+        },
+      }),
+      prisma.category.count(),
+      prisma.category.count({
+        where: {
+          createdAt: {
+            gte: startOfLastMonth,
+            lte: endOfLastMonth,
+          },
+        },
+      }),
+      prisma.category.count({
+        where: {
+          createdAt: {
+            gte: startOfCurrentMonth,
+            lte: endOfCurrentMonth,
+          },
+        },
+      }),
+      prisma.order
+        .aggregate({
+          _sum: {
+            totalAmount: true,
+          },
+        })
+        .then((result) => result._sum.totalAmount ?? 0),
+      prisma.order
+        .aggregate({
+          _sum: {
+            totalAmount: true,
+          },
+          where: {
+            createdAt: {
+              gte: startOfLastMonth,
+              lte: endOfLastMonth,
+            },
+          },
+        })
+        .then((result) => result._sum.totalAmount ?? 0),
+      prisma.order
+        .aggregate({
+          _sum: {
+            totalAmount: true,
+          },
+          where: {
+            createdAt: {
+              gte: startOfCurrentMonth,
+              lte: endOfCurrentMonth,
+            },
+          },
+        })
+        .then((result) => result._sum.totalAmount ?? 0),
+    ]);
+
+    return {
+      order: {
+        total: totalOrders,
+        lastMonth: ordersLastMonth,
+        thisMonth: ordersThisMonth,
+        isIncreasing: ordersThisMonth > ordersLastMonth,
+      },
+      user: {
+        total: totalUsers,
+        lastMonth: usersLastMonth,
+        thisMonth: usersThisMonth,
+        isIncreasing: usersThisMonth > usersLastMonth,
+      },
+      product: {
+        total: totalProducts,
+        lastMonth: productsLastMonth,
+        thisMonth: productsThisMonth,
+        isIncreasing: productsThisMonth > productsLastMonth,
+      },
+      category: {
+        total: totalCategories,
+        lastMonth: categoriesLastMonth,
+        thisMonth: categoriesThisMonth,
+        isIncreasing: categoriesThisMonth > categoriesLastMonth,
+      },
+      revenue: {
+        total: totalRevenue,
+        lastMonth: revenueLastMonth,
+        thisMonth: revenueThisMonth,
+        isIncreasing: revenueThisMonth > revenueLastMonth,
+      },
+    };
   } catch (e: unknown) {
     console.error("Error in getAdminStatistics", e);
     if (e instanceof Error) {
