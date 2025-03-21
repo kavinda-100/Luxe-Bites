@@ -6,7 +6,8 @@ import { prisma } from "../../server/db";
 
 export type period = "last30" | "last90" | "last365";
 
-/**@description get the statistics like the number of users, number of products, number of orders,
+/**
+ * @description get the statistics like the number of users, number of products, number of orders,
  number of categories, and revenue (compare last moth and current moth value as well).
  @returns {
   order: {
