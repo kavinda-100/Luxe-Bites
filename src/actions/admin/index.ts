@@ -447,15 +447,62 @@ export async function getAdminOrders({ period }: { period: period }) {
   }
 }
 
-// get user data for the last 30, 90 days and 1 year as a data set for the chart.
-// like how many users registered in the last 30 days, 90 days, and 1 year.
-export async function getAdminUsers({ period }: { period: period }) {
+/** get no of users that registered in each month for the last 12 months.
+ * if no user registered in a month, then the value should be 0.
+ * return type:-
+ * chartData = [
+ *   { month: "January", visitors: 186 },
+ *   { month: "February", visitors: 305 },
+ *   { month: "March", visitors: 237 },
+ *   { month: "April", visitors: 73 },
+ *   { month: "May", visitors: 209 },
+ *   { month: "June", visitors: 214 },
+ *   { month: "July", visitors: 80 },
+ *   { month: "August", visitors: 189 },
+ *   { month: "September", visitors: 120 },
+ *   { month: "October", visitors: 290 },
+ *   { month: "November", visitors: 150 },
+ *   { month: "December", visitors: 180 },
+ * ];
+ * **/
+
+export async function getAdminUsers() {
   try {
     const { getUser } = getKindeServerSession();
     const user = await getUser();
     if (!user) {
       throw new Error("Unauthorized");
     }
+
+    const now = new Date();
+    const months = Array.from({ length: 12 })
+      .map((_, i) => {
+        const date = subMonths(now, i);
+        return {
+          start: startOfMonth(date),
+          end: endOfMonth(date),
+          month: format(date, "MMMM"),
+        };
+      })
+      .reverse();
+
+    const userCounts = await Promise.all(
+      months.map(({ start, end }) =>
+        prisma.user.count({
+          where: {
+            createdAt: {
+              gte: start,
+              lte: end,
+            },
+          },
+        }),
+      ),
+    );
+
+    return months.map((month, index) => ({
+      month: month.month,
+      visitors: userCounts[index],
+    }));
   } catch (e: unknown) {
     console.error("Error in getAdminUsers", e);
     if (e instanceof Error) {
