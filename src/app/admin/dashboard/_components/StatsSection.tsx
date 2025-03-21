@@ -4,6 +4,7 @@ import React from "react";
 import { useQuery } from "@tanstack/react-query";
 import { getAdminStatistics } from "../../../../actions/admin";
 import { Skeleton } from "../../../../components/ui/skeleton";
+import { LucideIcon } from "lucide-react";
 
 const StatsSection = () => {
   const { data, isLoading, error } = useQuery({
@@ -14,7 +15,7 @@ const StatsSection = () => {
     return (
       <div
         className={
-          "container mx-auto grid min-h-[250px] grid-cols-1 gap-4 md:grid-cols-3 lg:grid-cols-5"
+          "container mx-auto grid min-h-[250px] grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3"
         }
       >
         {Array.from({ length: 5 }).map((_, index) => (
@@ -25,11 +26,20 @@ const StatsSection = () => {
   }
 
   if (error) {
-    return <div>Error</div>;
+    return <div>Error: {error.message}</div>;
   }
 
   console.log(data);
 
-  return <div>StatsSection</div>;
+  return <section className={"container mx-auto"}>StatsSection</section>;
 };
 export default StatsSection;
+
+type cardProrps = {
+  total: number;
+  lastMonth: number;
+  thisMonth: number;
+  isIncreasing: boolean;
+  percentageChange: number;
+  icon: LucideIcon;
+};
