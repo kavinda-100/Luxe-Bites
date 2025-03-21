@@ -396,6 +396,48 @@ export async function getAdminOrders({ period }: { period: period }) {
     if (!user) {
       throw new Error("Unauthorized");
     }
+
+    const now = new Date();
+    let startDate: Date;
+
+    switch (period) {
+      case "7d":
+        startDate = subDays(now, 7);
+        break;
+      case "30d":
+        startDate = subDays(now, 30);
+        break;
+      case "90d":
+        startDate = subDays(now, 90);
+        break;
+      case "365d":
+        startDate = subDays(now, 365);
+        break;
+      default:
+        throw new Error("Invalid period");
+    }
+
+    const salesData = await prisma.order.groupBy({
+      by: ["createdAt"],
+      where: {
+        createdAt: {
+          gte: startDate,
+          lte: now,
+        },
+      },
+      _count: {
+        id: true,
+      },
+      _sum: {
+        quantity: true,
+      },
+    });
+
+    return salesData.map((order) => ({
+      date: format(order.createdAt, "yyyy-MM-dd"),
+      orders: order._count.id,
+      products: order._sum.quantity,
+    }));
   } catch (e: unknown) {
     console.error("Error in getAdminUsers", e);
     if (e instanceof Error) {
