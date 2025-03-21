@@ -1,6 +1,7 @@
 import React from "react";
+import OverviewPage from "./OverviewPage";
 
 const AdminPage = () => {
-  return <div>AdminPage</div>;
+  return <OverviewPage />;
 };
 export default AdminPage;
