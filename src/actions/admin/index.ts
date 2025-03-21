@@ -379,9 +379,16 @@ export async function getAdminSales({ period }: { period: period }) {
   }
 }
 
-// get order data for the last 30, 90 days and 1 year as a data set for the chart.
-// like the number of orders, number of products sold, and revenue generated in
-// the last 30, 90 days and 1 year.
+/** get order data for the last 7, 30, 90 days and 1 year as a data set for the chart.
+ * like the number of orders, the number of products sold.
+ * return type:-
+ * chartData = [
+ *   { date: "2025-03-01", orders: 222, products: 150 },
+ *   { date: "2025-03-02", orders: 97, products: 180 },
+ *   { date: "2025-03-03", orders: 167, products: 120 },
+ *   { date: "2025-03-04", orders: 242, products: 260 },
+ * ];
+ * **/
 export async function getAdminOrders({ period }: { period: period }) {
   try {
     const { getUser } = getKindeServerSession();
