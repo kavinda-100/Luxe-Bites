@@ -27,6 +27,12 @@ export type period = "last30" | "last90" | "last365";
   thisMonth: number;
   isIncreasing: boolean;
   },
+  activeProduct: {
+  total: number;
+  lastMonth: number;
+  thisMonth: number;
+  isIncreasing: boolean;
+  },
   category: {
   total: number;
   lastMonth: number;
@@ -71,6 +77,9 @@ export async function getAdminStatistics() {
       totalRevenue,
       revenueLastMonth,
       revenueThisMonth,
+      productsActive,
+      productsActiveLastMonth,
+      productsActiveThisMonth,
     ] = await Promise.all([
       prisma.order.count(),
       prisma.order.count({
@@ -173,6 +182,29 @@ export async function getAdminStatistics() {
           },
         })
         .then((result) => result._sum.totalAmount ?? 0),
+      prisma.product.count({
+        where: {
+          active: true,
+        },
+      }),
+      prisma.product.count({
+        where: {
+          active: true,
+          createdAt: {
+            gte: startOfLastMonth,
+            lte: endOfLastMonth,
+          },
+        },
+      }),
+      prisma.product.count({
+        where: {
+          active: true,
+          createdAt: {
+            gte: startOfCurrentMonth,
+            lte: endOfCurrentMonth,
+          },
+        },
+      }),
     ]);
 
     return {
@@ -193,6 +225,12 @@ export async function getAdminStatistics() {
         lastMonth: productsLastMonth,
         thisMonth: productsThisMonth,
         isIncreasing: productsThisMonth > productsLastMonth,
+      },
+      productActive: {
+        total: productsActive,
+        lastMonth: productsActiveLastMonth,
+        thisMonth: productsActiveThisMonth,
+        isIncreasing: productsActiveThisMonth > productsActiveLastMonth,
       },
       category: {
         total: totalCategories,
