@@ -16,6 +16,7 @@ import {
   ChartTooltipContent,
 } from "@/components/ui/chart";
 import * as React from "react";
+import { UsersIcon } from "lucide-react";
 
 type UsersChartType = {
   chartConfig: ChartConfig;
@@ -26,7 +27,10 @@ export function UsersChart({ chartConfig, chartData }: UsersChartType) {
   return (
     <Card>
       <CardHeader>
-        <CardTitle>Users Chart</CardTitle>
+        <CardTitle className={"flex items-center gap-3"}>
+          <UsersIcon className={"size-5 text-primary"} />
+          Users
+        </CardTitle>
         <CardDescription>
           Showing total visitors for the last 6 months
         </CardDescription>

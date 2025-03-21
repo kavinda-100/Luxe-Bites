@@ -26,6 +26,7 @@ import {
   SelectValue,
 } from "../../../../../../components/ui/select";
 import type { period } from "../../../../../../actions/admin";
+import { HandCoins } from "lucide-react";
 
 type SalesChartType = {
   timeRange: period;
@@ -60,7 +61,10 @@ export function SalesChart({
     <Card>
       <CardHeader className="flex items-center gap-2 space-y-0 border-b py-5 sm:flex-row">
         <div className="grid flex-1 gap-1 text-center sm:text-left">
-          <CardTitle>Sales Chart</CardTitle>
+          <CardTitle className={"flex items-center gap-3"}>
+            <HandCoins className={"size-5 text-primary"} />
+            Sales
+          </CardTitle>
           <CardDescription>Showing total Sales of {timeRange}</CardDescription>
         </div>
         <Select value={timeRange} onValueChange={setTimeRange as any}>
