@@ -4,6 +4,7 @@ import React from "react";
 import StatsSection from "./_components/StatsSection";
 import { useRightSideBar } from "../../../store/useRightSideBar";
 import { Component } from "../../../components/DemoChart";
+import SalesPage from "./_components/charts/Sales";
 
 const OverviewPage = () => {
   const { close } = useRightSideBar();
@@ -20,6 +21,7 @@ const OverviewPage = () => {
       {/*Sales*/}
       <h1 className={"text-md font-medium text-foreground/80"}>Sales</h1>
       <Component />
+      <SalesPage />
     </section>
   );
 };

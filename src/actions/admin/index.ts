@@ -4,7 +4,7 @@ import { getKindeServerSession } from "@kinde-oss/kinde-auth-nextjs/server";
 import { subMonths, startOfMonth, endOfMonth } from "date-fns";
 import { prisma } from "../../server/db";
 
-export type period = "last30" | "last90" | "last365";
+export type period = "7d" | "30d" | "90d" | "365d";
 
 /**
  * @description get the statistics like the number of users, number of products, number of orders,
