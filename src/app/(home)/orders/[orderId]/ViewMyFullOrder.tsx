@@ -180,35 +180,41 @@ const ViewMyFullOrder = ({ orderId }: { orderId: string }) => {
       </Card>
 
       {/*  cancel the order */}
-      <div
-        className={
-          "container mx-auto mt-4 flex flex-col gap-4 rounded-md bg-muted/40 p-4"
-        }
-      >
-        <Label className={"text-md font-semibold"}>Cancel The order</Label>
-        <Textarea
-          placeholder={"Type the reason for canceling the order"}
-          className={"w-full"}
-          rows={3}
-          value={cancelReason}
-          onChange={(e) => setCancelReason(e.target.value)}
-        />
-        <Button
-          className={"w-fit"}
-          variant={"outline"}
-          onClick={handleCancelOrder}
-          disabled={isPending}
+      {status === "CANCELLED" ? (
+        <div className={"container mx-auto mt-4 rounded-md bg-muted/40 p-4"}>
+          <p className="text-red-500">This order has been canceled</p>
+        </div>
+      ) : (
+        <div
+          className={
+            "container mx-auto mt-4 flex flex-col gap-4 rounded-md bg-muted/40 p-4"
+          }
         >
-          {isPending ? (
-            <Loader2 className={"size-3 animate-spin"} />
-          ) : (
-            <div className={"flex items-center gap-2"}>
-              <BanIcon className="h-4 w-4" />
-              Cancel
-            </div>
-          )}
-        </Button>
-      </div>
+          <Label className={"text-md font-semibold"}>Cancel The order</Label>
+          <Textarea
+            placeholder={"Type the reason for canceling the order"}
+            className={"w-full"}
+            rows={3}
+            value={cancelReason}
+            onChange={(e) => setCancelReason(e.target.value)}
+          />
+          <Button
+            className={"w-fit"}
+            variant={"outline"}
+            onClick={handleCancelOrder}
+            disabled={isPending}
+          >
+            {isPending ? (
+              <Loader2 className={"size-3 animate-spin"} />
+            ) : (
+              <div className={"flex items-center gap-2"}>
+                <BanIcon className="h-4 w-4" />
+                Cancel
+              </div>
+            )}
+          </Button>
+        </div>
+      )}
     </section>
   );
 };
