@@ -19,6 +19,7 @@ import { getAllNotifications } from "../../../../actions/notifications";
 import { Skeleton } from "../../../../components/ui/skeleton";
 import { Button } from "../../../../components/ui/button";
 import { TrashIcon, CheckIcon, RefreshCcwIcon } from "lucide-react";
+import NotificationCard from "./NotificationCard";
 
 const NotificationSection = () => {
   const [filter, setFilter] = React.useState<"all" | "unread" | "read">("all");
@@ -75,6 +76,17 @@ const NotificationSection = () => {
             <NotificationLoadingCard key={index} />
           ))}
         {error && <div>{error.message}</div>}
+        {/*  notifications */}
+        {data?.map((notification) => (
+          <NotificationCard
+            key={notification.id}
+            id={notification.id}
+            orderId={notification.orderId}
+            state={notification.state}
+            read={notification.read}
+            createdAt={notification.createdAt}
+          />
+        ))}
       </CardContent>
     </Card>
   );
