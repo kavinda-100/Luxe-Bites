@@ -31,8 +31,10 @@
         - [x] sales chart
         - [x] orders chart
         - [x] users chart
-    - [ ] Notifications
-        - [ ] new orders
+    - [x] Notifications
+        - [x] view all notifications
+        - [x] filter notifications read/unread
+        - [x] clear all notifications
 
 - `for the user`
 - [x] let user browse through categories
