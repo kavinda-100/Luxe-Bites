@@ -17,11 +17,13 @@ import {
 import { useQuery } from "@tanstack/react-query";
 import { getAllNotifications } from "../../../../actions/notifications";
 import { Skeleton } from "../../../../components/ui/skeleton";
+import { Button } from "../../../../components/ui/button";
+import { TrashIcon, CheckIcon, RefreshCcwIcon } from "lucide-react";
 
 const NotificationSection = () => {
   const [filter, setFilter] = React.useState<"all" | "unread" | "read">("all");
 
-  const { data, isLoading, error } = useQuery({
+  const { data, isLoading, error, refetch, isRefetching } = useQuery({
     queryKey: ["notifications", { filter }],
     queryFn: () => getAllNotifications({ filter }),
   });
@@ -34,7 +36,27 @@ const NotificationSection = () => {
       }
     >
       <CardHeader className={"flex flex-col gap-3"}>
-        <CardTitle>Notifications</CardTitle>
+        <CardTitle className={"sr-only"}>Notifications</CardTitle>
+        <div className={"flex justify-between gap-2"}>
+          <h1 className={"text-lg font-semibold"}>Notifications</h1>
+          <Button variant={"ghost"} size={"icon"} onClick={() => refetch()}>
+            {isRefetching ? (
+              <RefreshCcwIcon className={"size-3 animate-spin"} />
+            ) : (
+              <RefreshCcwIcon className={"size-3"} />
+            )}
+          </Button>
+        </div>
+        <div className={"flex justify-between gap-2"}>
+          <Button variant={"outline"} size={"sm"}>
+            <CheckIcon className={"size-3"} />
+            Mark all as read
+          </Button>
+          <Button variant={"outline"} size={"sm"}>
+            <TrashIcon className={"size-3"} />
+            Clear all
+          </Button>
+        </div>
         {/* select filters */}
         <Select value={filter} onValueChange={setFilter as any}>
           <SelectTrigger className="w-full">
