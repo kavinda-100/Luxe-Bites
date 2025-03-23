@@ -2,23 +2,23 @@
 
 import { motion } from "framer-motion";
 import { useState, useEffect } from "react";
-import { CheckCircle, CreditCard, Truck } from "lucide-react"; // Icons
+import { CreditCard, ShoppingCartIcon, Truck } from "lucide-react"; // Icons
 
 const steps = [
   {
     title: "Place Your Order",
     description: "Select your favorite meals and add them to your cart.",
-    icon: CreditCard,
+    icon: ShoppingCartIcon,
   },
   {
     title: "Processing Payment",
     description: "Your payment is securely processed.",
-    icon: Truck,
+    icon: CreditCard,
   },
   {
     title: "Delivered to Your Doorstep",
     description: "Your food is on the way! Enjoy your meal.",
-    icon: CheckCircle,
+    icon: Truck,
   },
 ];
 
