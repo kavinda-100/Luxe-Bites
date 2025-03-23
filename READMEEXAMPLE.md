@@ -58,5 +58,6 @@
     - [x] let user view order details
     - [x] let user cancel order
 - [ ] Home page
-- [ ] about us page
-- [ ] contact us page
+- [x] about us page
+- [x] contact us page
+- [ ] footer
