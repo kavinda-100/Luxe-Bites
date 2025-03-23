@@ -11,7 +11,7 @@ const AboutUs = () => {
       {/* Hero Section */}
       <div className="relative h-[400px] w-full overflow-hidden rounded-lg">
         <Image
-          src="/images/about-hero.jpg"
+          src="/about-hero.jpg"
           alt="Luxe Bites - About Us"
           layout="fill"
           objectFit="cover"
@@ -23,10 +23,10 @@ const AboutUs = () => {
         </div>
       </div>
 
-      {/* Who We Are Section */}
+      {/* Who We Are Sectioned. */}
       <div className="mt-12 grid grid-cols-1 items-center gap-8 md:grid-cols-2">
         <Image
-          src="/images/local-food.jpg"
+          src="/local-food.jpg"
           alt="Local Food"
           width={500}
           height={400}
@@ -59,7 +59,7 @@ const AboutUs = () => {
         <Card className="p-6">
           <CardContent>
             <Image
-              src="/images/fresh-food.jpg"
+              src="/fresh-food.jpg"
               alt="Fresh Food"
               width={100}
               height={100}
@@ -75,7 +75,7 @@ const AboutUs = () => {
         <Card className="p-6">
           <CardContent>
             <Image
-              src="/images/local-support.jpg"
+              src="/local-support.jpeg"
               alt="Support Local"
               width={100}
               height={100}
@@ -91,7 +91,7 @@ const AboutUs = () => {
         <Card className="p-6">
           <CardContent>
             <Image
-              src="/images/fast-delivery.jpg"
+              src="/fast-delivery.jpg"
               alt="Fast Delivery"
               width={100}
               height={100}
@@ -120,8 +120,8 @@ const AboutUs = () => {
                   ))}
                 </div>
                 <p className="mt-2 text-gray-700">
-                  "Luxe Bites made my life easier! The food is fresh and
-                  delivery is quick!"
+                  &#34;Luxe Bites made my life easier! The food is fresh and
+                  delivery is quick!&#34;
                 </p>
                 <p className="mt-2 text-gray-500">- Happy Customer</p>
               </CardContent>
