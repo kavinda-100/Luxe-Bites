@@ -62,6 +62,14 @@ export const stripePayment = async (
     if (!order) {
       throw new Error("Error creating order");
     }
+    // set the notification for the admin.
+    await prisma.notification.create({
+      data: {
+        orderId: order.id,
+        state: "NEWORDER",
+        read: false,
+      },
+    });
     // create the shipping details
     const shippingDetails = await prisma.shippingDetails.create({
       data: {

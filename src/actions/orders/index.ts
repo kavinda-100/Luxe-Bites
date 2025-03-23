@@ -237,6 +237,15 @@ export async function CancelOrder({
       },
     });
 
+    // set the notification for the admin.
+    await prisma.notification.create({
+      data: {
+        orderId: order.id,
+        state: "CANCLEDOREDER",
+        read: false,
+      },
+    });
+
     return {
       success: true,
       message: "Order canceled successfully",
