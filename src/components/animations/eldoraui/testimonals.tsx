@@ -17,7 +17,7 @@ export function Highlight({
   return (
     <span
       className={cn(
-        "bg-[#f0abfc] p-1 py-0.5 font-bold text-[#d946ef] dark:bg-[#f0abfc] dark:text-[#d946ef]",
+        "bg-primary/50 p-1 py-0.5 font-bold text-primary dark:bg-primary/50 dark:text-primary",
         className,
       )}
     >
@@ -49,7 +49,7 @@ export function TestimonialCard({
       className={cn(
         "mb-4 flex w-full cursor-pointer break-inside-avoid flex-col items-center justify-between gap-6 rounded-xl p-4",
         // light styles
-        "border border-neutral-200 bg-white",
+        "border border-neutral-200 bg-background shadow-sm",
         // dark styles
         "dark:bg-black dark:[border:1px_solid_rgba(255,255,255,.1)] dark:[box-shadow:0_-20px_80px_-20px_#ffffff1f_inset]",
         className,
@@ -71,14 +71,14 @@ export function TestimonialCard({
         <Image
           width={40}
           height={40}
-          src={img || ""}
+          src={img ?? ""}
           alt={name}
           className="size-10 rounded-full ring-1 ring-border ring-offset-4"
         />
 
         <div>
-          <p className="font-medium text-neutral-500">{name}</p>
-          <p className="text-xs font-normal text-neutral-400">{role}</p>
+          <p className="font-medium text-muted-foreground">{name}</p>
+          <p className="text-xs font-normal text-muted-foreground/80">{role}</p>
         </div>
       </div>
     </div>
@@ -88,141 +88,141 @@ export function TestimonialCard({
 const testimonials = [
   {
     name: "Alex Rivera",
-    role: "UI/UX Lead at InnovateTech",
+    role: "Food Blogger",
     img: "https://randomuser.me/api/portraits/men/91.jpg",
     description: (
       <p>
-        Using EldoraUI has revolutionized our design process.
+        Luxe Bites has completely transformed my dining experience.
         <Highlight>
-          Its reusable, animated components make it easy to deliver cutting-edge
-          designs.
+          Their gourmet food items are top-notch and always fresh.
         </Highlight>{" "}
-        A must-have for any design team.
+        A must-try for any food enthusiast.
       </p>
     ),
   },
   {
     name: "Samantha Lee",
-    role: "Frontend Engineer at NextGen Solutions",
+    role: "Culinary Expert",
     img: "https://randomuser.me/api/portraits/women/12.jpg",
     description: (
       <p>
-        EldoraUI&apos;s templates have drastically improved our development
-        speed.
+        Luxe Bites&apos;s selection of food items has drastically improved my
+        culinary creations.
         <Highlight>
-          We&apos;ve reduced project timelines by 70%, delivering high-quality
-          UIs effortlessly.
+          The quality and variety are unmatched, making it easy to create
+          high-quality dishes effortlessly.
         </Highlight>{" "}
-        Highly recommend it to fellow developers.
+        Highly recommend it to fellow chefs.
       </p>
     ),
   },
   {
     name: "Raj Patel",
-    role: "Founder at Startup Studio",
+    role: "Restaurant Owner",
     img: "https://randomuser.me/api/portraits/men/45.jpg",
     description: (
       <p>
-        As a startup founder, I need tools that help us grow fast without
-        sacrificing quality. EldoraUI&apos;s stunning designs and simple
-        integration have made it an essential part of our workflow.
-        <Highlight>Our clients love our modern interfaces.</Highlight>
+        As a restaurant owner, I need reliable suppliers. Luxe Bites&apos;s
+        premium food items and timely delivery have made it an essential part of
+        our supply chain.
+        <Highlight>Our customers love the quality of our dishes.</Highlight>
       </p>
     ),
   },
   {
     name: "Emily Chen",
-    role: "Product Designer at Global Systems",
+    role: "Home Chef",
     img: "https://randomuser.me/api/portraits/women/83.jpg",
     description: (
       <p>
-        EldoraUI&apos;s prebuilt components have made it so easy to create
-        intuitive and compliant designs.
+        Luxe Bites&apos;s pre-packaged meals have made it so easy to prepare
+        delicious and healthy meals at home.
         <Highlight>
-          It&apos;s perfect for tackling complex workflows with style.
+          It&apos;s perfect for busy individuals who still want to eat well.
         </Highlight>{" "}
-        A must-have for any product designer.
+        A must-have for any home chef.
       </p>
     ),
   },
   {
     name: "Michael Brown",
-    role: "Creative Director at FinTech Innovations",
+    role: "Food Critic",
     img: "https://randomuser.me/api/portraits/men/1.jpg",
     description: (
       <p>
-        EldoraUI&apos;s animations and design elements have elevated our fintech
-        app&apos;s user experience.
+        Luxe Bites&apos;s gourmet food items have elevated my dining reviews.
         <Highlight>
-          The feedback on our new design is phenomenal.
+          The feedback on their products is phenomenal.
         </Highlight>{" "}
-        It&apos;s a game-changer for user-centric applications.
+        It&apos;s a game-changer for food critics and enthusiasts.
       </p>
     ),
   },
   {
     name: "Linda Wu",
-    role: "Web Developer at LogiChain Solutions",
+    role: "Nutritionist",
     img: "https://randomuser.me/api/portraits/women/5.jpg",
     description: (
       <p>
-        EldoraUI&apos;s component library has simplified web development for our
-        logistics dashboard.
+        Luxe Bites&apos;s healthy food options have simplified meal planning for
+        my clients.
         <Highlight>
-          Building custom layouts has never been this efficient.
+          Building nutritious and delicious meal plans has never been this
+          efficient.
         </Highlight>{" "}
       </p>
     ),
   },
   {
     name: "Carlos Gomez",
-    role: "Digital Marketing Specialist at EcoTech",
+    role: "Fitness Trainer",
     img: "https://randomuser.me/api/portraits/men/14.jpg",
     description: (
       <p>
-        EldoraUI&apos;s responsive designs have helped us create marketing sites
-        that look amazing on every device.
+        Luxe Bites&apos;s protein-packed snacks have helped my clients stay
+        energized and healthy.
         <Highlight>
-          It&apos;s revolutionized how we approach branding online.
+          It&apos;s revolutionized how we approach fitness nutrition.
         </Highlight>{" "}
       </p>
     ),
   },
   {
     name: "Aisha Khan",
-    role: "E-commerce Product Manager at FashionForward",
+    role: "E-commerce Specialist",
     img: "https://randomuser.me/api/portraits/women/56.jpg",
     description: (
       <p>
-        EldoraUI&apos;s beautifully crafted components have completely
-        transformed our fashion storefront.
+        Luxe Bites&apos;s beautifully crafted food items have completely
+        transformed our online store.
         <Highlight>
-          Customers love the dynamic shopping experience.
+          Customers love the dynamic shopping experience and the quality of the
+          products.
         </Highlight>{" "}
       </p>
     ),
   },
   {
     name: "Tom Chen",
-    role: "Healthcare App Designer at HealthTech Solutions",
+    role: "Health Coach",
     img: "https://randomuser.me/api/portraits/men/18.jpg",
     description: (
       <p>
-        EldoraUI has made it easy to create user-friendly, accessible interfaces
-        for our healthcare apps.
+        Luxe Bites has made it easy to create user-friendly, accessible meal
+        plans for my clients.
         <Highlight>
-          It&apos;s a crucial part of our design system.
+          It&apos;s a crucial part of our health coaching system.
         </Highlight>{" "}
       </p>
     ),
   },
   {
     name: "Sofia Patel",
-    role: "EdTech Founder at EduSafe Innovations",
+    role: "Teacher",
     img: "https://randomuser.me/api/portraits/women/73.jpg",
     description: (
       <p>
-        EldoraUI&apos;s education-focused templates have doubled our
+        Luxe Bites&apos;s education-focused food kits have doubled our
         platform&apos;s usability.
         <Highlight>
           It&apos;s tailor-made for addressing student and teacher needs.
@@ -240,11 +240,8 @@ export function Testimonials() {
       </h2>
       <h3 className="mx-auto mb-8 max-w-lg text-balance text-center text-lg font-medium tracking-tight text-foreground/80">
         Don&apos;t just take our word for it. Here&apos;s what{" "}
-        <span className="bg-gradient bg-clip-text text-transparent">
-          real people
-        </span>{" "}
-        are saying about{" "}
-        <span className="from-fg-onAccent text-purple-600">Eldora UI</span>
+        <span className="text-foreground">real people</span> are saying about{" "}
+        <span className="from-fg-onAccent text-primary">Luxe Bites</span>
       </h3>
       <div className="relative mt-6 max-h-screen overflow-hidden">
         <div className="gap-4 md:columns-2 xl:columns-3 2xl:columns-4">
