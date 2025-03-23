@@ -57,6 +57,36 @@ export async function markAsRead(id: string) {
   }
 }
 
+export async function markAllAsRead() {
+  try {
+    const { getUser } = getKindeServerSession();
+    const user = await getUser();
+    if (!user) {
+      throw new Error("Unauthorized");
+    }
+
+    await prisma.notification.updateMany({
+      where: {
+        read: false,
+      },
+      data: {
+        read: true,
+      },
+    });
+
+    return {
+      success: true,
+      message: "All notifications marked as read successfully",
+    };
+  } catch (e: unknown) {
+    console.log("Error in markAllAsRead", e);
+    if (e instanceof Error) {
+      throw new Error(e.message);
+    }
+    throw new Error("Internal Server Error");
+  }
+}
+
 export async function clearAllNotifications() {
   try {
     const { getUser } = getKindeServerSession();
