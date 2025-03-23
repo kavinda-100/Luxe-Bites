@@ -34,7 +34,7 @@ const SuccessPage = () => {
             Your order has been placed successfully
           </p>
         </div>
-        <Link href={"/dashboard"} className={cn(buttonVariants())}>
+        <Link href={"/orders"} className={cn(buttonVariants())}>
           See the order
           <ArrowRightIcon className={"size-4"} />
         </Link>
