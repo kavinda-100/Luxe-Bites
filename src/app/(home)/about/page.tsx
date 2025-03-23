@@ -34,7 +34,7 @@ const AboutUs = () => {
         />
         <div>
           <h2 className="text-3xl font-bold">Who We Are</h2>
-          <p className="mt-4 text-gray-600">
+          <p className="mt-4 text-muted-foreground">
             Luxe Bites is a one-stop e-commerce platform connecting local food
             shops with customers who love fresh and organic food. We aim to
             support small businesses while delivering high-quality meals and
@@ -46,7 +46,7 @@ const AboutUs = () => {
       {/* Our Mission & Vision */}
       <div className="mt-16 text-center">
         <h2 className="text-3xl font-bold">Our Mission & Vision</h2>
-        <p className="mx-auto mt-4 max-w-2xl text-gray-600">
+        <p className="mx-auto mt-4 max-w-2xl text-muted-foreground">
           Luxe Bites is dedicated to **making local food accessible**, promoting
           **sustainability**, and ensuring **fast & fresh delivery**. We believe
           in empowering local food businesses and providing the best for our
@@ -61,12 +61,12 @@ const AboutUs = () => {
             <Image
               src="/fresh-food.jpg"
               alt="Fresh Food"
-              width={100}
-              height={100}
-              className="mx-auto"
+              width={200}
+              height={200}
+              className="mx-auto rounded-full"
             />
             <h3 className="mt-4 text-xl font-semibold">Fresh & Organic</h3>
-            <p className="mt-2 text-gray-600">
+            <p className="mt-2 text-muted-foreground">
               We source food directly from trusted local shops.
             </p>
           </CardContent>
@@ -77,12 +77,12 @@ const AboutUs = () => {
             <Image
               src="/local-support.jpeg"
               alt="Support Local"
-              width={100}
-              height={100}
-              className="mx-auto"
+              width={200}
+              height={200}
+              className="mx-auto rounded-full"
             />
             <h3 className="mt-4 text-xl font-semibold">Support Local Shops</h3>
-            <p className="mt-2 text-gray-600">
+            <p className="mt-2 text-muted-foreground">
               Your purchases help small food businesses grow.
             </p>
           </CardContent>
@@ -93,14 +93,14 @@ const AboutUs = () => {
             <Image
               src="/fast-delivery.jpg"
               alt="Fast Delivery"
-              width={100}
-              height={100}
-              className="mx-auto"
+              width={200}
+              height={200}
+              className="mx-auto rounded-full"
             />
             <h3 className="mt-4 text-xl font-semibold">
               Fast & Reliable Delivery
             </h3>
-            <p className="mt-2 text-gray-600">
+            <p className="mt-2 text-muted-foreground">
               Enjoy fresh food at your doorstep in no time.
             </p>
           </CardContent>
@@ -119,11 +119,11 @@ const AboutUs = () => {
                     <Star key={i} className="text-yellow-500" />
                   ))}
                 </div>
-                <p className="mt-2 text-gray-700">
+                <p className="mt-2 text-muted-foreground">
                   &#34;Luxe Bites made my life easier! The food is fresh and
                   delivery is quick!&#34;
                 </p>
-                <p className="mt-2 text-gray-500">- Happy Customer</p>
+                <p className="text-muted-foreground0 mt-2">- Happy Customer</p>
               </CardContent>
             </Card>
           ))}
