@@ -220,3 +220,41 @@ export async function deleteProducts(ids: string | string[]) {
     throw new Error("Internal server cancel");
   }
 }
+
+// get featured products that have a rating of 3 or more and higher reviews and limit to 4
+export const getFeaturedProducts = async () => {
+  try {
+    const featuredProducts = await prisma.product.findMany({
+      where: {
+        rating: {
+          gte: 3,
+        },
+      },
+      orderBy: {
+        reviews: {
+          _count: "desc",
+        },
+      },
+      take: 4,
+      include: {
+        category: true,
+        reviews: true,
+      },
+    });
+
+    return featuredProducts.map((product) => ({
+      id: product.id,
+      name: product.name,
+      price: product.price,
+      discount: product.discount,
+      image: product.image,
+      description: product.description,
+    }));
+  } catch (e: unknown) {
+    console.log("Error getting featured products: ", e);
+    if (e instanceof Error) {
+      throw new Error(e.message);
+    }
+    throw new Error("Internal server error");
+  }
+};

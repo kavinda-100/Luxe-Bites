@@ -4,7 +4,6 @@ import React from "react";
 import {
   Card,
   CardContent,
-  CardFooter,
   CardHeader,
   CardTitle,
 } from "../../../../../components/ui/card";
@@ -13,8 +12,6 @@ import {
   cn,
   formatCurrency,
 } from "../../../../../lib/utils";
-import { Button } from "../../../../../components/ui/button";
-import { ChevronRight } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { useZoomImage } from "../../../../../hooks/useZoomImage";
 import WishListButton from "./WishListButton";
@@ -106,16 +103,6 @@ const ProductCard = ({
           <p className={"font-mono text-lg font-bold"}>{discount}% off</p>
         </div>
       </CardContent>
-      {/*<CardFooter>*/}
-      {/*  <Button*/}
-      {/*    onClick={handleViewDetails}*/}
-      {/*    className={"w-full"}*/}
-      {/*    variant={"outline"}*/}
-      {/*  >*/}
-      {/*    View Details*/}
-      {/*    <ChevronRight className={"size-4"} />*/}
-      {/*  </Button>*/}
-      {/*</CardFooter>*/}
     </Card>
   );
 };

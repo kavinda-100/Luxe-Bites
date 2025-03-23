@@ -5,6 +5,7 @@ import React from "react";
 import { TypewriterEffect } from "../../components/animations/aceternity/typewriter-effect";
 import { Testimonials } from "../../components/animations/eldoraui/testimonals";
 import HowItWorks from "../../components/animations/HowItWorks";
+import FeaturedProducts from "../../components/FeaturedProducts";
 
 const words = [
   { text: "Welcome" },
@@ -50,6 +51,9 @@ export default function HomePage() {
             </Link>
           </div>
         </section>
+
+        {/* Featured Products */}
+        <FeaturedProducts />
 
         {/* How It Works */}
         <HowItWorks />
