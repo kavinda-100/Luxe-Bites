@@ -29,7 +29,7 @@ export async function getMyOrders() {
     return orders.map((order) => ({
       orderId: order.id,
       userId: user.id,
-      userEmail: user.email,
+      userEmail: user.email!,
       productCount: order.productIds.length,
       quantity: order.quantity,
       totalAmount: order.totalAmount,
