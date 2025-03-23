@@ -13,6 +13,7 @@ import {
 } from "@/components/ui/sheet";
 import {
   ChevronDownIcon,
+  FoldersIcon,
   HeartIcon,
   Menu,
   ShoppingCartIcon,
@@ -98,9 +99,9 @@ const Header = async () => {
               </Link>
             </DropdownMenuItem>
             <DropdownMenuItem>
-              <Link href={"/profile"} className={"flex items-center gap-2"}>
-                <UserIcon className={"size-3"} />
-                <span>Profile</span>
+              <Link href={"/orders"} className={"flex items-center gap-2"}>
+                <FoldersIcon className={"size-3"} />
+                <span>My Orders</span>
               </Link>
             </DropdownMenuItem>
           </DropdownMenuContent>
