@@ -60,4 +60,4 @@
 - [ ] Home page
 - [x] about us page
 - [x] contact us page
-- [ ] footer
+- [x] footer
