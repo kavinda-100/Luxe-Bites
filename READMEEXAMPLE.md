@@ -52,6 +52,8 @@
 - [x] let user view orders
     - [x] let user view order details
     - [x] let user cancel order
+
+- `for the website`
 - [x] Home page
 - [x] about us page
 - [x] contact us page
