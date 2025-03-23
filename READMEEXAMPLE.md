@@ -54,12 +54,9 @@
     - [x] let user clear cart
     - [x] let user checkout
     - [x] checkout dialog
-- [ ] let user view orders
-    - [ ] let user view order details
-    - [ ] let user cancel order
-- [ ] let user view profile
-    - [ ] let user update profile
-    - [ ] let user delete profile
+- [x] let user view orders
+    - [x] let user view order details
+    - [x] let user cancel order
 - [ ] Home page
 - [ ] about us page
 - [ ] contact us page
