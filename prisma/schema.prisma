@@ -140,6 +140,8 @@ model Order {
 
     user        User    @relation(fields: [userId], references: [kindUserId])
 
+    notifications Notification[]
+
     createdAt DateTime @default(now())
     updatedAt DateTime @updatedAt
 
@@ -168,6 +170,23 @@ model ShippingDetails {
     @@index([id, userId, orderId]) // Index for searching by id or userId or orderId
 }
 
+enum State {
+    NEWORDER // new order
+    CANCLEDOREDER // canceled order
+}
+model Notification { // for orders
+    id          String   @id @default(cuid())
+    orderId      String
+    state       State
+    read        Boolean @default(false)
+
+    order      Order    @relation(fields: [orderId], references: [id])
+
+    createdAt DateTime @default(now())
+    updatedAt DateTime @updatedAt
+
+    @@index([id, orderId]) // Index for searching by id or userId
+}
 
 
 
