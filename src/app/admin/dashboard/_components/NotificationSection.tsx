@@ -85,6 +85,7 @@ const NotificationSection = () => {
             state={notification.state}
             read={notification.read}
             createdAt={notification.createdAt}
+            updatedAt={notification.updatedAt}
           />
         ))}
       </CardContent>
