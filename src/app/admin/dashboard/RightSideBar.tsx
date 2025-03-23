@@ -3,12 +3,7 @@
 import React from "react";
 import { useRightSideBar } from "../../../store/useRightSideBar";
 import { cn } from "../../../lib/utils";
-import {
-  Card,
-  CardContent,
-  CardHeader,
-  CardTitle,
-} from "../../../components/ui/card";
+import NotificationSection from "./_components/NotificationSection";
 
 const RightSideBar = ({
   children,
@@ -24,18 +19,7 @@ const RightSideBar = ({
       >
         {children}
       </section>
-      {isOpen && (
-        <Card
-          className={
-            "h-full w-3/12 max-w-[300px] shadow-sm transition-all duration-200 ease-linear"
-          }
-        >
-          <CardHeader>
-            <CardTitle>Notifications</CardTitle>
-          </CardHeader>
-          <CardContent></CardContent>
-        </Card>
-      )}
+      {isOpen && <NotificationSection />}
     </section>
   );
 };
