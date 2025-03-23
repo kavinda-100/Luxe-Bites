@@ -52,7 +52,7 @@
 - [x] let user view orders
     - [x] let user view order details
     - [x] let user cancel order
-- [ ] Home page
+- [x] Home page
 - [x] about us page
 - [x] contact us page
 - [x] footer
