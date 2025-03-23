@@ -1,8 +1,3 @@
-### Spend Hours
-
-- tue - 02- 2025 = 4.30 hours
-- wed - 03- 2025 = 4.30 hours
-
 ## left to do
 
 - `for the Admin`
