@@ -14,21 +14,59 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { useQuery } from "@tanstack/react-query";
-import { getAllNotifications } from "../../../../actions/notifications";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import {
+  clearAllNotifications,
+  getAllNotifications,
+  markAllAsRead,
+} from "../../../../actions/notifications";
 import { Skeleton } from "../../../../components/ui/skeleton";
 import { Button } from "../../../../components/ui/button";
-import { TrashIcon, CheckIcon, RefreshCcwIcon } from "lucide-react";
+import { TrashIcon, CheckIcon, RefreshCcwIcon, Loader2 } from "lucide-react";
 import NotificationCard from "./NotificationCard";
+import { toast } from "sonner";
 
 const NotificationSection = () => {
+  const queryClient = useQueryClient();
   const [filter, setFilter] = React.useState<"all" | "unread" | "read">("all");
 
+  //get all notifications
   const { data, isLoading, error, refetch, isRefetching } = useQuery({
     queryKey: ["notifications", { filter }],
     queryFn: () => getAllNotifications({ filter }),
   });
-  console.log(data);
+
+  // clear all notifications
+  const { mutate: clearAllMutation, isPending: isClearingAllIsPending } =
+    useMutation({
+      mutationFn: clearAllNotifications,
+      onSuccess: async (res) => {
+        if (res.success) {
+          await queryClient.invalidateQueries({ queryKey: ["notifications"] });
+          toast.success(res.message);
+        }
+      },
+      onError: (e) => {
+        toast.error(e.message);
+      },
+    });
+
+  // mark all as read
+  const {
+    mutate: markAllAsReadMutation,
+    isPending: isMarkingAllAsReadPending,
+  } = useMutation({
+    mutationFn: markAllAsRead,
+    onSuccess: async (res) => {
+      if (res.success) {
+        await queryClient.invalidateQueries({ queryKey: ["notifications"] });
+        toast.success(res.message);
+      }
+    },
+    onError: (e) => {
+      toast.error(e.message);
+    },
+  });
 
   return (
     <Card
@@ -49,13 +87,33 @@ const NotificationSection = () => {
           </Button>
         </div>
         <div className={"flex justify-between gap-2"}>
-          <Button variant={"outline"} size={"sm"}>
-            <CheckIcon className={"size-3"} />
-            Mark all as read
+          <Button
+            variant={"outline"}
+            size={"sm"}
+            onClick={() => markAllAsReadMutation()}
+          >
+            {!isMarkingAllAsReadPending ? (
+              <div className={"flex items-center gap-2"}>
+                <CheckIcon className={"size-3"} />
+                Mark all as read
+              </div>
+            ) : (
+              <Loader2 className={"size-3 animate-spin"} />
+            )}
           </Button>
-          <Button variant={"outline"} size={"sm"}>
-            <TrashIcon className={"size-3"} />
-            Clear all
+          <Button
+            variant={"outline"}
+            size={"sm"}
+            onClick={() => clearAllMutation()}
+          >
+            {!isClearingAllIsPending ? (
+              <div className={"flex items-center gap-2"}>
+                <TrashIcon className={"size-3"} />
+                Clear all
+              </div>
+            ) : (
+              <Loader2 className={"size-3 animate-spin"} />
+            )}
           </Button>
         </div>
         {/* select filters */}
