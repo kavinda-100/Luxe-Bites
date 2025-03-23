@@ -5,20 +5,19 @@ import { useQuery } from "@tanstack/react-query";
 import { getAdminStatistics } from "../../../../actions/admin";
 import { Skeleton } from "../../../../components/ui/skeleton";
 import {
-  ArrowDown01,
-  ArrowUp10,
   CircleDollarSignIcon,
   FoldersIcon,
   Grid2X2Icon,
   type LucideIcon,
   ShoppingBagIcon,
   ShoppingBasketIcon,
+  TrendingDown,
+  TrendingUp,
   UserIcon,
 } from "lucide-react";
 import {
   Card,
   CardContent,
-  CardFooter,
   CardHeader,
   CardTitle,
 } from "../../../../components/ui/card";
@@ -141,13 +140,36 @@ const StatsCard = ({
   return (
     <Card>
       <CardHeader>
-        <CardTitle className={"flex items-center gap-3"}>
-          <Icon className={"size-5 text-primary"} />
-          {label}
-        </CardTitle>
+        <CardTitle className={"sr-only"}>{label}</CardTitle>
+        <div className={"flex w-full justify-between gap-3"}>
+          {/* icon and title */}
+          <div className={"flex items-center gap-3"}>
+            <Icon className={"size-5 text-primary"} />
+            {label}
+          </div>
+          {/* percentage */}
+          <div
+            className={
+              "rounded-md border px-2 py-1 text-sm font-normal text-foreground/60"
+            }
+          >
+            {isIncreasing ? (
+              <p>
+                Increased By{" "}
+                {Math.ceil(percentageChange === -100 ? 0 : percentageChange)}%
+              </p>
+            ) : (
+              <p>
+                Decreased By{" "}
+                {Math.ceil(percentageChange === -100 ? 0 : percentageChange)}%
+              </p>
+            )}
+          </div>
+        </div>
       </CardHeader>
-      <CardContent className={"flex justify-between gap-3"}>
-        <div className={"flex flex-col gap-3"}>
+      <CardContent className={"flex flex-col gap-3"}>
+        {/* amount - money/number */}
+        <div className={"flex items-center gap-3"}>
           {isMoney ? (
             <span className={"flex items-center gap-1 text-3xl"}>
               $
@@ -165,18 +187,22 @@ const StatsCard = ({
           )}
           <p className={"text-md font-normal"}>Total</p>
         </div>
-
-        <div className={"text-md flex flex-col items-center gap-2 font-normal"}>
-          <p>
+        {/* this month - last month */}
+        <div
+          className={
+            "text-md mt-3 flex items-center justify-between gap-2 font-normal"
+          }
+        >
+          <p className={"flex flex-col gap-1"}>
             {isMoney ? (
-              <>
+              <span className={"flex items-center gap-1"}>
                 $
                 <NumberTicker
                   value={thisMonth}
                   className={"font-mono text-lg font-semibold"}
                   decimalPlaces={2}
                 />{" "}
-              </>
+              </span>
             ) : (
               <>
                 <NumberTicker
@@ -188,20 +214,20 @@ const StatsCard = ({
             This month
           </p>
           {isIncreasing ? (
-            <ArrowUp10 className={"size-5 text-emerald-500"} />
+            <TrendingUp className={"size-6 text-emerald-500"} />
           ) : (
-            <ArrowDown01 className={"size-5 text-red-500"} />
+            <TrendingDown className={"size-6 text-red-500"} />
           )}
-          <p>
+          <p className={"flex flex-col gap-1"}>
             {isMoney ? (
-              <>
+              <span className={"flex items-center gap-1"}>
                 $
                 <NumberTicker
                   value={lastMonth}
                   className={"font-mono text-lg font-semibold"}
                   decimalPlaces={2}
                 />{" "}
-              </>
+              </span>
             ) : (
               <>
                 <NumberTicker
@@ -214,21 +240,6 @@ const StatsCard = ({
           </p>
         </div>
       </CardContent>
-      <CardFooter>
-        <div className={"text-sm font-normal text-foreground/60"}>
-          {isIncreasing ? (
-            <p>
-              Increased By{" "}
-              {Math.ceil(percentageChange === -100 ? 0 : percentageChange)}%
-            </p>
-          ) : (
-            <p>
-              Decreased By{" "}
-              {Math.ceil(percentageChange === -100 ? 0 : percentageChange)}%
-            </p>
-          )}
-        </div>
-      </CardFooter>
     </Card>
   );
 };
