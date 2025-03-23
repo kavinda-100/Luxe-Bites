@@ -19,6 +19,11 @@ const config: NextConfig = {
         hostname: "62966vzr5x.ufs.sh",
         port: "",
       },
+      {
+        protocol: "https",
+        hostname: "randomuser.me",
+        port: "",
+      },
     ],
   },
 };

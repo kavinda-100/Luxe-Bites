@@ -3,6 +3,7 @@ import ButtonRotatingBackgroundGradient from "../../components/animations/Button
 import Link from "next/link";
 import React from "react";
 import { TypewriterEffect } from "../../components/animations/aceternity/typewriter-effect";
+import { Testimonials } from "../../components/animations/eldoraui/testimonals";
 
 const words = [
   { text: "Welcome" },
@@ -47,6 +48,11 @@ export default function HomePage() {
               <ButtonRotatingBackgroundGradient text={"Order Now"} />
             </Link>
           </div>
+        </section>
+
+        {/* Testimonials */}
+        <section className="container relative z-10 mx-auto mb-8 mt-4 h-[700px] w-full overflow-hidden rounded-lg bg-background">
+          <Testimonials />
         </section>
       </section>
     </>
