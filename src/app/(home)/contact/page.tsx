@@ -1,18 +1,15 @@
 "use client";
 
 import React from "react";
-import { Input } from "@/components/ui/input";
-import { Textarea } from "@/components/ui/textarea";
-import { Button } from "@/components/ui/button";
 import { Mail, Phone, MapPin } from "lucide-react";
 
 const ContactUs = () => {
   return (
-    <section className="container mx-auto px-6 py-12">
+    <section className="container mx-auto min-h-screen px-6 py-12">
       {/* Header */}
       <h1 className="text-center text-4xl font-bold">Contact Us</h1>
-      <p className="mt-2 text-center text-gray-600">
-        Have questions? Reach out to us, and we'll be happy to assist you.
+      <p className="mt-2 text-center text-muted-foreground">
+        Have questions? Reach out to us, and we&#39;ll be happy to assist you.
       </p>
 
       {/* Contact Info */}
@@ -20,29 +17,21 @@ const ContactUs = () => {
         <div>
           <Mail className="mx-auto text-primary" size={40} />
           <h3 className="mt-2 text-lg font-semibold">Email Us</h3>
-          <p className="text-gray-600">support@luxebites.com</p>
+          <p className="text-muted-foreground">support@luxebites.com</p>
         </div>
         <div>
           <Phone className="mx-auto text-primary" size={40} />
           <h3 className="mt-2 text-lg font-semibold">Call Us</h3>
-          <p className="text-gray-600">+1 234 567 890</p>
+          <p className="text-muted-foreground">+1 234 567 890</p>
         </div>
         <div>
           <MapPin className="mx-auto text-primary" size={40} />
           <h3 className="mt-2 text-lg font-semibold">Our Location</h3>
-          <p className="text-gray-600">123 Luxe Bites St, Food City, USA</p>
+          <p className="text-muted-foreground">
+            123 Luxe Bites St, Food City, USA
+          </p>
         </div>
       </div>
-
-      {/* Contact Form */}
-      <form className="mx-auto mt-12 max-w-lg space-y-4">
-        <Input placeholder="Your Name" required />
-        <Input type="email" placeholder="Your Email" required />
-        <Textarea placeholder="Your Message" required />
-        <Button type="submit" className="w-full">
-          Send Message
-        </Button>
-      </form>
     </section>
   );
 };
