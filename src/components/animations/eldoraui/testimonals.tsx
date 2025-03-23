@@ -4,8 +4,8 @@ import { cn } from "@/lib/utils";
 import { motion } from "framer-motion";
 import { Star } from "lucide-react";
 import Image from "next/image";
-import React from "react";
 import { Marquee } from "./marquee";
+import React from "react";
 
 export function Highlight({
   children,
@@ -17,7 +17,7 @@ export function Highlight({
   return (
     <span
       className={cn(
-        "rounded-sm bg-primary/90 p-1 py-0.5 font-bold text-white",
+        "bg-[#f0abfc] p-1 py-0.5 font-bold text-[#d946ef] dark:bg-[#f0abfc] dark:text-[#d946ef]",
         className,
       )}
     >
@@ -71,7 +71,7 @@ export function TestimonialCard({
         <Image
           width={40}
           height={40}
-          src={img ?? ""}
+          src={img || ""}
           alt={name}
           className="size-10 rounded-full ring-1 ring-border ring-offset-4"
         />
@@ -92,10 +92,10 @@ const testimonials = [
     img: "https://randomuser.me/api/portraits/men/91.jpg",
     description: (
       <p>
-        Digital Hub has transformed our design process.
+        Using EldoraUI has revolutionized our design process.
         <Highlight>
-          Its extensive collection of templates and UI kits makes it easy to
-          deliver top-notch designs.
+          Its reusable, animated components make it easy to deliver cutting-edge
+          designs.
         </Highlight>{" "}
         A must-have for any design team.
       </p>
@@ -107,7 +107,7 @@ const testimonials = [
     img: "https://randomuser.me/api/portraits/women/12.jpg",
     description: (
       <p>
-        Digital Hub&apos;s resources have drastically improved our development
+        EldoraUI&apos;s templates have drastically improved our development
         speed.
         <Highlight>
           We&apos;ve reduced project timelines by 70%, delivering high-quality
@@ -124,7 +124,7 @@ const testimonials = [
     description: (
       <p>
         As a startup founder, I need tools that help us grow fast without
-        sacrificing quality. Digital Hub&apos;s stunning designs and simple
+        sacrificing quality. EldoraUI&apos;s stunning designs and simple
         integration have made it an essential part of our workflow.
         <Highlight>Our clients love our modern interfaces.</Highlight>
       </p>
@@ -136,7 +136,7 @@ const testimonials = [
     img: "https://randomuser.me/api/portraits/women/83.jpg",
     description: (
       <p>
-        Digital Hub&apos;s prebuilt components have made it so easy to create
+        EldoraUI&apos;s prebuilt components have made it so easy to create
         intuitive and compliant designs.
         <Highlight>
           It&apos;s perfect for tackling complex workflows with style.
@@ -151,8 +151,8 @@ const testimonials = [
     img: "https://randomuser.me/api/portraits/men/1.jpg",
     description: (
       <p>
-        Digital Hub&apos;s animations and design elements have elevated our
-        fintech app&apos;s user experience.
+        EldoraUI&apos;s animations and design elements have elevated our fintech
+        app&apos;s user experience.
         <Highlight>
           The feedback on our new design is phenomenal.
         </Highlight>{" "}
@@ -166,8 +166,8 @@ const testimonials = [
     img: "https://randomuser.me/api/portraits/women/5.jpg",
     description: (
       <p>
-        Digital Hub&apos;s component library has simplified web development for
-        our logistics dashboard.
+        EldoraUI&apos;s component library has simplified web development for our
+        logistics dashboard.
         <Highlight>
           Building custom layouts has never been this efficient.
         </Highlight>{" "}
@@ -180,8 +180,8 @@ const testimonials = [
     img: "https://randomuser.me/api/portraits/men/14.jpg",
     description: (
       <p>
-        Digital Hub&apos;s responsive designs have helped us create marketing
-        sites that look amazing on every device.
+        EldoraUI&apos;s responsive designs have helped us create marketing sites
+        that look amazing on every device.
         <Highlight>
           It&apos;s revolutionized how we approach branding online.
         </Highlight>{" "}
@@ -194,7 +194,7 @@ const testimonials = [
     img: "https://randomuser.me/api/portraits/women/56.jpg",
     description: (
       <p>
-        Digital Hub&apos;s beautifully crafted components have completely
+        EldoraUI&apos;s beautifully crafted components have completely
         transformed our fashion storefront.
         <Highlight>
           Customers love the dynamic shopping experience.
@@ -208,8 +208,8 @@ const testimonials = [
     img: "https://randomuser.me/api/portraits/men/18.jpg",
     description: (
       <p>
-        Digital Hub has made it easy to create user-friendly, accessible
-        interfaces for our healthcare apps.
+        EldoraUI has made it easy to create user-friendly, accessible interfaces
+        for our healthcare apps.
         <Highlight>
           It&apos;s a crucial part of our design system.
         </Highlight>{" "}
@@ -222,7 +222,7 @@ const testimonials = [
     img: "https://randomuser.me/api/portraits/women/73.jpg",
     description: (
       <p>
-        Digital Hub&apos;s education-focused templates have doubled our
+        EldoraUI&apos;s education-focused templates have doubled our
         platform&apos;s usability.
         <Highlight>
           It&apos;s tailor-made for addressing student and teacher needs.
@@ -239,9 +239,12 @@ export function Testimonials() {
         What People Are Saying
       </h2>
       <h3 className="mx-auto mb-8 max-w-lg text-balance text-center text-lg font-medium tracking-tight text-foreground/80">
-        Don&apos;t just take our word for it. Here&apos;s what real people are
-        saying about{" "}
-        <span className="from-fg-onAccent text-primary">Digital Bub</span>
+        Don&apos;t just take our word for it. Here&apos;s what{" "}
+        <span className="bg-gradient bg-clip-text text-transparent">
+          real people
+        </span>{" "}
+        are saying about{" "}
+        <span className="from-fg-onAccent text-purple-600">Eldora UI</span>
       </h3>
       <div className="relative mt-6 max-h-screen overflow-hidden">
         <div className="gap-4 md:columns-2 xl:columns-3 2xl:columns-4">
