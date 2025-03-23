@@ -20,7 +20,7 @@ export function useCancelOrder() {
       if (res.success) {
         toast.success(res.message);
         await queryClient.invalidateQueries({
-          queryKey: ["orders", "order", variables.orderId],
+          queryKey: ["orders", "order", "notifications", variables.orderId],
         });
       }
     },
