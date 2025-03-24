@@ -28,7 +28,7 @@ export default async function RootLayout({
   }
   // check if user is admin
   if (role !== "ADMIN") {
-    return redirect("/error?message=Unauthorized-Access Denied");
+    return <Unauthorized />;
   }
 
   return (
