@@ -10,7 +10,7 @@ const products = [
     stock: 100,
     image:
       "https://62966vzr5x.ufs.sh/f/Ay4pssvNA9trAIFgi7vNA9tr0sLCUcIWPxodT3ezYM7FlHhu",
-    categoryId: "cm7mzj3ie00017zw53ddgfnmt",
+    categoryId: "cm8mo2u7g0001vvzhlgljniz5",
     active: true,
     rating: 4.8,
   },
@@ -23,7 +23,7 @@ const products = [
     stock: 80,
     image:
       "https://62966vzr5x.ufs.sh/f/Ay4pssvNA9tryfx12x6ADTXwxg1QlasV9N5jKfYBJWGLHhq3",
-    categoryId: "cm7mzj3ie00017zw53ddgfnmt",
+    categoryId: "cm8mo2u7g0001vvzhlgljniz5",
     active: true,
     rating: 4.7,
   },
@@ -36,7 +36,7 @@ const products = [
     stock: 120,
     image:
       "https://62966vzr5x.ufs.sh/f/Ay4pssvNA9tr1plsg2kD3bBguj4SfamT6rqneXiJGFozhAvk",
-    categoryId: "cm7mzj3ie00017zw53ddgfnmt",
+    categoryId: "cm8mo2u7g0001vvzhlgljniz5",
     active: true,
     rating: 4.6,
   },
@@ -49,7 +49,7 @@ const products = [
     stock: 60,
     image:
       "https://62966vzr5x.ufs.sh/f/Ay4pssvNA9trC1lQ4uZx8rqYLTmcOXp12nZVlhkRowyN03a7",
-    categoryId: "cm7mzj3jy00027zw5d03g93jh",
+    categoryId: "cm8mo2vl10002vvzh4y1eeyav",
     active: true,
     rating: 4.9,
   },
@@ -62,7 +62,7 @@ const products = [
     stock: 70,
     image:
       "https://62966vzr5x.ufs.sh/f/Ay4pssvNA9trhwgEaKuZjbsW1X4dqSiD6YBkQnztMvPu8AEe",
-    categoryId: "cm7mzj3jy00027zw5d03g93jh",
+    categoryId: "cm8mo2vl10002vvzh4y1eeyav",
     active: true,
     rating: 4.8,
   },
@@ -75,7 +75,7 @@ const products = [
     stock: 90,
     image:
       "https://62966vzr5x.ufs.sh/f/Ay4pssvNA9trmG4yJhzfL2xWqyCPdEXzlBnbpureD4T83vcg",
-    categoryId: "cm7mzj3jy00027zw5d03g93jh",
+    categoryId: "cm8mo2vl10002vvzh4y1eeyav",
     active: true,
     rating: 4.7,
   },
@@ -88,7 +88,7 @@ const products = [
     stock: 150,
     image:
       "https://62966vzr5x.ufs.sh/f/Ay4pssvNA9trZ9tcCFwy58MT4aeW9pE6dJ7YqXkuf1xjwARt",
-    categoryId: "cm7mzj3l200037zw51g3zx4rj",
+    categoryId: "cm8mo2wda0003vvzh8fgix2oc",
     active: true,
     rating: 4.9,
   },
@@ -101,7 +101,7 @@ const products = [
     stock: 85,
     image:
       "https://62966vzr5x.ufs.sh/f/Ay4pssvNA9tr1jGB9RkD3bBguj4SfamT6rqneXiJGFozhAvk",
-    categoryId: "cm7mzj3l200037zw51g3zx4rj",
+    categoryId: "cm8mo2wda0003vvzh8fgix2oc",
     active: true,
     rating: 4.8,
   },
@@ -114,7 +114,7 @@ const products = [
     stock: 110,
     image:
       "https://62966vzr5x.ufs.sh/f/Ay4pssvNA9trFhujM4NDsuD1tdirh8HFjpRJmvaWw625oQb9",
-    categoryId: "cm7mzj3l200037zw51g3zx4rj",
+    categoryId: "cm8mo2wda0003vvzh8fgix2oc",
     active: true,
     rating: 4.9,
   },
@@ -127,7 +127,7 @@ const products = [
     stock: 75,
     image:
       "https://62966vzr5x.ufs.sh/f/Ay4pssvNA9trc5ehqF0mBfqtybiwXPaJjCUHoZu6kWnThSp8",
-    categoryId: "cm7mzj3l700047zw5eyj9y8ah",
+    categoryId: "cm8mo2x5c0004vvzhja14py1s",
     active: true,
     rating: 4.8,
   },
@@ -140,7 +140,7 @@ const products = [
     stock: 50,
     image:
       "https://62966vzr5x.ufs.sh/f/Ay4pssvNA9trh6OLZHuZjbsW1X4dqSiD6YBkQnztMvPu8AEe",
-    categoryId: "cm7mzj3l700047zw5eyj9y8ah",
+    categoryId: "cm8mo2x5c0004vvzhja14py1s",
     active: true,
     rating: 4.9,
   },
@@ -153,7 +153,7 @@ const products = [
     stock: 45,
     image:
       "https://62966vzr5x.ufs.sh/f/Ay4pssvNA9tr6HWfHiNFwQLE7OK3xHBMaS4GrWlgUz8YRnNo",
-    categoryId: "cm7mzj3l700047zw5eyj9y8ah",
+    categoryId: "cm8mo2x5c0004vvzhja14py1s",
     active: true,
     rating: 4.9,
   },
