@@ -2,7 +2,6 @@
 
 import type { Role } from "@prisma/client";
 import type { ColumnDef } from "@tanstack/react-table";
-import { Checkbox } from "../../../../../components/ui/checkbox";
 import { Button } from "../../../../../components/ui/button";
 import {
   ArrowUpDown,
