@@ -19,12 +19,12 @@ export default async function RootLayout({
   const { getUser } = getKindeServerSession();
   const user = await getUser();
   if (!user) {
-    return <Unauthorized post_login_redirect_url={"/admin/dashboard"} />;
+    return <Unauthorized />;
   }
   // check user role
   const role = await checkUserRole(user.id);
   if (role === null) {
-    return <Unauthorized post_login_redirect_url={"/admin/dashboard"} />;
+    return <Unauthorized />;
   }
   // check if user is admin
   if (role !== "ADMIN") {

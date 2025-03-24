@@ -2,11 +2,7 @@ import React from "react";
 import Link from "next/link";
 import { BanIcon } from "lucide-react";
 
-type UnauthorizedProps = {
-  post_login_redirect_url: string | null;
-};
-
-const Unauthorized = ({ post_login_redirect_url }: UnauthorizedProps) => {
+const Unauthorized = () => {
   return (
     <section
       className={
@@ -23,7 +19,7 @@ const Unauthorized = ({ post_login_redirect_url }: UnauthorizedProps) => {
         <p className={"mt-2 text-sm text-muted-foreground"}>
           Please Sign In To Shop{" "}
           <Link
-            href={`/api/auth/login?post_login_redirect_url=${post_login_redirect_url ?? "/"}`}
+            href={`/api/auth/login?post_login_redirect_url=${"/admin/dashboard"}`}
             className={"text-primary"}
           >
             here
