@@ -7,7 +7,7 @@ import {
   DialogContent,
   DialogHeader,
   DialogTitle,
-} from "../../../../../components/ui/dialog";
+} from "@/components/ui/dialog";
 import { DialogBody } from "next/dist/client/components/react-dev-overlay/internal/components/Dialog";
 import { useDebounce } from "../../../../../hooks/useDebounce";
 import { useSearchProducts } from "../../../../../hooks/api/users/products/useSearchProducts";

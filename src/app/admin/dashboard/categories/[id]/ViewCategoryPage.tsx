@@ -35,7 +35,7 @@ import {
   DialogHeader,
   DialogTitle,
   DialogTrigger,
-} from "../../../../../components/ui/dialog";
+} from "@/components/ui/dialog";
 import { DialogBody } from "next/dist/client/components/react-dev-overlay/internal/components/Dialog";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { updateCategory } from "../../../../../actions/categoryAction";
