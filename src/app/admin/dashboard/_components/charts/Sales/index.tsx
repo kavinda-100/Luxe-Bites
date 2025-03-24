@@ -3,7 +3,7 @@
 import React from "react";
 import type { ChartConfig } from "../../../../../../components/ui/chart";
 import { SalesChart } from "./SalesChart";
-import { getAdminSales, period } from "../../../../../../actions/admin";
+import { getAdminSales, type period } from "../../../../../../actions/admin";
 import { useQuery } from "@tanstack/react-query";
 import { Skeleton } from "../../../../../../components/ui/skeleton";
 
