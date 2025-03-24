@@ -2,11 +2,6 @@
 
 This Is an online website of food selling store that sells all types of foods in locals
 
-- [Next.js](https://nextjs.org)
-- [Prisma](https://prisma.io)
-- [Tailwind CSS](https://tailwindcss.com)
-- [Stripe](https://stripe.com)
-
 ## Features
 
 - [x] Authentication
