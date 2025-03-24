@@ -8,7 +8,6 @@ import {
   DialogHeader,
   DialogTitle,
 } from "@/components/ui/dialog";
-import { DialogBody } from "next/dist/client/components/react-dev-overlay/internal/components/Dialog";
 import { useDebounce } from "../../../../../hooks/useDebounce";
 import { useSearchProducts } from "../../../../../hooks/api/users/products/useSearchProducts";
 import { Skeleton } from "../../../../../components/ui/skeleton";
@@ -78,7 +77,7 @@ const SearchBar = () => {
               />
             </div>
           </DialogHeader>
-          <DialogBody className={"max-h-[400px] overflow-y-auto"}>
+          <div className={"max-h-[400px] overflow-y-auto"}>
             {searchError && (
               <div className={"w-full bg-muted p-2"}>
                 <p className={"text-sm font-medium text-red-500"}>
@@ -106,7 +105,7 @@ const SearchBar = () => {
                 </p>
               </div>
             )}
-          </DialogBody>
+          </div>
         </DialogContent>
       </Dialog>
     </>

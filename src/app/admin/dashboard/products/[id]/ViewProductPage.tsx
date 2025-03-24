@@ -54,7 +54,6 @@ import {
   DialogTrigger,
 } from "@/components/ui/dialog";
 import { Button } from "../../../../../components/ui/button";
-import { DialogBody } from "next/dist/client/components/react-dev-overlay/internal/components/Dialog";
 
 type ViewProductPageProps = {
   id: string;
@@ -155,7 +154,7 @@ const ViewProductPage = ({ id }: ViewProductPageProps) => {
       </section>
     );
   }
-  // if the product is not found, show an cancel
+  // if the product is not found, show a cancel
   if (isProductError) {
     router.push(`/error?message=${isProductError.message}`);
   }
@@ -452,7 +451,7 @@ const ViewProductPage = ({ id }: ViewProductPageProps) => {
                         action cannot be undone.
                       </DialogDescription>
                     </DialogHeader>
-                    <DialogBody>
+                    <div>
                       <div className={"flex justify-end gap-3"}>
                         <Button
                           type={"button"}
@@ -474,7 +473,7 @@ const ViewProductPage = ({ id }: ViewProductPageProps) => {
                           )}
                         </Button>
                       </div>
-                    </DialogBody>
+                    </div>
                   </DialogContent>
                 </Dialog>
               </div>

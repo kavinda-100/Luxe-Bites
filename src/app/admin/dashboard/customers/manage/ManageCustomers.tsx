@@ -52,7 +52,6 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
-import { DialogBody } from "next/dist/client/components/react-dev-overlay/internal/components/Dialog";
 
 const ManageCustomers = () => {
   // Get the email from the URL query params.
@@ -339,7 +338,7 @@ const ManageCustomers = () => {
                             action cannot be undone.
                           </DialogDescription>
                         </DialogHeader>
-                        <DialogBody>
+                        <div>
                           <div className={"flex justify-end gap-3"}>
                             <Button
                               type={"button"}
@@ -361,7 +360,7 @@ const ManageCustomers = () => {
                               )}
                             </Button>
                           </div>
-                        </DialogBody>
+                        </div>
                       </DialogContent>
                     </Dialog>
 
@@ -384,7 +383,7 @@ const ManageCustomers = () => {
                               Are you sure you want to Unban this User?
                             </DialogDescription>
                           </DialogHeader>
-                          <DialogBody>
+                          <div>
                             <div className={"mt-3 flex justify-end gap-3"}>
                               <Button
                                 type={"button"}
@@ -405,7 +404,7 @@ const ManageCustomers = () => {
                                 )}
                               </Button>
                             </div>
-                          </DialogBody>
+                          </div>
                         </DialogContent>
                       </Dialog>
                     ) : (
@@ -426,7 +425,7 @@ const ManageCustomers = () => {
                               Are you sure you want to Ban this User?
                             </DialogDescription>
                           </DialogHeader>
-                          <DialogBody>
+                          <div>
                             <Input
                               placeholder={"Reason for banning"}
                               value={bannedReason}
@@ -453,7 +452,7 @@ const ManageCustomers = () => {
                                 )}
                               </Button>
                             </div>
-                          </DialogBody>
+                          </div>
                         </DialogContent>
                       </Dialog>
                     )}

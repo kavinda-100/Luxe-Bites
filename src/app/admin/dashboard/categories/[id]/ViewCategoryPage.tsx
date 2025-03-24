@@ -36,7 +36,6 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
-import { DialogBody } from "next/dist/client/components/react-dev-overlay/internal/components/Dialog";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { updateCategory } from "../../../../../actions/categoryAction";
 import { toast } from "sonner";
@@ -204,7 +203,7 @@ const ViewCategoryPage = ({ id }: ViewCategoryPageProps) => {
                         action cannot be undone.
                       </DialogDescription>
                     </DialogHeader>
-                    <DialogBody>
+                    <div>
                       <div className={"flex justify-end gap-3"}>
                         <Button
                           type={"button"}
@@ -226,7 +225,7 @@ const ViewCategoryPage = ({ id }: ViewCategoryPageProps) => {
                           )}
                         </Button>
                       </div>
-                    </DialogBody>
+                    </div>
                   </DialogContent>
                 </Dialog>
               </div>
