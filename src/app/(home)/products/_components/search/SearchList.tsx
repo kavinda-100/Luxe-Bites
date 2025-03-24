@@ -7,12 +7,7 @@ import {
   AvatarImage,
 } from "../../../../../components/ui/avatar";
 import { useRouter } from "next/navigation";
-import {
-  ArrowLeftIcon,
-  ArrowLeftRight,
-  ArrowRight,
-  CirclePlusIcon,
-} from "lucide-react";
+import { ArrowRight, CirclePlusIcon } from "lucide-react";
 
 type SearchListProps = {
   id: string;
