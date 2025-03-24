@@ -5,7 +5,6 @@ import { cookies } from "next/headers";
 import { getKindeServerSession } from "@kinde-oss/kinde-auth-nextjs/server";
 import Unauthorized from "../../unauthorized/page";
 import { checkUserRole } from "../../../actions/AuthActions";
-import { redirect } from "next/navigation";
 import { ModeToggle } from "../../../components/ModeToggle";
 import RightSideBar from "./RightSideBar";
 import RightSideBarToggleButton from "../../../components/RightSideBarToggleButton";
