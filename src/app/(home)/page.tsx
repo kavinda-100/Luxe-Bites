@@ -46,7 +46,7 @@ export default function HomePage() {
               "mx-auto flex max-w-3xl flex-col items-center justify-center"
             }
           >
-            <Link href={"/public"}>
+            <Link href={"/products"}>
               <ButtonRotatingBackgroundGradient text={"Order Now"} />
             </Link>
           </div>
